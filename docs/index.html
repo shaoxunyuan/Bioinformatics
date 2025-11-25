@@ -11,7 +11,7 @@
       color: #333;
       max-width: 960px;
       margin: 0 auto;
-      padding-left: 240px; /* Adjust for the fixed nav width */
+      padding-left: 240px; /* 为左侧导航留出空间 */
       background-color: #fafafa;
     }
     h1, h2, h3 {
@@ -59,20 +59,6 @@
       margin: 15px 0;
       border-radius: 0 4px 4px 0;
     }
-    .images-container {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin: 20px 0;
-    }
-    .images-container img {
-      width: 180px;
-      height: auto;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
     .file-list a {
       display: inline-block;
       margin: 5px 10px 5px 0;
@@ -102,6 +88,7 @@
       background-color: #2c3e50;
       color: white;
       box-shadow: 2px 0 5px rgba(0,0,0,.1);
+      overflow-y: auto;
     }
     .nav-fixed a {
       color: #ecf0f1;
@@ -130,13 +117,26 @@
 <hr />
 
 <h2 id="序列比对">1. 序列比对</h2>
-<p>（内容待补充）</p>
+<p>序列比对是生物信息学中最基础的分析任务之一，用于识别不同 DNA、RNA 或蛋白质序列之间的相似性与差异。常见的比对类型包括：</p>
+<ul>
+  <li><strong>全局比对（Global Alignment）</strong>：适用于长度相近、整体同源的序列，如 Needleman-Wunsch 算法。</li>
+  <li><strong>局部比对（Local Alignment）</strong>：用于寻找高相似性片段，如 BLAST 和 Smith-Waterman 算法。</li>
+  <li><strong>多序列比对（MSA）</strong>：对三个及以上序列进行比对，常用于保守区域识别和系统发育分析，工具包括 Clustal Omega、MAFFT 和 MUSCLE。</li>
+</ul>
+<p>比对结果可用于功能注释、变异检测、引物设计等下游分析。</p>
 
 <h2 id="分子进化">2. 分子进化</h2>
-<p>（内容待补充）</p>
+<p>分子进化研究通过比较不同物种或个体间的分子序列（如基因或蛋白），推断其演化关系与历史。核心步骤包括：</p>
+<ol>
+  <li><strong>多序列比对</strong>：确保同源位点正确对齐。</li>
+  <li><strong>模型选择</strong>：使用 jModelTest（DNA）或 ProtTest（蛋白）选择最佳核苷酸/氨基酸替换模型。</li>
+  <li><strong>构建系统发育树</strong>：常用方法包括邻接法（NJ）、最大似然法（ML，如 RAxML、IQ-TREE）和贝叶斯推断（如 MrBayes）。</li>
+  <li><strong>树的可视化与评估</strong>：通过 bootstrap 支持率或后验概率评估分支可靠性，工具如 FigTree、iTOL。</li>
+</ol>
+<p>分子进化分析广泛应用于物种分类、基因家族扩张、正选择检测等领域。</p>
 
 <h2 id="测序数据回帖">3. 测序数据回帖</h2>
-<p>转录组数据分析</p>
+<p>转录组数据分析的核心步骤是从原始测序 reads 回帖（mapping）到参考基因组或转录组，以确定每个 read 的来源位置。该过程通常包括质量控制、索引构建、比对、去重和定量等环节。</p>
 
 <h2 id="基因表达数据分析">4. 基因表达数据分析</h2>
 
@@ -170,11 +170,12 @@
 </ol>
 
 <h3>数据可视化</h3>
-<div class="images-container">
-  <img src="./figures/VolcanoPlot.png" alt="火山图" />
-  <img src="./figures/HeatmapPlot.png" alt="热图" />
-  <img src="./figures/VolinBoxPlot.png" alt="小提琴箱线图" />
-</div>
+<p>基因表达分析结果通常通过以下图表展示：</p>
+<ul>
+  <li><strong>火山图（Volcano Plot）</strong>：展示差异表达基因的显著性与变化幅度。</li>
+  <li><strong>热图（Heatmap）</strong>：显示多个样本中关键基因的表达模式聚类。</li>
+  <li><strong>小提琴图 / 箱线图（Violin/Box Plot）</strong>：比较特定基因在不同组间的表达分布。</li>
+</ul>
 
 <h4>数据文件下载</h4>
 <p>（点击链接 → 右键“链接另存为”）</p>
@@ -191,7 +192,7 @@
 
 <div class="note">
   <p><strong>基因表达数据：</strong><br>
-  行是基因，列是样本，数值是表达值。</p>
+  行是基因，列是样本，数值是表达值（如 TPM、FPKM 或 counts）。</p>
 
   <p><strong>差异表达结果：</strong><br>
   • <strong>Gene</strong>：基因名称。<br>
@@ -210,7 +211,7 @@
 </ul>
 
 <footer>
-  <p>© 2025 生物信息学</p>
+  <p>© 2025 生物信息学教学资料 | 排版美化版</p>
 </footer>
 
 </body>
