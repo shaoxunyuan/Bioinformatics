@@ -11,7 +11,7 @@
       color: #333;
       max-width: 960px;
       margin: 0 auto;
-      padding: 20px;
+      padding-left: 240px; /* Adjust for the fixed nav width */
       background-color: #fafafa;
     }
     h1, h2, h3 {
@@ -92,20 +92,40 @@
       color: #7f8c8d;
       font-size: 0.9em;
     }
+    .nav-fixed {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 220px;
+      padding: 20px;
+      background-color: #2c3e50;
+      color: white;
+      box-shadow: 2px 0 5px rgba(0,0,0,.1);
+    }
+    .nav-fixed a {
+      color: #ecf0f1;
+      text-decoration: none;
+      display: block;
+      padding: 10px 0;
+      transition: all 0.3s ease;
+    }
+    .nav-fixed a:hover {
+      background-color: #34495e;
+      padding-left: 10px;
+    }
   </style>
 </head>
 <body>
 
-<h1>生物信息学</h1>
+<div class="nav-fixed">
+  <a href="#序列比对">1. 序列比对</a>
+  <a href="#分子进化">2. 分子进化</a>
+  <a href="#测序数据回帖">3. 测序数据回帖</a>
+  <a href="#基因表达数据分析">4. 基因表达数据分析</a>
+</div>
 
-<nav>
-  <ul>
-    <li><a href="#序列比对">1. 序列比对</a></li>
-    <li><a href="#分子进化">2. 分子进化</a></li>
-    <li><a href="#测序数据回帖">3. 测序数据回帖</a></li>
-    <li><a href="#基因表达数据分析">4. 基因表达数据分析</a></li>
-  </ul>
-</nav>
+<h1>生物信息学</h1>
 
 <hr />
 
@@ -190,7 +210,7 @@
 </ul>
 
 <footer>
-  <p>© 2025 生物信息学教学资料 | 排版美化版</p>
+  <p>© 2025 生物信息学</p>
 </footer>
 
 </body>
