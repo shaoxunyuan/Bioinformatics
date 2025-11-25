@@ -283,12 +283,57 @@
 
 <h3>转录组绘图（专为 RNA-seq 等高通量表达数据设计）</h3>
 <ul>
-  <li><strong>小提琴图（Violin Plot）</strong>：结合箱线图与密度估计，展示基因在不同分组中的表达分布形态，比箱线图更丰富地反映数据偏态与多峰性。</li>
-  <li><strong>火山图（Volcano Plot）</strong>：同时展示差异表达基因的统计显著性（-log₁₀(p-value)）与生物学效应大小（log₂ fold change），便于快速筛选关键候选基因。</li>
-  <li><strong>聚类热图（Cluster Heatmap）</strong>：通过层次聚类将具有相似表达模式的基因和样本聚集在一起，直观揭示共表达模块或样本亚型。</li>
-  <li><strong>GO/Pathway 富集图（如气泡图、条形图）</strong>：将差异基因映射到 Gene Ontology 或 KEGG 通路，以图形化方式展示显著富集的功能类别，辅助机制解读。</li>
-  <li><strong>Venn 图（文恩图）</strong>：比较多个基因集合（如不同处理组的上调基因）的交集与特有基因，识别共有或特异性调控因子。</li>
-</ul>
+  <!-- 第一行 -->
+  <li><strong>GSEA标记基因图（GSEA Gene Plot）</strong>：展示基因集富集分析（GSEA）中关键基因的表达趋势，用于识别与特定生物学过程相关的上调/下调基因序列。</li>
+  <li><strong>表达热图 + 趋势图（Heatmap Trend Time Series）</strong>：结合热图与时间序列折线图，展示多个基因在不同时间点的表达模式，常用于发育或药物响应研究。</li>
+  <li><strong>表达热图 + 趋势图 + 注释（Heatmap Trend GO Pathway）</strong>：在热图和趋势图基础上增加功能注释，如 GO 或 KEGG 通路标签，辅助解读共表达模块的功能意义。</li>
+  <li><strong>三色火山图（Volcano Plot with Three Colors）</strong>：使用三种颜色区分显著上调、显著下调和不显著基因，直观展示差异表达结果，是转录组分析的核心图表之一。</li>
+  <li><strong>相关系数散点图（Pearson Correlation Coefficient Scatter Plot）</strong>：展示两个变量间的线性相关性，如基因对之间表达的相关性，或样本间表达谱的相似性。</li>
+
+  <!-- 第二行 -->
+  <li><strong>时序分析_cluster（Mfuzz Time Series）</strong>：基于模糊聚类的时间序列分析图，将基因按表达模式分为若干簇，适用于动态过程研究（如细胞周期、分化）。</li>
+  <li><strong>多类型气泡图（Bubble Plot for GO/KEGG）</strong>：每个气泡代表一个通路或功能项，大小表示富集程度，颜色表示 p 值，适合展示富集分析结果。</li>
+  <li><strong>GO, KEGG点线图（GO BP CC MF KEGG）</strong>：条形图加点线图，展示通路富集得分及其显著性，支持多种功能类别并列比较。</li>
+  <li><strong>带点箱体图（Boxplot with Points）</strong>：箱线图叠加原始数据点，既能展示整体分布又能看到个体变异，适用于小样本差异分析。</li>
+  <li><strong>pathway分类汇总图（KEGG Pathway）</strong>：将差异基因映射到 KEGG 通路，并以柱状图形式汇总各通路富集情况，便于快速识别关键通路。</li>
+  <li><strong>高级雨云图（Raincloud Violin）</strong>：融合密度图、箱线图和散点图，全面展示数据分布形态，比普通箱线图更丰富地反映偏态或多峰特征。</li>
+
+  <!-- 第三行 -->
+  <li><strong>双X轴bar和line图（Dual-axis GO Pathway）</strong>：左侧柱状图展示富集得分，右侧折线图展示 p 值，同时呈现两个维度的信息，提升信息密度。</li>
+  <li><strong>GO_Pathway富集圈图（Enrichment Circle）</strong>：环形图展示 GO 或 KEGG 富集结果，外圈为功能类别，内圈为富集得分，视觉冲击力强。</li>
+  <li><strong>GO circle（GO 圆圈图）</strong>：圆形布局的 GO 功能富集图，中心为基因，外围为功能类别，适合展示层级化功能关系。</li>
+  <li><strong>相关系数矩阵（Correlation Corrplot）</strong>：展示多个基因或样本之间的两两相关性，颜色深浅表示相关强度，常用于构建共表达网络。</li>
+  <li><strong>富集分析cnet图（Enrichment Cnetplot）</strong>：基于富集结果构建的网络图，节点为通路或功能项，边表示关联性，揭示功能模块间的相互作用。</li>
+  <li><strong>带cut的聚类热图（Cut Heatmap）</strong>：热图加层次聚类树，并通过切割线划分样本或基因亚群，用于识别潜在的分子亚型或共表达模块。</li>
+
+  <!-- 第四行 -->
+  <li><strong>BP,CC,MF三合一（GO三合一图）</strong>：将 GO 的三个主要类别（生物过程、细胞组分、分子功能）整合在一个图中，便于综合查看富集结果。</li>
+  <li><strong>三维PCA（3D PCA）</strong>：三维主成分分析图，展示样本在前三个主成分上的分布，用于评估样本间相似性及批次效应。</li>
+  <li><strong>相关系数网络图（Correlation Network）</strong>：基于相关性构建的网络图，节点为基因，边表示相关性，可用于发现核心调控基因或模块。</li>
+  <li><strong>KEGG pathway二级分类汇总（Kegg Pathway）</strong>：将 KEGG 通路按二级分类汇总富集结果，提升分类精度，适合复杂通路分析。</li>
+  <li><strong>带有行列注释条的热图（Gap Heatmap）</strong>：热图两侧添加注释条，标注样本分组、临床信息或基因功能，增强可解释性。</li>
+  <li><strong>GSEA网络图（GSEA Geneset Network）</strong>：将 GSEA 分析得到的基因集构建为网络，节点为基因集，边表示重叠程度，揭示功能模块间的关联。</li>
+
+  <!-- 第五行 -->
+  <li><strong>富集气泡图（Enrichment Dot Bubble）</strong>：每个点代表一个功能项，大小表示富集程度，颜色表示 p 值，适合展示大量通路的富集结果。</li>
+  <li><strong>BP,CC,MF三合一（Enrichment GO Term）</strong>：同上，GO 三大类的富集结果整合展示，便于横向比较。</li>
+  <li><strong>聚类图_热图（Cluster Heatmap）</strong>：基于表达值进行聚类的热图，展示基因或样本的相似性，是转录组分析中最常用的图表之一。</li>
+  <li><strong>带基因标注的火山图（Volcano Plot with Gene Labels）</strong>：在火山图中标注显著差异基因名称，便于直接识别关键候选基因。</li>
+  <li><strong>带颜色富集条形图（Bar with Color Gradient）</strong>：条形图颜色随 p 值变化，直观展示富集显著性，适合展示多个通路的富集得分。</li>
+  <li><strong>GO_KEGG富集分析（GO KEGG Pathway Enrichment）</strong>：整合 GO 和 KEGG 富集结果，统一展示功能与通路富集，提升分析深度。</li>
+
+  <!-- 第六行 -->
+  <li><strong>GO_Pathway弦图（Gene Ontology Chord Diagram）</strong>：弦图展示基因在不同 GO 类别或通路之间的交叉分布，揭示功能重叠关系。</li>
+  <li><strong>GSEA基因集富集分析（GSEA Gene Set Genesets）</strong>：展示 GSEA 分析中各基因集的富集程度，识别与特定生物学过程相关的基因集合。</li>
+  <li><strong>相关系数图（Correlation Corrplot）</strong>：同上，展示基因或样本间的相关性矩阵，支持多种颜色方案和标注方式。</li>
+  <li><strong>环状RNA-miRNA图（circRNA miRNA Circle）</strong>：环形图展示 circRNA 与 miRNA 的调控关系，常用于非编码 RNA 相互作用分析。</li>
+  <li><strong>基因表达连线图（Connection PCR RNA-seq）</strong>：展示 qPCR 验证结果与 RNA-seq 数据的一致性，常用直线连接表示一致性趋势。</li>
+  <li><strong>2-6个数据集venn图（Interactive Venn Diagram）</strong>：支持最多六个数据集的交集比较，用于整合多个实验或数据库的差异基因结果。</li>
+
+  <!-- 第七行 -->
+  <li><strong>山脊线图（Ridgeline Plot / Joyplot）</strong>：多条密度曲线堆叠显示，展示不同样本或条件下的分布变化，适合比较多个组别的表达分布。</li>
+  <li><strong>圆形聚类图（Circular Heatmap）</strong>：将热图排列成圆形，适合展示循环性数据（如昼夜节律）或大规模数据集。</li>
+  <
 
 <footer>
   <p>© 2025 南京中医药大学 人工智能与信息技术学院</p>
