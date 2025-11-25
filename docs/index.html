@@ -11,7 +11,7 @@
       color: #333;
       max-width: 960px;
       margin: 0 auto;
-      padding-left: 240px; /* 为左侧导航留出空间 */
+      padding-left: 240px;
       background-color: #fafafa;
     }
     h1, h2, h3 {
@@ -105,11 +105,13 @@
 </head>
 <body>
 
+<!-- 左侧固定导航栏 -->
 <div class="nav-fixed">
   <a href="#序列比对">1. 序列比对</a>
   <a href="#分子进化">2. 分子进化</a>
   <a href="#测序数据回帖">3. 测序数据回帖</a>
   <a href="#基因表达数据分析">4. 基因表达数据分析</a>
+  <a href="#生物信息学数据可视化">5. 生物信息学数据可视化</a>
 </div>
 
 <h1>生物信息学</h1>
@@ -209,6 +211,30 @@
   <li><a href="https://www.chiplot.online/" target="_blank">ChiPlot</a></li>
   <li><a href="https://www.bioinformatics.com.cn/" target="_blank">微生信</a></li>
 </ul>
+
+<!-- 新增第五章 -->
+<h2 id="生物信息学数据可视化">5. 生物信息学数据可视化</h2>
+<p>高质量的数据可视化是生物信息学研究的关键环节。推荐使用国内优秀的在线平台 <a href="https://bioinformatics.com.cn/" target="_blank">微生信（Bioinformatics.com.cn）</a> 进行快速、美观、可发表级的图表绘制。该平台无需编程基础，支持多种组学数据类型的可视化。以下按功能模块分类介绍常用图表及其生物学意义。</p>
+
+<h3>基础绘图（适用于各类数据探索与展示）</h3>
+<ul>
+  <li><strong>饼图（Pie Chart）</strong>：展示分类数据的比例构成，如样本中不同组织来源的占比、通路富集结果的类别分布。</li>
+  <li><strong>线图（Line Plot）</strong>：呈现连续变量随时间、浓度或处理梯度的变化趋势，如药物剂量-响应曲线、时间序列基因表达动态。</li>
+  <li><strong>点图（Scatter Plot）</strong>：揭示两个连续变量之间的相关性或聚类模式，常用于 PCA、t-SNE 等降维结果展示。</li>
+  <li><strong>柱状图（Bar Plot）</strong>：比较不同组别或类别的数值大小，如各组样本的平均表达量、通路富集得分排序。</li>
+  <li><strong>面积图（Area Plot）</strong>：在展示趋势的同时强调累积效应，适用于堆叠式时间序列或多组分比例变化。</li>
+</ul>
+
+<h3>转录组绘图（专为 RNA-seq 等高通量表达数据设计）</h3>
+<ul>
+  <li><strong>小提琴图（Violin Plot）</strong>：结合箱线图与密度估计，展示基因在不同分组中的表达分布形态，比箱线图更丰富地反映数据偏态与多峰性。</li>
+  <li><strong>火山图（Volcano Plot）</strong>：同时展示差异表达基因的统计显著性（-log₁₀(p-value)）与生物学效应大小（log₂ fold change），便于快速筛选关键候选基因。</li>
+  <li><strong>聚类热图（Cluster Heatmap）</strong>：通过层次聚类将具有相似表达模式的基因和样本聚集在一起，直观揭示共表达模块或样本亚型。</li>
+  <li><strong>GO/Pathway 富集图（如气泡图、条形图）</strong>：将差异基因映射到 Gene Ontology 或 KEGG 通路，以图形化方式展示显著富集的功能类别，辅助机制解读。</li>
+  <li><strong>Venn 图（文恩图）</strong>：比较多个基因集合（如不同处理组的上调基因）的交集与特有基因，识别共有或特异性调控因子。</li>
+</ul>
+
+<p>所有上述图表均可在 <a href="https://bioinformatics.com.cn/" target="_blank">微生信平台</a> 免费在线生成，支持自定义配色、标签、分辨率导出（PNG/PDF/SVG），非常适合科研论文配图。建议先观看平台提供的操作视频再进行绘图（测试账号：<code>test</code>，密码：<code>bio123456789</code>）。</p>
 
 <footer>
   <p>© 2025 生物信息学教学资料 | 排版美化版</p>
