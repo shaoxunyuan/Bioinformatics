@@ -214,15 +214,71 @@
 
 <!-- 新增第五章 -->
 <h2 id="生物信息学数据可视化">5. 生物信息学数据可视化</h2>
-<p>高质量的数据可视化是生物信息学研究的关键环节。推荐使用国内优秀的在线平台 <a href="https://bioinformatics.com.cn/" target="_blank">微生信（Bioinformatics.com.cn）</a> 进行快速、美观、可发表级的图表绘制。该平台无需编程基础，支持多种组学数据类型的可视化。以下按功能模块分类介绍常用图表及其生物学意义。</p>
+<p>高质量的数据可视化是生物信息学研究的关键环节。推荐使用在线平台 <a href="https://bioinformatics.com.cn/" target="_blank">微生信（Bioinformatics.com.cn）</a> 进行快速、美观、可发表级的图表绘制。该平台无需编程基础，支持多种组学数据类型的可视化。以下按功能模块分类介绍常用图表及其生物学意义。</p>
 
 <h3>基础绘图（适用于各类数据探索与展示）</h3>
 <ul>
-  <li><strong>饼图（Pie Chart）</strong>：展示分类数据的比例构成，如样本中不同组织来源的占比、通路富集结果的类别分布。</li>
-  <li><strong>线图（Line Plot）</strong>：呈现连续变量随时间、浓度或处理梯度的变化趋势，如药物剂量-响应曲线、时间序列基因表达动态。</li>
-  <li><strong>点图（Scatter Plot）</strong>：揭示两个连续变量之间的相关性或聚类模式，常用于 PCA、t-SNE 等降维结果展示。</li>
-  <li><strong>柱状图（Bar Plot）</strong>：比较不同组别或类别的数值大小，如各组样本的平均表达量、通路富集得分排序。</li>
-  <li><strong>面积图（Area Plot）</strong>：在展示趋势的同时强调累积效应，适用于堆叠式时间序列或多组分比例变化。</li>
+  <!-- 第一行 -->
+  <li><strong>带连线注释的甜甜圈图（Donut Pie with Annotation）</strong>：用于展示分类数据的比例构成，并通过连线标注具体数值，适合多组别占比对比，如不同组织来源样本比例。</li>
+  <li><strong>大饼拉小饼图（Pie with Sub-pie）</strong>：主图展示整体分布，子图细化某一类别内部结构，适用于嵌套层级数据，如基因功能富集的二级分类。</li>
+  <li><strong>2.5d柱状图（Bar Chart 2.5D）</strong>：三维视觉效果的柱状图，增强可读性，常用于比较多个样本或处理组的表达量或计数。</li>
+  <li><strong>渐变树形图（Gradient Treemap）</strong>：用矩形面积表示值大小，颜色深浅表示另一维度（如 p 值），适合展示通路富集结果或基因家族分布。</li>
+  <li><strong>水平条形图（Horizontal Bar Chart）</strong>：横向排列条形，便于阅读长标签，常用于 GO/KEGG 富集分析中路径名称较长的情况。</li>
+  <li><strong>平滑线图（Smooth Line Plot）</strong>：展示连续变量随时间或梯度的变化趋势，如药物浓度响应曲线、时间序列表达动态。</li>
+
+  <!-- 第二行 -->
+  <li><strong>矩形漏斗图（Rectangle Funnel）</strong>：展示流程中各阶段的转化率，如测序数据质控流程（raw reads → clean reads → mapped reads）。</li>
+  <li><strong>成比例面积文氏图（Proportional Venn Diagram）</strong>：展示多个集合之间的交集与特有元素，面积按数量缩放，适用于差异基因集合比较（如 DESeq vs FQ）。</li>
+  <li><strong>3D饼图（3D Pie Chart）</strong>：立体化饼图，增强视觉冲击力，适合展示单个样本中不同成分的组成比例（如转录本类型分布）。</li>
+  <li><strong>2D饼图（2D Pie Chart）</strong>：标准二维饼图，简洁直观地展示分类数据比例，如样本分组占比、基因功能类别分布。</li>
+
+  <!-- 第三行 -->
+  <li><strong>3D面积图（3D Area Chart）</strong>：三维堆叠面积图，展示多变量随时间或条件变化的趋势，适用于多组实验的时间动态表达分析。</li>
+  <li><strong>堆叠面积图（Stacked Area Chart）</strong>：展示总量及其组成部分随时间的变化，如不同基因在某通路中的表达贡献。</li>
+  <li><strong>堆叠线图（Stacked Line Chart）</strong>：多条线叠加显示，体现各组分对总体趋势的贡献，适合展示基因表达模式聚类。</li>
+  <li><strong>垂直柱状图（Vertical Bar Chart）</strong>：最常用的柱状图形式，用于比较不同类别或样本间的数值大小，如不同处理组的平均表达量。</li>
+  <li><strong>箱体图 / 盒子图（Boxplot）</strong>：展示数据分布的五数概括（最小值、下四分位、中位数、上四分位、最大值），识别异常值，常用于比较不同组间表达差异。</li>
+  <li><strong>水平 / 垂直小提琴图（Violin Plot）</strong>：结合箱线图与密度估计，全面展示数据分布形态，比箱线图更清晰地反映偏态或多峰特征。</li>
+
+  <!-- 第四行 -->
+  <li><strong>直方图，带拟合（Histogram with Fit）</strong>：展示连续型数据的频次分布，并叠加正态分布曲线，用于检验数据是否符合某种分布（如表达值正态性检验）。</li>
+  <li><strong>多组垂直柱状图（Multi-group Vertical Bar）</strong>：比较多个样本或处理组的表达量，支持分组配色，适合展示多因子实验结果。</li>
+  <li><strong>堆叠柱状图（Vertical Stack Bar）</strong>：展示各组内不同类别的构成比例，如不同样本中不同细胞类型的占比。</li>
+  <li><strong>堆叠条形图（Horizontal Stack Bar）</strong>：横向堆叠条形，便于比较多个样本中各类别的相对比例。</li>
+  <li><strong>三维柱状图（3D Bar Chart）</strong>：三维空间展示数据，增强可视化效果，适合展示两因素交互作用（如时间 × 处理）。</li>
+  <li><strong>底部汇聚柱状图（Aggregation Bar）</strong>：从底部汇聚的柱状图，强调累积效应，可用于展示累计表达量或通路激活程度。</li>
+
+  <!-- 第五行 -->
+  <li><strong>甜甜圈图（Donut Chart）</strong>：环形饼图，中心留空，常用于展示分类数据比例，如基因功能分类或样本来源分布。</li>
+  <li><strong>三维柱状图（3D Bar Chart）</strong>：同上，三维立体柱状图，增强视觉表现力。</li>
+  <li><strong>双层饼图（Two-layer Pie）</strong>：内外两层饼图，外层为主分类，内层为子分类，适合展示层次化数据结构。</li>
+  <li><strong>圆形比例图（Percentage Half Circle）</strong>：半圆扇形图，以角度表示比例，常用于展示单一指标的百分比构成。</li>
+  <li><strong>双层甜甜圈图（Two-layer Donut）</strong>：双层环形图，用于展示两层嵌套分类数据，如物种 × 组织类型。</li>
+  <li><strong>梯形漏斗图（Trapezoid Funnel）</strong>：梯形形状的漏斗图，展示流程转化率，如筛选候选基因的流程步骤。</li>
+
+  <!-- 第六行 -->
+  <li><strong>小提琴图（Violin Box）</strong>：结合小提琴图与箱线图，既展示分布密度又突出统计位置，适用于复杂分布数据的精细比较。</li>
+  <li><strong>4/5/6/7元文恩图（Venn Diagram）</strong>：支持最多七组集合的交集可视化，用于比较多个实验条件下的差异基因重叠情况。</li>
+  <li><strong>成比例面积图（Proportional Area Chart）</strong>：面积大小按数值缩放，适合展示不同类别的重要性或丰度，如通路富集得分。</li>
+  <li><strong>两组成比例面积图（Proportional Circle Area）</strong>：两个圆形区域，面积按比例划分，用于比较两类数据的构成差异。</li>
+  <li><strong>errorbar柱状图（Errorbar Bar）</strong>：柱状图加误差棒，展示均值 ± 标准差或置信区间，适用于重复实验数据的统计比较。</li>
+  <li><strong>矩阵饼图（Pie Matrix）</strong>：多个小饼图组成矩阵，每个代表一个样本或类别，适合展示多样本的分类分布。</li>
+
+  <!-- 第七行 -->
+  <li><strong>4组面积图（Square Area）</strong>：四个区域的面积图，用于比较四个组别的数据趋势，如不同时间点的表达变化。</li>
+  <li><strong>哑铃图（Dumbbell Chart）</strong>：连接两个点的线段，展示同一对象在不同条件下的变化，如基因在对照 vs 实验组的表达变化。</li>
+  <li><strong>填充柱状图（Link Fill Bar）</strong>：柱状图之间用线条连接，强调连续性，适合展示时间序列或梯度实验结果。</li>
+  <li><strong>分组_回归的散点图（Scatter Fit Group）</strong>：分组散点图加回归线，展示不同组别间变量关系及趋势，如基因表达与临床指标相关性。</li>
+  <li><strong>带连线的box图（Dot Line Box）</strong>：箱线图加点连成线，展示个体数据点趋势，适用于纵向研究或重复测量设计。</li>
+  <li><strong>带bar的饼图（Bar of Pie）</strong>：主饼图展示主要类别，次要类别单独用条形图展示，解决小比例类别难以辨识的问题。</li>
+
+  <!-- 第八行 -->
+  <li><strong>华夫饼图（Waffle Chart）</strong>：由小方块组成的网格图，每个方块代表一个单位，适合展示百分比构成，如样本分组比例。</li>
+  <li><strong>漏斗图（Funnel Chart）</strong>：展示流程中各阶段的转化率，如测序数据过滤流程或患者筛选流程。</li>
+  <li><strong>雷达图（Radar Chart）</strong>：多维数据可视化，展示多个指标的综合表现，如基因在多个功能通路中的富集得分。</li>
+  <li><strong>一条/多条线图（Multi-line）</strong>：多条折线图，比较多个变量随时间或条件的变化趋势，如多个基因的表达动态。</li>
+  <li><strong>蝴蝶图（Butterfly Horizontal Bar）</strong>：左右对称条形图，用于比较两个组别在相同类别上的差异，如上调 vs 下调基因数。</li>
+  <li><strong>填充线图（Filled Area）</strong>：折线图下方填充颜色，强调面积大小，适合展示累计值或趋势范围。</li>
 </ul>
 
 <h3>转录组绘图（专为 RNA-seq 等高通量表达数据设计）</h3>
@@ -234,10 +290,8 @@
   <li><strong>Venn 图（文恩图）</strong>：比较多个基因集合（如不同处理组的上调基因）的交集与特有基因，识别共有或特异性调控因子。</li>
 </ul>
 
-<p>所有上述图表均可在 <a href="https://bioinformatics.com.cn/" target="_blank">微生信平台</a> 免费在线生成，支持自定义配色、标签、分辨率导出（PNG/PDF/SVG），非常适合科研论文配图。建议先观看平台提供的操作视频再进行绘图（测试账号：<code>test</code>，密码：<code>bio123456789</code>）。</p>
-
 <footer>
-  <p>© 2025 生物信息学教学资料 | 排版美化版</p>
+  <p>© 2025 南京中医药大学 人工智能与信息技术学院</p>
 </footer>
 
 </body>
