@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>生物信息学基础教程 - 目录</title>
+  <title>生物信息学基础教程 - 分子进化</title>
   <style>
     body {
       font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
@@ -22,6 +22,11 @@
       margin-bottom: 30px;
       border-bottom: 2px solid #3498db;
       padding-bottom: 10px;
+    }
+    h2 {
+      margin-top: 30px;
+      border-left: 4px solid #3498db;
+      padding-left: 10px;
     }
     ul, ol {
       padding-left: 20px;
@@ -62,16 +67,14 @@
       font-weight: bold;
       margin-bottom: 10px;
     }
-    .content {
-      margin-top: 40px;
-    }
   </style>
 </head>
 <body>
 
-<!-- 左侧固定导航栏（目录） -->
+<!-- 左侧固定导航栏 -->
 <div class="nav-fixed">
   <div class="nav-title">生物信息学基础教程</div>
+  <a href="index.html">返回首页</a>
   <a href="01-alignment.html">1. 序列比对</a>
   <a href="02-evolution.html">2. 分子进化</a>
   <a href="03-mapping.html">3. 测序数据回帖</a>
@@ -79,14 +82,21 @@
   <a href="05-visualization.html">5. 生物信息学数据可视化</a>
 </div>
 
-<div class="content">
-  <h1>生物信息学基础教程</h1>
-  <p>欢迎使用本教程。请通过左侧目录进入各章节内容。</p>
+<h1>生物信息学基础教程</h1>
 
-  <footer>
-    <p>© 2025 南京中医药大学 人工智能与信息技术学院</p>
-  </footer>
-</div>
+<h2>2. 分子进化</h2>
+<p>分子进化研究通过比较不同物种或个体间的分子序列（如基因或蛋白），推断其演化关系与历史。核心步骤包括：</p>
+<ol>
+  <li><strong>多序列比对</strong>：确保同源位点正确对齐。</li>
+  <li><strong>模型选择</strong>：使用 jModelTest（DNA）或 ProtTest（蛋白）选择最佳核苷酸/氨基酸替换模型。</li>
+  <li><strong>构建系统发育树</strong>：常用方法包括邻接法（NJ）、最大似然法（ML，如 RAxML、IQ-TREE）和贝叶斯推断（如 MrBayes）。</li>
+  <li><strong>树的可视化与评估</strong>：通过 bootstrap 支持率或后验概率评估分支可靠性，工具如 FigTree、iTOL。</li>
+</ol>
+<p>分子进化分析广泛应用于物种分类、基因家族扩张、正选择检测等领域。</p>
+
+<footer>
+  <p>© 2025 南京中医药大学 人工智能与信息技术学院</p>
+</footer>
 
 </body>
 </html>
