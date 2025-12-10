@@ -131,6 +131,19 @@
     }
   </style>
 </head>
+
+<script>
+    document.getElementById("copyBtn").onclick = function () {
+        const textarea = document.querySelector("textarea");
+        textarea.select();
+        textarea.setSelectionRange(0, 99999); 
+        navigator.clipboard.writeText(textarea.value).then(() => {
+            alert("已复制到剪贴板！");
+        });
+    };
+    </script>
+
+
 <body>
 
 
@@ -157,6 +170,19 @@
 <div class="highlight-box">
   建议第一次练习先使用这组基因，成功跑通后再替换为你课题中的基因列表。
 </div>
+
+<button id="copyBtn" style="
+  float: right;
+  margin-bottom: 6px;
+  padding: 6px 12px;
+  background:#3498db;
+  color:white;
+  border:none;
+  border-radius:4px;
+  cursor:pointer;
+">
+  一键复制基因列表
+</button>
 
 <textarea readonly>
 TP53
