@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>基因注释与富集分析在线工具教程</title>
+  <style>
+    body {
+      font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding-left: 260px;
+      background-color: #fafafa;
+    }
+    h1, h2, h3, h4 {
+      color: #2c3e50;
+    }
+    h1 {
+      text-align: center;
+      margin: 20px 0 30px;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 10px;
+    }
+    h2 {
+      margin-top: 30px;
+      border-left: 4px solid #3498db;
+      padding-left: 10px;
+    }
+    h3 {
+      margin-top: 20px;
+      color: #2980b9;
+    }
+    h4 {
+      margin-top: 16px;
+    }
+    ul, ol {
+      padding-left: 22px;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    pre, code, textarea {
+      background-color: #f4f4f4;
+      border-radius: 4px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.9em;
+    }
+    pre {
+      padding: 10px 12px;
+      border-left: 3px solid #3498db;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+    textarea {
+      width: 100%;
+      min-height: 130px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+    .note {
+      background-color: #fff8e1;
+      border-left: 4px solid #ffc107;
+      padding: 10px 12px;
+      margin: 15px 0;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.95em;
+    }
+    .tip {
+      background-color: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 10px 12px;
+      margin: 10px 0;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.95em;
+    }
+    .warning {
+      background-color: #ffebee;
+      border-left: 4px solid #e53935;
+      padding: 10px 12px;
+      margin: 10px 0;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.95em;
+    }
+    a {
+      color: #1976d2;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .step {
+      background-color: #ffffff;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin: 12px 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .step-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    footer {
+      margin: 40px 0 20px;
+      text-align: center;
+      color: #7f8c8d;
+      font-size: 0.9em;
+    }
+    .badge-link {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background-color: #e3f2fd;
+      font-size: 0.8em;
+      margin-left: 4px;
+    }
+    .badge-link a {
+      text-decoration: none;
+      color: #1976d2;
+    }
+    .highlight-box {
+      border: 1px dashed #90caf9;
+      background-color: #f1f8ff;
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      margin: 8px 0 4px;
+    }
+  </style>
+</head>
+<body>
+
+
+<h1>基因注释与功能富集分析：STRING & Enrichr 实战教程</h1>
+
+<!-- 0. 教程目标 -->
+<h2 id="intro">0. 教程目标</h2>
+<p>本页面将带领你用一组真实的 <strong>基因符号（Gene Symbol）</strong>，在浏览器里完成：</p>
+<ol>
+  <li>使用 <strong>STRING</strong> 构建蛋白互作网络（PPI），观察基因之间的“社交关系”。</li>
+  <li>使用 <strong>Enrichr</strong> 进行 GO / KEGG 等功能富集分析，理解这些基因共同参与了哪些生物过程或通路。</li>
+  <li>学会基本的结果解读原则，而不仅仅是“点出来一张图”。</li>
+</ol>
+
+<div class="note">
+  <strong>前提假设：</strong>  
+  你已经知道什么是基因 symbol（如 <code>TP53</code>、<code>EGFR</code>），并且能在浏览器中打开网页、复制粘贴文本。
+</div>
+
+<!-- 1. 示例基因列表 -->
+<h2 id="gene-list">1. 示例基因列表（复制即可使用）</h2>
+<p>下面给出一组与细胞周期与癌症相关的经典基因，用于教学示例。你可以直接<strong>全选 → 复制 → 粘贴</strong>到 STRING 或 Enrichr 中。</p>
+
+<div class="highlight-box">
+  建议第一次练习先使用这组基因，成功跑通后再替换为你课题中的基因列表。
+</div>
+
+<textarea readonly>
+TP53
+EGFR
+MYC
+CDK1
+CCNB1
+CDKN1A
+BCL2
+MDM2
+RB1
+AKT1
+PIK3CA
+MAPK1
+JUN
+FOS
+STAT3
+</textarea>
+
+<div class="tip">
+  <strong>小提示：</strong>  
+  绝大多数在线工具都<strong>接受一行一个基因符号</strong>的列表格式，如上面这样。
+</div>
+
+<!-- 2. STRING PPI -->
+<h2 id="string">2. 使用 STRING 构建蛋白互作网络 (PPI)</h2>
+<p>
+  STRING 是一个非常常用的蛋白互作数据库，可以根据基因 symbol 构建蛋白质相互作用网络。  
+  官方网站：<a href="https://string-db.org" target="_blank">https://string-db.org</a>
+</p>
+
+<h3 id="string-input">2.1 在 STRING 中输入基因列表</h3>
+
+<div class="step">
+  <div class="step-title">步骤 1：打开 STRING 网站</div>
+  <ol>
+    <li>在浏览器中输入网址：<code>https://string-db.org</code> 并回车。</li>
+    <li>进入首页后，可以看到一个搜索框，通常会显示 “Search” 或 “Multiple proteins”。</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">步骤 2：切换到“Multiple proteins”模式（如果需要）</div>
+  <ol>
+    <li>如果默认是单个蛋白搜索，请找到并点击 <strong>“Multiple proteins”</strong> 或类似选项。</li>
+    <li>进入后，页面中会有一个大文本框，用来粘贴多个基因/蛋白名称。</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">步骤 3：粘贴示例基因列表</div>
+  <ol>
+    <li>回到本教程页面，选中上面的基因列表，<strong>Ctrl+C（复制）</strong>。</li>
+    <li>在 STRING 的文本框中点击，然后 <strong>Ctrl+V（粘贴）</strong>。</li>
+    <li>确认每个基因占一行（一般不用额外处理）。</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">步骤 4：选择物种（物种非常关键！）</div>
+  <ol>
+    <li>在文本框下面，通常会有一个 <strong>Organism / Species</strong> 的选择框。</li>
+    <li>本示例基因来自人类，请选择：<strong>Homo sapiens</strong>（Human）。</li>
+  </ol>
+  <div class="warning">
+    如果物种选错了，很多基因会识别不到，或者得到完全不相关的结果！
+  </div>
+</div>
+
+<h3 id="string-options">2.2 运行 STRING 并设置基本参数</h3>
+
+<div class="step">
+  <div class="step-title">步骤 5：提交查询</div>
+  <ol>
+    <li>确认基因和物种无误后，点击页面中的 <strong>“Search”</strong> 或 <strong>“Continue”</strong> 按钮。</li>
+    <li>如果弹出一个“匹配基因列表”的页面，通常是让你确认每个 symbol 对应哪个蛋白，保持默认或选择最常见的条目，再点击继续。</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">步骤 6：了解几个常见参数</div>
+  <p>在看到网络之前或之后，STRING 常见的一些参数包括：</p>
+  <ul>
+    <li><strong>Confidence score（置信度阈值）</strong>：  
+      一般用 0.4（medium）作为起点。分数越高，边越少但更可靠。
+    </li>
+    <li><strong>Network edges（连接来源）</strong>：  
+      可以选择是否保留 “text-mining”、“co-expression”、“experiments” 等不同证据类型。
+    </li>
+    <li><strong>Number of interactors</strong>：  
+      可以限制只看<strong>输入基因之间</strong>的互作，或者允许 STRING “扩展”出更多相互作用伙伴。</li>
+  </ul>
+</div>
+
+<h3 id="string-interpret">2.3 STRING PPI 结果如何解读？</h3>
+
+<div class="step">
+  <div class="step-title">(1) 网络视图（Network）</div>
+  <ul>
+    <li>每一个<strong>节点（圆圈）代表一个蛋白</strong>（通常对应一个基因）。</li>
+    <li>节点之间的<strong>连线（边）代表蛋白之间可能存在相互作用</strong>。</li>
+    <li>边的<strong>粗细/颜色</strong>往往代表<strong>置信度高低</strong>或不同的证据来源。</li>
+  </ul>
+  <div class="tip">
+    观察问题示例：  
+    1）哪些基因在网络中心？  
+    2）是否有明显的“模块”（一群基因互相高度连接）？  
+    3）是否出现了你熟悉的信号通路（如 PI3K-AKT、MAPK 等）？
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-title">(2) 表功能：节点信息与表格</div>
+  <ul>
+    <li>点击某个节点（如 <code>TP53</code>），可以查看该蛋白的详细信息、别名、功能描述。</li>
+    <li>页面中通常有一个表格列出<strong>各互作对的得分</strong>，例如：
+      <ul>
+        <li>Overall score（综合得分）</li>
+        <li>来自实验、数据库、文献挖掘等各类证据的子评分</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="step">
+  <div class="step-title">(3) 功能富集（Functional Enrichment）</div>
+  <ul>
+    <li>STRING 还会给出一系列富集结果，例如：
+      <ul>
+        <li><strong>GO Biological Process</strong>：该网络在什么生物过程上富集，如 “cell cycle”、“apoptotic process” 等。</li>
+        <li><strong>KEGG pathways</strong>：该网络涉及哪些经典信号通路，如 “p53 signaling pathway”、“PI3K-Akt signaling pathway” 等。</li>
+      </ul>
+    </li>
+    <li>每一行结果通常包含：
+      <ul>
+        <li><strong>Term</strong>：通路或功能名称</li>
+        <li><strong>Count</strong>：命中该项的基因数</li>
+        <li><strong>p-value / FDR</strong>：显著性水平（越小越可靠）</li>
+      </ul>
+    </li>
+  </ul>
+  <div class="note">
+    一般来说，我们会关注 <strong>FDR &lt; 0.05</strong> 的功能/通路，并结合生物学背景进行筛选。
+  </div>
+</div>
+
+<!-- 3. Enrichr -->
+<h2 id="enrichr">3. 使用 Enrichr 进行功能富集分析</h2>
+<p>
+  Enrichr 是一个简单易用的在线富集分析工具，支持非常多的基因集库。  
+  网站地址：<a href="https://maayanlab.cloud/Enrichr/" target="_blank">https://maayanlab.cloud/Enrichr/</a>
+</p>
+
+<h3 id="enrichr-input">3.1 输入基因列表</h3>
+
+<div class="step">
+  <div class="step-title">步骤 1：打开 Enrichr</div>
+  <ol>
+    <li>在浏览器输入：<code>https://maayanlab.cloud/Enrichr/</code>，进入页面。</li>
+    <li>首页通常会有一个大文本框，提示你粘贴基因列表。</li>
+  </ol>
+</div>
+
+<div class="step">
+  <div class="step-title">步骤 2：粘贴基因列表并提交</div>
+  <ol>
+    <li>从本页面复制示例基因列表（或你自己的基因列表）。</li>
+    <li>粘贴到 Enrichr 的文本框中。</li>
+    <li>点击文本框下方的 <strong>“Submit”</strong> 或类似按钮。</li>
+  </ol>
+  <div class="tip">
+    Enrichr 一般默认识别的是人类基因 symbol，如果你是其他物种，要注意工具是否支持，或使用对应物种专用库。
+  </div>
+</div>
+
+<h3 id="enrichr-library">3.2 选择基因集库（Gene-set Library）</h3>
+
+<div class="step">
+  <div class="step-title">步骤 3：选择感兴趣的功能库</div>
+  <p>提交后，Enrichr 会跳转到结果页面，上方通常有多个 Tab 或列表，用来选择不同的基因集库，例如：</p>
+  <ul>
+    <li><strong>GO Biological Process 2021</strong>（GO 生物过程）</li>
+    <li><strong>GO Molecular Function</strong>（GO 分子功能）</li>
+    <li><strong>GO Cellular Component</strong>（GO 细胞组分）</li>
+    <li><strong>KEGG 2021</strong> 或类似（经典信号通路）</li>
+    <li>Reactome、WikiPathways 等其他通路库</li>
+  </ul>
+  <p>第一次建议重点看：</p>
+  <ul>
+    <li>一个 GO BP（Biological Process）库</li>
+    <li>一个 KEGG 通路库</li>
+  </ul>
+</div>
+
+<h3 id="enrichr-interpret">3.3 Enrichr 结果表格怎么看？</h3>
+
+<div class="step">
+  <div class="step-title">(1) 结果表格的核心列</div>
+  <p>在任一基因集库中，你会看到一个结果表格，每一行代表一个富集到的功能/通路，常见列包括：</p>
+  <ul>
+    <li><strong>Term</strong>：功能/通路的名称，例如 “cell cycle”、“p53 signaling pathway” 等。</li>
+    <li><strong>Overlap</strong>：你的基因列表中，有多少基因落在这个功能里（如 5/120）。</li>
+    <li><strong>P-value</strong>：该富集结果的显著性，一般 <code>p &lt; 0.05</code> 认为有统计学意义。</li>
+    <li><strong>Adjusted p-value</strong> 或 <strong>q-value</strong>：多重检验校正后的 p 值，<strong>优先看这个</strong>。</li>
+    <li><strong>Combined score</strong>：Enrichr 自己定义的综合评分，数值越大通常代表越重要。</li>
+  </ul>
+</div>
+
+<div class="step">
+  <div class="step-title">(2) 条形图/气泡图视图</div>
+  <ul>
+    <li>很多基因集库都会支持图形视图，比如<strong>横向条形图</strong>，条越长代表富集越显著或 Combined score 越高。</li>
+    <li>有些页面还提供气泡图（bubble plot），气泡的大小和颜色分别代表不同信息。</li>
+  </ul>
+  <div class="tip">
+    图形视图适合做汇报用的展示图，表格则更适合严谨地阅读具体数值。
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-title">(3) 点进去看基因详情</div>
+  <ul>
+    <li>在某一行的 Term 上点击，通常会弹出或跳转到一个页面，显示<strong>究竟是你列表中的哪些基因</strong>落入了这个功能/通路。</li>
+    <li>这一步非常重要：  
+      它可以帮助你判断这个富集结果是否“生物学合理”，而不是仅仅依靠 p 值。
+    </li>
+  </ul>
+</div>
+
+<div class="step">
+  <div class="step-title">(4) 总体解读思路</div>
+  <ol>
+    <li>先按照 <strong>Adjusted p-value</strong> 或 <strong>Combined score</strong> 排序，挑选出前 10~20 个条目。</li>
+    <li>观察其中是否出现了你预期的关键词，如 “cell cycle”、“apoptosis”、“DNA damage”等。</li>
+    <li>对于每个你感兴趣的 Term，点进去看具体的命中基因是否合理。</li>
+    <li>尝试用一句话概括这些基因集合的功能主题，例如：  
+      “这组基因主要富集在细胞周期调控与凋亡相关通路中。”</li>
+  </ol>
+</div>
+
+<!-- 4. 其他工具 -->
+<h2 id="other-tools">4. 其他常用在线工具（扩展阅读）</h2>
+<p>除了 STRING 和 Enrichr，还有许多可以直接用 <strong>Gene Symbol 列表</strong> 进行注释与富集分析的在线平台，例如：</p>
+<ul>
+  <li><strong>g:Profiler</strong>：支持多物种的 GO/KEGG/Reactome 富集分析。</li>
+  <li><strong>DAVID</strong>：经典的功能富集和注释工具，适合入门。</li>
+  <li><strong>Metascape</strong>：集成多种数据库并提供漂亮的可视化。</li>
+</ul>
+<p>但作为入门，本教程重点掌握好 <strong>STRING PPI + Enrichr 富集</strong> 已经足够应付大多数基础课题。</p>
+
+<!-- 5. 作业 -->
+<h2 id="homework">5. 练习与思考题</h2>
+
+<h3>练习 1：用示例基因跑一遍完整流程</h3>
+<ol>
+  <li>用本页面的基因列表在 <strong>STRING</strong> 中构建 PPI 网络，并截图保存。</li>
+  <li>记录下 STRING 功能富集结果中 <strong>KEGG pathways</strong> 的前 5 个 term 名称及其 FDR。</li>
+  <li>用同一基因列表在 <strong>Enrichr</strong> 中运行 GO Biological Process 和 KEGG 富集分析。</li>
+  <li>比较 STRING 与 Enrichr 的 KEGG 结果是否一致？有哪些共同通路？有哪些差异？</li>
+</ol>
+
+<h3>练习 2：使用你自己课题的基因列表</h3>
+<ol>
+  <li>从你的差异表达分析结果（DEGs）中选出一组上调基因（例如 log2FC &gt; 1 且 FDR &lt; 0.05）。</li>
+  <li>将这些基因作为新的输入，重复本教程中的 STRING + Enrichr 步骤。</li>
+  <li>尝试用 <strong>3~5 句话</strong> 概括你课题基因的主要功能和通路。</li>
+</ol>
+
+<h3>思考题</h3>
+<ul>
+  <li>为什么我们需要进行多重检验校正？仅看原始 p 值会有什么风险？</li>
+  <li>PPI 网络中度数（degree）很高的“hub 基因”一定是最重要的吗？为什么？</li>
+  <li>富集结果中如果出现了与你生物学假说完全不符的通路，你会怎么处理？</li>
+</ul>
+
+<footer>
+  <p>© 2025 生物信息学基础课程示例页面 · 可自由修改用于教学</p>
+</footer>
+
+</body>
+</html>
