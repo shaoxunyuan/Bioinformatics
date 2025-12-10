@@ -3,88 +3,95 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>生物信息学基础教程 - 目录</title>
+  <title>生物信息学基础教程 - 首页</title>
   <style>
     body {
-      font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+      font-family: "Segoe UI","Microsoft YaHei",sans-serif;
       line-height: 1.6;
       color: #333;
+      background-color: #f7f9fc;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
       max-width: 960px;
       margin: 0 auto;
-      padding-left: 240px;
-      background-color: #fafafa;
-    }
-    h1, h2, h3 {
-      color: #2c3e50;
-    }
-    h1 {
+      padding: 40px 20px;
       text-align: center;
-      margin-bottom: 30px;
+    }
+
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+      font-size: 2.2em;
       border-bottom: 2px solid #3498db;
       padding-bottom: 10px;
     }
-    ul, ol {
-      padding-left: 20px;
+
+    p.subtitle {
+      color: #555;
+      margin-top: -10px;
+      margin-bottom: 30px;
+      font-size: 1.1em;
     }
-    li {
-      margin-bottom: 8px;
+
+    .menu {
+      max-width: 480px;
+      margin: 0 auto;
+      text-align: left;
+      padding: 0;
+      list-style: none;
     }
+
+    .menu li {
+      background: white;
+      margin: 12px 0;
+      padding: 14px 18px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+      transition: all 0.2s ease;
+      font-size: 1.05em;
+    }
+
+    .menu li:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .menu a {
+      color: #1976d2;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+    }
+
     footer {
       margin-top: 40px;
       text-align: center;
-      color: #7f8c8d;
       font-size: 0.9em;
-    }
-    .nav-fixed {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 220px;
-      padding: 20px;
-      background-color: #2c3e50;
-      color: white;
-      box-shadow: 2px 0 5px rgba(0,0,0,.1);
-      overflow-y: auto;
-    }
-    .nav-fixed a {
-      color: #ecf0f1;
-      text-decoration: none;
-      display: block;
-      padding: 10px 0;
-      transition: all 0.3s ease;
-    }
-    .nav-fixed a:hover {
-      background-color: #34495e;
-      padding-left: 10px;
-    }
-    .nav-title {
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    .content {
-      margin-top: 40px;
+      color: #888;
     }
   </style>
 </head>
+
 <body>
 
-<!-- 左侧固定导航栏（目录） -->
-<div class="nav-fixed">
-  <div class="nav-title">生物信息学基础教程</div>
-  <a href="01-alignment.html">1. 序列比对</a>
-  <a href="02-evolution.html">2. 分子进化</a>
-  <a href="03-mapping.html">3. 测序数据回帖</a>
-  <a href="04-expression.html">4. 基因表达数据分析</a>
-  <a href="05-visualization.html">5. 生物信息学数据可视化</a>
-</div>
-
-<div class="content">
+<div class="container">
   <h1>生物信息学基础教程</h1>
-  <p>欢迎使用本教程。请通过左侧目录进入各章节内容。</p>
+  <p class="subtitle">请选择学习章节</p>
+
+  <ul class="menu">
+    <li><a href="01-alignment.html">1序列比对</a></li>
+    <li><a href="02-evolution.html">分子进化</a></li>
+    <li><a href="03-mapping.html">测序数据回帖</a></li>
+    <li><a href="04-expression.html">基因表达数据分析</a></li>
+    <li><a href="05-visualization.html">生物信息学数据可视化</a></li>
+    <li><a href="06-enrichments.html">基因注释与富集分析</a></li>
+  </ul>
 
   <footer>
-    <p>© 2025 南京中医药大学 人工智能与信息技术学院</p>
+    © 2025 南京中医药大学 · 生物信息学基础课程
   </footer>
 </div>
 
