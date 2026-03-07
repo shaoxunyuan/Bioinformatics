@@ -125,11 +125,33 @@
       display: block;
       padding: 6px 0;
       color: #ecf0f1;
-      font-size: 0.92em;
+      text-decoration: none;
     }
     .chapter-nav a:hover {
       background: rgba(255,255,255,0.1);
       padding-left: 6px;
+    }
+    /* 一级菜单：六大章节 */
+    .chapter-nav a.nav-top {
+      font-size: 0.98em;
+      font-weight: 600;
+      padding: 6px 0 4px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 2px;
+    }
+    .chapter-nav a.nav-top:hover {
+      padding-left: 6px;
+    }
+    /* 二级菜单：小节 */
+    .chapter-nav a.nav-sub {
+      font-size: 0.85em;
+      font-weight: 400;
+      color: #bdc3c7;
+      padding: 4px 0 4px 14px;
+    }
+    .chapter-nav a.nav-sub:hover {
+      color: #ecf0f1;
+      padding-left: 18px;
     }
   </style>
 </head>
@@ -138,22 +160,22 @@
 <!-- 左侧本章目录 -->
 <div class="chapter-nav">
   <h3>本章导航</h3>
-  <a href="#intro">1. Seurat 简介</a>
-  <a href="#object">2. Seurat 对象与数据结构</a>
-  <a href="#exampledata">3. Seurat 示例数据说明</a>
-  <a href="#workflow">4. 标准分析流程概览</a>
-  <a href="#plots">5. 常用图形类型与解读</a>
-  <a href="#qc-plots">· 质控相关图</a>
-  <a href="#dim-plots">· 降维与分群图</a>
-  <a href="#feature-plots">· 基因表达图</a>
-  <a href="#marker-plots">· 差异与 Marker 图</a>
-  <a href="#code-demo">6. 可复制粘贴的示例代码</a>
-  <a href="#code-rstudio">· 6.0 RStudio 新建项目</a>
-  <a href="#code-install">· 6.1 环境与数据</a>
-  <a href="#code-qc">· 6.2 质控</a>
-  <a href="#code-workflow">· 6.3 标准流程</a>
-  <a href="#code-dim">· 6.4 可视化</a>
-  <a href="#code-marker">· 6.5 差异与 Marker 图</a>
+  <a href="#intro" class="nav-top">1. Seurat 简介</a>
+  <a href="#object" class="nav-top">2. Seurat 对象与数据结构</a>
+  <a href="#exampledata" class="nav-top">3. Seurat 示例数据说明</a>
+  <a href="#workflow" class="nav-top">4. 标准分析流程概览</a>
+  <a href="#plots" class="nav-top">5. 常用图形类型与解读</a>
+  <a href="#qc-plots" class="nav-sub">· 质控相关图</a>
+  <a href="#dim-plots" class="nav-sub">· 降维与分群图</a>
+  <a href="#feature-plots" class="nav-sub">· 基因表达图</a>
+  <a href="#marker-plots" class="nav-sub">· 差异与 Marker 图</a>
+  <a href="#code-demo" class="nav-top">6. 可复制粘贴的示例代码</a>
+  <a href="#code-rstudio" class="nav-sub">· 6.0 RStudio 新建项目</a>
+  <a href="#code-install" class="nav-sub">· 6.1 环境与数据</a>
+  <a href="#code-qc" class="nav-sub">· 6.2 质控</a>
+  <a href="#code-workflow" class="nav-sub">· 6.3 标准流程</a>
+  <a href="#code-dim" class="nav-sub">· 6.4 可视化</a>
+  <a href="#code-marker" class="nav-sub">· 6.5 差异与 Marker 图</a>
 </div>
 
 <h1>单细胞数据分析（Seurat）</h1>
