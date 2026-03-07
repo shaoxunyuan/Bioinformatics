@@ -47,11 +47,33 @@
       font-family: Consolas, Monaco, monospace;
       font-size: 0.9em;
     }
+    .code-wrap {
+      position: relative;
+      margin: 12px 0;
+    }
     pre {
-      padding: 10px 12px;
+      padding: 10px 12px 36px 12px;
       border-left: 3px solid #3498db;
       overflow-x: auto;
-      margin: 12px 0;
+      margin: 0;
+    }
+    .code-copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 6px 12px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85em;
+    }
+    .code-copy-btn:hover {
+      background: #217dbb;
+    }
+    .code-copy-btn.copied {
+      background: #27ae60;
     }
     code {
       padding: 2px 6px;
@@ -265,8 +287,7 @@
   <li><strong>标准化</strong>：<code>ScaleData()</code>（用于 PCA 的基因）。</li>
   <li><strong>降维</strong>：<code>RunPCA()</code> → <code>RunUMAP()</code> / <code>RunTSNE()</code>。</li>
   <li><strong>聚类</strong>：<code>FindNeighbors()</code> + <code>FindClusters()</code>。</li>
-  <li><strong>注释与可视化</strong>：根据 Marker 注释细胞类型，并绘制各类图。
-</li>
+  <li><strong>注释与可视化</strong>：根据 Marker 注释细胞类型，并绘制各类图。</li>
 </ol>
 
 <!-- 5. 常用图形类型与解读 -->
@@ -544,6 +565,45 @@ top_genes &lt;- unique(top10$gene)</pre>
 <footer>
   © 2025 南京中医药大学 · 生物信息学基础课程
 </footer>
+
+<script>
+(function() {
+  document.querySelectorAll('pre').forEach(function(pre) {
+    var wrap = document.createElement('div');
+    wrap.className = 'code-wrap';
+    pre.parentNode.insertBefore(wrap, pre);
+    wrap.appendChild(pre);
+    var btn = document.createElement('button');
+    btn.className = 'code-copy-btn';
+    btn.textContent = '复制代码';
+    wrap.appendChild(btn);
+    btn.onclick = function() {
+      var text = pre.textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+          btn.textContent = '已复制';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = '复制代码'; btn.classList.remove('copied'); }, 1500);
+        });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          btn.textContent = '已复制';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = '复制代码'; btn.classList.remove('copied'); }, 1500);
+        } catch (e) {}
+        document.body.removeChild(ta);
+      }
+    };
+  });
+})();
+</script>
 
 </body>
 </html>
