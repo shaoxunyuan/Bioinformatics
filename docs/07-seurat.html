@@ -447,9 +447,10 @@ InstallData("pbmc3k")</pre>
 library(SeuratData)</pre>
 
 <h4>6.1.4 加载示例数据并赋给变量</h4>
-<p>将内置的 pbmc3k 数据载入内存，并统一用 <code>pbmc</code> 作为对象名，方便后续代码复用。</p>
+<p>将内置的 pbmc3k 数据载入内存，并统一用 <code>pbmc</code> 作为对象名。若出现 <strong>“Please run UpdateSeuratObject on your object”</strong>，说明对象是旧版 Seurat 格式，需运行 <code>UpdateSeuratObject(pbmc)</code> 转为当前版本后再继续。</p>
 <pre>data("pbmc3k")
-pbmc &lt;- pbmc3k</pre>
+pbmc &lt;- pbmc3k
+pbmc &lt;- UpdateSeuratObject(pbmc)</pre>
 
 <h3 id="code-qc">6.2 质控</h3>
 
