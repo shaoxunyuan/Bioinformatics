@@ -278,6 +278,7 @@ pbmc &lt;- UpdateSeuratObject(pbmc)</pre>
   <img src="images/seurat/01-qc-vln.png" alt="质控小提琴图：nFeature_RNA、nCount_RNA、percent.mt" width="800"/>
   <figcaption class="fig-cap">图 6.2.1 质控小提琴图示例（运行 scripts/seurat_generate_figures.R 可生成）</figcaption>
 </figure>
+<p><strong>结果解读：</strong>可据此观察基因数、UMI 数、线粒体比例的分布范围与离群点，从而设定质控阈值（如 nFeature_RNA 200–2500、percent.mt &lt; 5%）并过滤低质量细胞。</p>
 
 <h4>6.2.2 质控散点图（nCount vs nFeature）</h4>
 <p>看总 UMI 与检测基因数的相关性；离群点可能是双细胞或破损细胞。</p>
@@ -286,6 +287,7 @@ pbmc &lt;- UpdateSeuratObject(pbmc)</pre>
   <img src="images/seurat/02-qc-scatter.png" alt="质控散点图：nCount_RNA vs nFeature_RNA" width="500"/>
   <figcaption class="fig-cap">图 6.2.2 质控散点图示例</figcaption>
 </figure>
+<p><strong>结果解读：</strong>nCount 与 nFeature 通常呈正相关；若出现明显偏离主云团的点，可能是双细胞或破损细胞，应在质控时剔除。</p>
 
 <h3 id="code-workflow">6.3 标准分析流程</h3>
 
@@ -323,6 +325,7 @@ pbmc &lt;- FindClusters(pbmc, resolution = 0.5)</pre>
   <img src="images/seurat/03-dim-umap.png" alt="UMAP 分群图" width="600"/>
   <figcaption class="fig-cap">图 6.4.1 UMAP 分群图示例</figcaption>
 </figure>
+<p><strong>结果解读：</strong>不同颜色代表不同 cluster，可直观看出细胞在 UMAP 空间中的分群是否清晰、是否有过度分裂或合并，为后续细胞类型注释提供空间依据。</p>
 
 <h4>6.4.2 基因在 UMAP 上的表达（FeaturePlot）</h4>
 <p>在 UMAP 上用颜色表示指定基因的表达量，用于判断该基因在哪些细胞/区域高表达。</p>
@@ -331,6 +334,7 @@ pbmc &lt;- FindClusters(pbmc, resolution = 0.5)</pre>
   <img src="images/seurat/04-feature-plot.png" alt="FeaturePlot：CD3D、CD14、MS4A1" width="900"/>
   <figcaption class="fig-cap">图 6.4.2 基因在 UMAP 上的表达（CD3D、CD14、MS4A1）</figcaption>
 </figure>
+<p><strong>结果解读：</strong>CD3D 高表达区对应 T 细胞群，CD14 高表达区对应单核细胞群，MS4A1 高表达区对应 B 细胞群，可与分群图结合判断各 cluster 的细胞类型。</p>
 
 <h4>6.4.3 按 cluster 的基因表达小提琴图</h4>
 <p>按聚类展示某基因的表达分布，比较不同群之间的表达差异。</p>
@@ -339,6 +343,7 @@ pbmc &lt;- FindClusters(pbmc, resolution = 0.5)</pre>
   <img src="images/seurat/05-vln-cd3d.png" alt="按 cluster 的 CD3D 小提琴图" width="600"/>
   <figcaption class="fig-cap">图 6.4.3 CD3D 在各 cluster 的表达分布</figcaption>
 </figure>
+<p><strong>结果解读：</strong>CD3D 在部分 cluster 中明显高表达、在其余 cluster 中较低，可帮助确认哪些 cluster 为 T 细胞相关，并评估 Marker 的特异性。</p>
 
 <h4>6.4.4 脊线图</h4>
 <p>与小提琴图类似，以脊线形式展示各群中某基因的表达分布。</p>
@@ -347,6 +352,7 @@ pbmc &lt;- FindClusters(pbmc, resolution = 0.5)</pre>
   <img src="images/seurat/06-ridge-cd3d.png" alt="CD3D 脊线图" width="600"/>
   <figcaption class="fig-cap">图 6.4.4 CD3D 脊线图示例</figcaption>
 </figure>
+<p><strong>结果解读：</strong>脊线峰的位置与高度反映各 cluster 中 CD3D 表达水平，便于在多群并排时快速比较 T 细胞相关 cluster 与其他群的差异。</p>
 
 <h3 id="code-marker">6.5 差异基因与 Marker 图</h3>
 
@@ -367,6 +373,7 @@ top_genes &lt;- unique(top10$gene)</pre>
   <img src="images/seurat/07-dotplot.png" alt="各 cluster 的 Marker 点图" width="800"/>
   <figcaption class="fig-cap">图 6.5.3 DotPlot 示例</figcaption>
 </figure>
+<p><strong>结果解读：</strong>点大且颜色深的基因在该 cluster 中表达比例高、平均表达强，可据此快速识别各群的特征 Marker，辅助细胞类型命名与验证。</p>
 
 <h4>6.5.4 Marker 热图（DoHeatmap）</h4>
 <p>对上述 top 基因做热图，行是基因、列是细胞（按 cluster 排列），展示各群特征表达模式。</p>
@@ -375,6 +382,7 @@ top_genes &lt;- unique(top10$gene)</pre>
   <img src="images/seurat/08-heatmap.png" alt="Marker 热图" width="800"/>
   <figcaption class="fig-cap">图 6.5.4 DoHeatmap 示例</figcaption>
 </figure>
+<p><strong>结果解读：</strong>每列为一个细胞、每行为一个 Marker 基因，颜色表示标准化表达；可看出各 cluster 对应的基因表达模式，用于确认分群与注释是否合理。</p>
 
 <div class="note">
   <strong>说明：</strong>本节示例图由项目内脚本 <code>scripts/seurat_generate_figures.R</code> 生成（需已安装 Seurat 与 SeuratData 并成功加载 pbmc3k）。在项目根目录执行 <code>Rscript scripts/seurat_generate_figures.R</code> 即可将图片写入 <code>docs/images/seurat/</code>。若 pbmc3k 已通过 <code>InstallData("pbmc3k")</code> 安装，只需运行 6.1.3、6.1.4 即可加载。调整 <code>FindClusters(..., resolution = 0.5)</code> 中的 <code>resolution</code>（如 0.3～1.0）可改变聚类粗细；可根据已知 Marker 将 <code>seurat_clusters</code> 重命名为细胞类型后再绘图。
