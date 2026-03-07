@@ -147,7 +147,13 @@
   <a href="#dim-plots">· 降维与分群图</a>
   <a href="#feature-plots">· 基因表达图</a>
   <a href="#marker-plots">· 差异与 Marker 图</a>
-  <a href="#code-demo">6. 示例代码汇总</a>
+  <a href="#code-demo">6. 可复制粘贴的示例代码</a>
+  <a href="#code-install">· 6.1 安装与加载</a>
+  <a href="#code-qc">· 6.2 质控图</a>
+  <a href="#code-workflow">· 6.3 标准流程</a>
+  <a href="#code-dim">· 6.4 分群与表达图</a>
+  <a href="#code-marker">· 6.5 Marker 图</a>
+  <a href="#code-full">· 6.6 一键完整脚本</a>
 </div>
 
 <h1>单细胞数据分析（Seurat）</h1>
@@ -343,45 +349,95 @@
 </p>
 
 <!-- 6. 示例代码汇总 -->
-<h2 id="code-demo">6. 示例代码汇总</h2>
+<h2 id="code-demo">6. 可复制粘贴的 Seurat 示例代码</h2>
 <p>
-  以下以 PBMC 3K 为例，从安装、加载示例数据到出图，给出最小可运行流程（使用 SeuratData 的 <code>pbmc3k</code> 时需先 <code>InstallData("pbmc3k")</code>）。
+  以下代码可直接在 R 或 RStudio 中按块复制运行。首次使用需先安装并下载示例数据（见块 1）。全部仅依赖 <code>Seurat</code> 与 <code>SeuratData</code>，无需 dplyr。
 </p>
 
-<pre># 安装与加载
+<h3 id="code-install">6.1 安装与加载（首次运行执行一次即可）</h3>
+<pre># 安装包（取消注释后运行一次）
 # install.packages("Seurat")
-# remotes::install_github("satijalab/seurat-data")
+# if (!requireNamespace("SeuratData", quietly = TRUE)) remotes::install_github("satijalab/seurat-data")
 # SeuratData::InstallData("pbmc3k")
+
 library(Seurat)
 library(SeuratData)
 data("pbmc3k")
+pbmc &lt;- pbmc3k   # 后续统一用 pbmc 命名</pre>
 
-# 质控图
-VlnPlot(pbmc3k, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
-FeatureScatter(pbmc3k, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+<h3 id="code-qc">6.2 质控图</h3>
+<pre># 小提琴图：基因数、UMI 数、线粒体比例
+VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 
-# 标准流程（归一化 → 高变基因 → Scale → PCA → 聚类 → UMAP）
-pbmc3k &lt;- NormalizeData(pbmc3k)
-pbmc3k &lt;- FindVariableFeatures(pbmc3k, selection.method = "vst", nfeatures = 2000)
-pbmc3k &lt;- ScaleData(pbmc3k)
-pbmc3k &lt;- RunPCA(pbmc3k, features = VariableFeatures(object = pbmc3k))
-pbmc3k &lt;- FindNeighbors(pbmc3k, dims = 1:10)
-pbmc3k &lt;- FindClusters(pbmc3k, resolution = 0.5)
-pbmc3k &lt;- RunUMAP(pbmc3k, dims = 1:10)
+# 散点图：nCount vs nFeature
+FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")</pre>
 
-# 分群图与基因表达图
-DimPlot(pbmc3k, reduction = "umap", group.by = "seurat_clusters")
-FeaturePlot(pbmc3k, features = c("CD3D", "CD14", "MS4A1"))
-VlnPlot(pbmc3k, features = "CD3D", group.by = "seurat_clusters")
+<h3 id="code-workflow">6.3 标准分析流程（归一化 → 高变基因 → Scale → PCA → 聚类 → UMAP）</h3>
+<pre>pbmc &lt;- NormalizeData(pbmc)
+pbmc &lt;- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
+pbmc &lt;- ScaleData(pbmc)
+pbmc &lt;- RunPCA(pbmc, features = VariableFeatures(object = pbmc))
+pbmc &lt;- FindNeighbors(pbmc, dims = 1:10)
+pbmc &lt;- FindClusters(pbmc, resolution = 0.5)
+pbmc &lt;- RunUMAP(pbmc, dims = 1:10)</pre>
 
-# Marker 差异（以 cluster 0 为例）
-markers &lt;- FindAllMarkers(pbmc3k, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
-top10 &lt;- markers %&gt;% group_by(cluster) %&gt;% slice_max(n = 10, order_by = avg_log2FC)
-DotPlot(pbmc3k, features = unique(top10$gene)) + RotatedAxis()
-DoHeatmap(pbmc3k, features = top10$gene, size = 3)</pre>
+<h3 id="code-dim">6.4 分群与基因表达图</h3>
+<pre># UMAP 分群图
+DimPlot(pbmc, reduction = "umap", group.by = "seurat_clusters")
+
+# 在 UMAP 上画 3 个基因的表达
+FeaturePlot(pbmc, features = c("CD3D", "CD14", "MS4A1"))
+
+# 按 cluster 看 CD3D 表达分布
+VlnPlot(pbmc, features = "CD3D", group.by = "seurat_clusters")
+
+# 脊线图
+RidgePlot(pbmc, features = "CD3D", group.by = "seurat_clusters")</pre>
+
+<h3 id="code-marker">6.5 差异基因与 Marker 图（DotPlot、DoHeatmap）</h3>
+<pre># 为每个 cluster 找 marker（仅用 Seurat，无需 dplyr）
+markers &lt;- FindAllMarkers(pbmc, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+
+# 每群取 top10：用 base R
+top10 &lt;- markers[order(markers$cluster, -markers$avg_log2FC), ]
+top10 &lt;- do.call(rbind, lapply(split(top10, top10$cluster), head, 10))
+top_genes &lt;- unique(top10$gene)
+
+# 点图
+DotPlot(pbmc, features = top_genes) + RotatedAxis()
+
+# 热图
+DoHeatmap(pbmc, features = top_genes, size = 3)</pre>
+
+<h3 id="code-full">6.6 一键完整脚本（整段复制到 R 控制台运行）</h3>
+<pre>library(Seurat)
+library(SeuratData)
+data("pbmc3k")
+pbmc &lt;- pbmc3k
+
+VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+
+pbmc &lt;- NormalizeData(pbmc)
+pbmc &lt;- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
+pbmc &lt;- ScaleData(pbmc)
+pbmc &lt;- RunPCA(pbmc, features = VariableFeatures(object = pbmc))
+pbmc &lt;- FindNeighbors(pbmc, dims = 1:10)
+pbmc &lt;- FindClusters(pbmc, resolution = 0.5)
+pbmc &lt;- RunUMAP(pbmc, dims = 1:10)
+
+DimPlot(pbmc, reduction = "umap", group.by = "seurat_clusters")
+FeaturePlot(pbmc, features = c("CD3D", "CD14", "MS4A1"))
+VlnPlot(pbmc, features = "CD3D", group.by = "seurat_clusters")
+
+markers &lt;- FindAllMarkers(pbmc, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+top10 &lt;- markers[order(markers$cluster, -markers$avg_log2FC), ]
+top10 &lt;- do.call(rbind, lapply(split(top10, top10$cluster), head, 10))
+DotPlot(pbmc, features = unique(top10$gene)) + RotatedAxis()
+DoHeatmap(pbmc, features = top10$gene, size = 3)</pre>
 
 <div class="note">
-  <strong>说明：</strong><code>FindAllMarkers</code> 需配合 <code>dplyr</code> 的 <code>group_by</code>、<code>slice_max</code> 等选取每群 top 基因；实际分析中可根据分辨率 <code>resolution</code> 调整聚类粗细，并根据已知 Marker 对 <code>seurat_clusters</code> 进行细胞类型重命名与可视化。
+  <strong>说明：</strong>若未安装 <code>pbmc3k</code>，先运行 <code>SeuratData::InstallData("pbmc3k")</code>。分辨率 <code>resolution</code> 可调（如 0.3～1.0）以改变聚类粗细；可根据已知 Marker 对 <code>seurat_clusters</code> 重命名为细胞类型后再绘图。
 </div>
 
 <footer>
