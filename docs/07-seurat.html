@@ -148,6 +148,7 @@
   <a href="#feature-plots">· 基因表达图</a>
   <a href="#marker-plots">· 差异与 Marker 图</a>
   <a href="#code-demo">6. 可复制粘贴的示例代码</a>
+  <a href="#code-rstudio">· 6.0 RStudio 新建项目</a>
   <a href="#code-install">· 6.1 环境与数据</a>
   <a href="#code-qc">· 6.2 质控</a>
   <a href="#code-workflow">· 6.3 标准流程</a>
@@ -350,7 +351,20 @@
 <!-- 6. 示例代码汇总 -->
 <h2 id="code-demo">6. 可复制粘贴的 Seurat 示例代码</h2>
 <p>
-  每一小节为「一段说明 + 一段代码」，按顺序复制到 R 中运行即可。先完成 6.1 环境与数据，再按 6.2～6.5 做质控、流程、出图。
+  每一小节为「一段说明 + 一段代码」，按顺序复制到 R 中运行即可。建议先在 RStudio 中新建项目（见 6.0），再完成 6.1 环境与数据，最后按 6.2～6.5 做质控、流程、出图。
+</p>
+
+<h3 id="code-rstudio">6.0 在 RStudio 中新建项目</h3>
+<p>
+  新建项目便于统一管理脚本、数据和结果，且每次打开项目即进入对应工作目录。项目名称建议与本次分析相关，例如 <strong>seurat-pbmc</strong>（Seurat + PBMC 示例）或 <strong>single-cell-seurat</strong>。
+</p>
+<ol>
+  <li>打开 RStudio，菜单栏选择 <strong>File → New Project…</strong>。</li>
+  <li>选择 <strong>New Directory</strong>，再选 <strong>New Project</strong>。</li>
+  <li><strong>Directory name</strong> 填写：<code>seurat-pbmc</code>（或 <code>single-cell-seurat</code>）；<strong>Create project as subdirectory of</strong> 选择你想保存的父文件夹，点击 <strong>Create Project</strong>。</li>
+</ol>
+<p>
+  创建完成后，RStudio 会打开该项目，工作目录即为该文件夹。后续可将 R 脚本保存于此，运行时代码中的相对路径均相对于该目录。
 </p>
 
 <h3 id="code-install">6.1 环境与数据</h3>
