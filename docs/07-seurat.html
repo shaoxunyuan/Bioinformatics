@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>单细胞数据分析（Seurat）</title>
+  <style>
+    body {
+      font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding-left: 260px;
+      background-color: #fafafa;
+    }
+    h1, h2, h3, h4 {
+      color: #2c3e50;
+    }
+    h1 {
+      text-align: center;
+      margin: 20px 0 30px;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 10px;
+    }
+    h2 {
+      margin-top: 30px;
+      border-left: 4px solid #3498db;
+      padding-left: 10px;
+    }
+    h3 {
+      margin-top: 20px;
+      color: #2980b9;
+    }
+    h4 {
+      margin-top: 16px;
+    }
+    ul, ol {
+      padding-left: 22px;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    pre, code {
+      background-color: #f4f4f4;
+      border-radius: 4px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.9em;
+    }
+    pre {
+      padding: 10px 12px;
+      border-left: 3px solid #3498db;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+    code {
+      padding: 2px 6px;
+    }
+    .note {
+      background-color: #fff8e1;
+      border-left: 4px solid #ffc107;
+      padding: 10px 12px;
+      margin: 15px 0;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.95em;
+    }
+    .tip {
+      background-color: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 10px 12px;
+      margin: 10px 0;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.95em;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0;
+      font-size: 0.95em;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    a {
+      color: #1976d2;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      margin: 40px 0 20px;
+      text-align: center;
+      color: #7f8c8d;
+      font-size: 0.9em;
+    }
+    .chapter-nav {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 200px;
+      background: #2c3e50;
+      padding: 16px 14px;
+      border-radius: 6px;
+      color: white;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+    .chapter-nav h3 {
+      color: #ecf0f1;
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1em;
+      font-weight: bold;
+    }
+    .chapter-nav a {
+      display: block;
+      padding: 6px 0;
+      color: #ecf0f1;
+      font-size: 0.92em;
+    }
+    .chapter-nav a:hover {
+      background: rgba(255,255,255,0.1);
+      padding-left: 6px;
+    }
+    .course-nav {
+      background: #ecf0f1;
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-size: 0.95em;
+    }
+    .course-nav a {
+      margin-right: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 左侧本章目录 -->
+<div class="chapter-nav">
+  <h3>本章导航</h3>
+  <a href="#intro">1. Seurat 简介</a>
+  <a href="#object">2. Seurat 对象与数据结构</a>
+  <a href="#exampledata">3. Seurat 示例数据说明</a>
+  <a href="#workflow">4. 标准分析流程概览</a>
+  <a href="#plots">5. 常用图形类型与解读</a>
+  <a href="#qc-plots">· 质控相关图</a>
+  <a href="#dim-plots">· 降维与分群图</a>
+  <a href="#feature-plots">· 基因表达图</a>
+  <a href="#marker-plots">· 差异与 Marker 图</a>
+  <a href="#code-demo">6. 示例代码汇总</a>
+</div>
+
+<div class="course-nav">
+  <a href="index.html">返回首页</a>
+  <a href="01-alignment.html">1. 序列比对</a>
+  <a href="02-evolution.html">2. 分子进化</a>
+  <a href="03-mapping.html">3. 测序数据回帖</a>
+  <a href="04-expression.html">4. 基因表达</a>
+  <a href="05-visualization.html">5. 数据可视化</a>
+  <a href="06-enrichments.html">6. 富集分析</a>
+  <a href="07-seurat.html">7. 单细胞（Seurat）</a>
+</div>
+
+<h1>单细胞数据分析（Seurat）</h1>
+
+<!-- 1. Seurat 简介 -->
+<h2 id="intro">1. Seurat 简介</h2>
+<p>
+  <strong>Seurat</strong> 是 R 语言中用于单细胞 RNA 测序（scRNA-seq）数据分析的主流工具包，由 Satija Lab 开发并维护。它覆盖从原始表达矩阵到细胞分群、细胞类型注释、差异表达与可视化的完整流程。
+</p>
+<ul>
+  <li><strong>主要功能</strong>：质控（QC）、归一化、高变基因筛选、降维（PCA、UMAP、t-SNE）、聚类、细胞类型注释、差异表达与 Marker 基因、多样本整合等。</li>
+  <li><strong>适用数据</strong>：10X Genomics、Smart-seq2 等平台产生的基因×细胞表达矩阵（count 或 TPM 等）。</li>
+  <li><strong>官方资源</strong>：<a href="https://satijalab.org/seurat/" target="_blank">Seurat 官网</a>、<a href="https://satijalab.org/seurat/articles/pbmc3k_tutorial.html" target="_blank">PBMC3k 教程</a>、<a href="https://github.com/satijalab/seurat" target="_blank">GitHub</a>。</li>
+</ul>
+
+<!-- 2. Seurat 对象与数据结构 -->
+<h2 id="object">2. Seurat 对象与数据结构</h2>
+<p>
+  所有数据与中间结果都存放在一个 <strong>Seurat 对象</strong> 中。对象内包含：
+</p>
+<ul>
+  <li><strong>Assays</strong>：通常包含 <code>RNA</code> assay。其中 <code>counts</code> 为原始 count，<code>data</code> 为归一化后的表达，<code>scale.data</code> 为标准化后用于降维的高变基因矩阵。</li>
+  <li><strong>Meta data</strong>：每个细胞的注释信息，如 <code>nCount_RNA</code>（总 UMI）、<code>nFeature_RNA</code>（检测到的基因数）、<code>percent.mt</code>（线粒体基因占比）、<code>seurat_clusters</code>（聚类结果）等。</li>
+  <li><strong>Reductions</strong>：降维结果，如 <code>pca</code>、<code>umap</code>、<code>tsne</code>，用于后续绘图与聚类。</li>
+</ul>
+
+<!-- 3. Seurat 示例数据说明 -->
+<h2 id="exampledata">3. Seurat 示例数据说明</h2>
+<p>
+  Seurat 官方教程常用 <strong>PBMC 3K</strong> 作为示例数据集，便于在本地快速复现完整流程。
+</p>
+
+<h3>3.1 数据来源与获取</h3>
+<ul>
+  <li><strong>名称</strong>：PBMC 3K（Peripheral Blood Mononuclear Cells，外周血单核细胞）。</li>
+  <li><strong>平台</strong>：10X Genomics，Illumina NextSeq 500 测序。</li>
+  <li><strong>规模</strong>：约 <strong>2,700 个细胞</strong>，<strong>约 13,714 个基因</strong>（hg19）。</li>
+  <li><strong>获取方式</strong>：
+    <ol>
+      <li>从 10X 官网下载 CellRanger 输出的 <code>filtered_gene_bc_matrices</code>，用 <code>Read10X()</code> + <code>CreateSeuratObject()</code> 创建对象；</li>
+      <li>或使用 <code>SeuratData</code> 包安装 <code>pbmc3k</code> 后直接加载（<code>InstallData("pbmc3k")</code>，<code>data("pbmc3k")</code>）。</li>
+    </ol>
+  </li>
+</ul>
+
+<h3>3.2 示例数据包含的细胞类型</h3>
+<p>
+  经过聚类与注释后，PBMC 3K 中通常可区分出多种免疫细胞类型，例如：
+</p>
+<ul>
+  <li>Naive CD4+ T、Memory CD4+ T、CD8+ T、NK、CD14+ Mono、FCGR3A+ Mono、B、DC 等。</li>
+</ul>
+<p>
+  教程会演示如何从原始矩阵得到这些细胞类型标签及对应的 Marker 基因。
+</p>
+
+<div class="tip">
+  <strong>提示：</strong>使用示例数据时无需自己下载 10X 原始数据，可直接用 <code>SeuratData</code> 的 <code>pbmc3k</code> 或教程提供的 R 代码生成“模拟”对象，重点学习对象结构与绘图函数。
+</div>
+
+<!-- 4. 标准分析流程概览 -->
+<h2 id="workflow">4. 标准分析流程概览</h2>
+<p>
+  使用 Seurat 做单细胞分析时，典型步骤包括：
+</p>
+<ol>
+  <li><strong>创建对象</strong>：<code>CreateSeuratObject()</code>，并（可选）计算 <code>percent.mt</code>。</li>
+  <li><strong>质控</strong>：按 <code>nFeature_RNA</code>、<code>nCount_RNA</code>、<code>percent.mt</code> 过滤低质量细胞。</li>
+  <li><strong>归一化</strong>：<code>NormalizeData()</code>（默认 LogNormalize）。</li>
+  <li><strong>高变基因</strong>：<code>FindVariableFeatures()</code>。</li>
+  <li><strong>标准化</strong>：<code>ScaleData()</code>（用于 PCA 的基因）。</li>
+  <li><strong>降维</strong>：<code>RunPCA()</code> → <code>RunUMAP()</code> / <code>RunTSNE()</code>。</li>
+  <li><strong>聚类</strong>：<code>FindNeighbors()</code> + <code>FindClusters()</code>。</li>
+  <li><strong>注释与可视化</strong>：根据 Marker 注释细胞类型，并绘制各类图。
+</li>
+</ol>
+
+<!-- 5. 常用图形类型与解读 -->
+<h2 id="plots">5. 常用图形类型与解读</h2>
+<p>
+  下面按“质控 → 降维/分群 → 基因表达 → Marker/差异”顺序，说明 Seurat 中常用图的含义与对应函数。
+</p>
+
+<h3 id="qc-plots">5.1 质控相关图</h3>
+<table>
+  <thead>
+    <tr>
+      <th>图形</th>
+      <th>函数（示例）</th>
+      <th>含义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>小提琴图（QC 指标）</strong></td>
+      <td><code>VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"))</code></td>
+      <td>展示每个细胞（或按分组）的基因数、总 UMI 数、线粒体比例分布，用于设定质控阈值、发现异常样本。</td>
+    </tr>
+    <tr>
+      <td><strong>散点图（基因数 vs UMI）</strong></td>
+      <td><code>FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")</code></td>
+      <td>看 nCount 与 nFeature 的相关性，通常呈正相关；离群点可能是双细胞或破损细胞。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="dim-plots">5.2 降维与分群图</h3>
+<table>
+  <thead>
+    <tr>
+      <th>图形</th>
+      <th>函数（示例）</th>
+      <th>含义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>UMAP / t-SNE 分群图</strong></td>
+      <td><code>DimPlot(pbmc, reduction = "umap", group.by = "seurat_clusters")</code></td>
+      <td>在 UMAP（或 t-SNE）二维空间中按聚类或注释标签着色，展示细胞群分布与分离程度。</td>
+    </tr>
+    <tr>
+      <td><strong>PCA 双标图</strong></td>
+      <td><code>DimPlot(pbmc, reduction = "pca")</code> 或 <code>VizDimLoadings()</code></td>
+      <td>展示主成分上的细胞分布或各基因对主成分的贡献（loading），用于理解驱动差异的主成分。</td>
+    </tr>
+    <tr>
+      <td><strong>肘部图</strong></td>
+      <td><code>ElbowPlot(pbmc)</code></td>
+      <td>各主成分解释的方差比例，用于选择保留的 PC 数量（通常取“肘部”附近）。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="feature-plots">5.3 基因表达图</h3>
+<table>
+  <thead>
+    <tr>
+      <th>图形</th>
+      <th>函数（示例）</th>
+      <th>含义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>降维图上的基因表达</strong></td>
+      <td><code>FeaturePlot(pbmc, features = "CD3D")</code></td>
+      <td>在 UMAP/t-SNE 上用颜色表示某个基因的表达量，用于看该基因在哪些细胞/区域高表达，辅助细胞类型判断。</td>
+    </tr>
+    <tr>
+      <td><strong>小提琴图（基因表达）</strong></td>
+      <td><code>VlnPlot(pbmc, features = "CD3D", group.by = "seurat_clusters")</code></td>
+      <td>按 cluster（或细胞类型）展示某基因表达量分布，比较不同群之间表达差异。</td>
+    </tr>
+    <tr>
+      <td><strong>脊线图</strong></td>
+      <td><code>RidgePlot(pbmc, features = "CD3D", group.by = "seurat_clusters")</code></td>
+      <td>类似小提琴图，以脊线形式展示各群中某基因的表达分布，适合多群对比。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="marker-plots">5.4 差异与 Marker 图</h3>
+<table>
+  <thead>
+    <tr>
+      <th>图形</th>
+      <th>函数（示例）</th>
+      <th>含义</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>点图（DotPlot）</strong></td>
+      <td><code>DotPlot(pbmc, features = marker_genes) + RotatedAxis()</code></td>
+      <td>横轴为基因，纵轴为 cluster（或细胞类型）；点大小表示表达该基因的细胞比例，颜色表示平均表达量，用于快速对比多个 Marker 在各群中的表达。</td>
+    </tr>
+    <tr>
+      <td><strong>热图（DoHeatmap）</strong></td>
+      <td><code>DoHeatmap(pbmc, features = top_markers, size = 3)</code></td>
+      <td>对每个 cluster 的 top marker 基因做热图，行是基因、列是细胞（常按 cluster 排列），颜色为标准化表达，用于展示各群特征基因表达模式。</td>
+    </tr>
+    <tr>
+      <td><strong>气泡图（比例 + 表达）</strong></td>
+      <td>同上 DotPlot，有时与 <code>scale = TRUE</code> 等参数联用</td>
+      <td>与 DotPlot 一致，强调“表达比例”与“平均表达”两个维度，是 Marker 展示最常用的图之一。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  上述图中，<strong>DimPlot</strong>、<strong>FeaturePlot</strong>、<strong>VlnPlot</strong>、<strong>DotPlot</strong>、<strong>DoHeatmap</strong> 是 Seurat 教程中最常出现的五类图，分别对应：分群展示、基因在空间上的表达、基因在各群分布、多基因多群对比、Marker 热图。
+</p>
+
+<!-- 6. 示例代码汇总 -->
+<h2 id="code-demo">6. 示例代码汇总</h2>
+<p>
+  以下以 PBMC 3K 为例，从安装、加载示例数据到出图，给出最小可运行流程（使用 SeuratData 的 <code>pbmc3k</code> 时需先 <code>InstallData("pbmc3k")</code>）。
+</p>
+
+<pre># 安装与加载
+# install.packages("Seurat")
+# remotes::install_github("satijalab/seurat-data")
+# SeuratData::InstallData("pbmc3k")
+library(Seurat)
+library(SeuratData)
+data("pbmc3k")
+
+# 质控图
+VlnPlot(pbmc3k, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+FeatureScatter(pbmc3k, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+
+# 标准流程（归一化 → 高变基因 → Scale → PCA → 聚类 → UMAP）
+pbmc3k &lt;- NormalizeData(pbmc3k)
+pbmc3k &lt;- FindVariableFeatures(pbmc3k, selection.method = "vst", nfeatures = 2000)
+pbmc3k &lt;- ScaleData(pbmc3k)
+pbmc3k &lt;- RunPCA(pbmc3k, features = VariableFeatures(object = pbmc3k))
+pbmc3k &lt;- FindNeighbors(pbmc3k, dims = 1:10)
+pbmc3k &lt;- FindClusters(pbmc3k, resolution = 0.5)
+pbmc3k &lt;- RunUMAP(pbmc3k, dims = 1:10)
+
+# 分群图与基因表达图
+DimPlot(pbmc3k, reduction = "umap", group.by = "seurat_clusters")
+FeaturePlot(pbmc3k, features = c("CD3D", "CD14", "MS4A1"))
+VlnPlot(pbmc3k, features = "CD3D", group.by = "seurat_clusters")
+
+# Marker 差异（以 cluster 0 为例）
+markers &lt;- FindAllMarkers(pbmc3k, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+top10 &lt;- markers %&gt;% group_by(cluster) %&gt;% slice_max(n = 10, order_by = avg_log2FC)
+DotPlot(pbmc3k, features = unique(top10$gene)) + RotatedAxis()
+DoHeatmap(pbmc3k, features = top10$gene, size = 3)</pre>
+
+<div class="note">
+  <strong>说明：</strong><code>FindAllMarkers</code> 需配合 <code>dplyr</code> 的 <code>group_by</code>、<code>slice_max</code> 等选取每群 top 基因；实际分析中可根据分辨率 <code>resolution</code> 调整聚类粗细，并根据已知 Marker 对 <code>seurat_clusters</code> 进行细胞类型重命名与可视化。
+</div>
+
+<footer>
+  © 2025 南京中医药大学 · 生物信息学基础课程
+</footer>
+
+</body>
+</html>

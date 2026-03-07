@@ -92,6 +92,16 @@ jupyter notebook
 - 富集结果可视化  
 **参考资料**: [assignment_5.md](assignments/assignment_5.md)
 
+### 实验6: 单细胞数据分析（Seurat）
+**时间**: 第11-12周  
+**目标**: 掌握单细胞 RNA 测序数据的质控、降维、聚类与可视化  
+**内容**:
+- Seurat 对象与 PBMC 示例数据
+- 质控、归一化、高变基因与降维（PCA、UMAP）
+- 聚类与细胞类型注释
+- 常用图：DimPlot、FeaturePlot、VlnPlot、DotPlot、DoHeatmap 等  
+**参考资料**: [07-seurat.html](07-seurat.html)
+
 ## 实验报告要求
 
 ### 报告结构
