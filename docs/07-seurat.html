@@ -452,10 +452,14 @@ library(SeuratData)</pre>
 pbmc &lt;- pbmc3k
 pbmc &lt;- UpdateSeuratObject(pbmc)</pre>
 
+<h4>6.1.5 计算线粒体基因比例（percent.mt）</h4>
+<p>pbmc3k 的 meta 里默认没有 <code>percent.mt</code>，需要先算出来，后面的质控小提琴图才能画三张（含线粒体比例）。线粒体基因名通常以 <code>MT-</code> 开头。</p>
+<pre>pbmc[["percent.mt"]] &lt;- PercentageFeatureSet(pbmc, pattern = "^MT-")</pre>
+
 <h3 id="code-qc">6.2 质控</h3>
 
 <h4>6.2.1 质控小提琴图（基因数、UMI 数、线粒体比例）</h4>
-<p>查看每个细胞检测到的基因数、总 UMI 数、线粒体基因占比的分布，用于设定过滤阈值或发现异常样本。</p>
+<p>查看每个细胞检测到的基因数、总 UMI 数、线粒体基因占比的分布，用于设定过滤阈值或发现异常样本。若只有两幅图、提示 <strong>variables were not found: percent.mt</strong>，请先运行上面 6.1.5 计算 <code>percent.mt</code>。</p>
 <pre>VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)</pre>
 <figure class="fig-wrap">
   <img src="images/seurat/01-qc-vln.png" alt="质控小提琴图：nFeature_RNA、nCount_RNA、percent.mt" width="800"/>
