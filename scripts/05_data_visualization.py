@@ -1,3 +1,4 @@
+import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -77,8 +78,10 @@ axes[1, 1].set_title('基因相关性矩阵')
 plt.colorbar(im, ax=axes[1, 1])
 
 plt.tight_layout()
-plt.savefig('../figures/data_visualization.png', dpi=300, bbox_inches='tight')
-print("\n图表已保存到 ../figures/data_visualization.png")
+out_dir = os.path.join(os.path.dirname(__file__), '..', 'docs', 'images')
+os.makedirs(out_dir, exist_ok=True)
+plt.savefig(os.path.join(out_dir, 'data_visualization.png'), dpi=300, bbox_inches='tight')
+print("\n图表已保存到 docs/images/data_visualization.png")
 
 print("\n基因相关性矩阵:")
 print(pd.DataFrame(correlation_matrix, 

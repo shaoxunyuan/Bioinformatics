@@ -80,9 +80,9 @@ p3 <- DimPlot(pbmc, reduction = "umap", group.by = "seurat_clusters")
 ggsave(file.path(out_dir, "03-dim-umap.png"), plot = p3, width = 6, height = 5, dpi = 150)
 message("Saved 03-dim-umap.png")
 
-# 6.4.2 FeaturePlot
+# 6.4.2 FeaturePlot（保持每个 UMAP 子图接近方形，避免压扁）
 p4 <- FeaturePlot(pbmc, features = c("CD3D", "CD14", "MS4A1"))
-ggsave(file.path(out_dir, "04-feature-plot.png"), plot = p4, width = 12, height = 4, dpi = 150)
+ggsave(file.path(out_dir, "04-feature-plot.png"), plot = p4, width = 12, height = 5.5, dpi = 150)
 message("Saved 04-feature-plot.png")
 
 # 6.4.3 VlnPlot CD3D（优先 Seurat，失败则 ggplot2）
@@ -114,13 +114,17 @@ markers <- FindAllMarkers(pbmc, only.pos = TRUE, min.pct = 0.25, logfc.threshold
 top10 <- markers[order(markers$cluster, -markers$avg_log2FC), ]
 top10 <- do.call(rbind, lapply(split(top10, top10$cluster), head, 10))
 top_genes <- unique(top10$gene)
+# 出图用每群 top5，避免基因名过多叠在一起
+markers_ord <- markers[order(markers$cluster, -markers$avg_log2FC), ]
+top5 <- do.call(rbind, lapply(split(markers_ord, markers_ord$cluster), head, 5))
+top_genes_plot <- unique(top5$gene)
 
-# 6.5.3 DotPlot（RotatedAxis 可能与 ggplot2 4.x 冲突，失败则不旋转）
+# 6.5.3 DotPlot（少基因 + 大图 + 旋转轴，避免重叠）
 p7 <- .try_seurat_plot(
-  DotPlot(pbmc, features = top_genes) + RotatedAxis(),
-  DotPlot(pbmc, features = top_genes)
+  DotPlot(pbmc, features = top_genes_plot) + RotatedAxis() + ggplot2::theme(axis.text.x = ggplot2::element_text(size = 7)),
+  DotPlot(pbmc, features = top_genes_plot) + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5, size = 7))
 )
-ggsave(file.path(out_dir, "07-dotplot.png"), plot = p7, width = 10, height = 6, dpi = 150)
+ggsave(file.path(out_dir, "07-dotplot.png"), plot = p7, width = 12, height = 6.5, dpi = 150)
 message("Saved 07-dotplot.png")
 
 # 6.5.4 DoHeatmap

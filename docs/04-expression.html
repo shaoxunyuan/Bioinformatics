@@ -4,108 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>生物信息学基础教程 - 基因表达数据分析</title>
-  <style>
-    body {
-      font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
-      line-height: 1.6;
-      color: #333;
-      max-width: 960px;
-      margin: 0 auto;
-      padding-left: 240px;
-      background-color: #fafafa;
-    }
-    h1, h2, h3, h4 {
-      color: #2c3e50;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-      border-bottom: 2px solid #3498db;
-      padding-bottom: 10px;
-    }
-    h2 {
-      margin-top: 30px;
-      border-left: 4px solid #3498db;
-      padding-left: 10px;
-    }
-    h3 {
-      margin-top: 20px;
-      color: #2980b9;
-    }
-    ul, ol {
-      padding-left: 20px;
-    }
-    li {
-      margin-bottom: 8px;
-    }
-    pre, code {
-      background-color: #f4f4f4;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: Consolas, Monaco, monospace;
-      font-size: 0.95em;
-    }
-    pre {
-      padding: 12px;
-      overflow-x: auto;
-      border-left: 3px solid #3498db;
-      background-color: #fdfdfd;
-      margin: 15px 0;
-    }
-    .note {
-      background-color: #fff8e1;
-      border-left: 4px solid #ffc107;
-      padding: 12px;
-      margin: 15px 0;
-      border-radius: 0 4px 4px 0;
-    }
-    .file-list a {
-      display: inline-block;
-      margin: 5px 10px 5px 0;
-      padding: 6px 12px;
-      background-color: #e3f2fd;
-      color: #1976d2;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: background 0.2s;
-    }
-    .file-list a:hover {
-      background-color: #bbdefb;
-    }
-    footer {
-      margin-top: 40px;
-      text-align: center;
-      color: #7f8c8d;
-      font-size: 0.9em;
-    }
-    .nav-fixed {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 220px;
-      padding: 20px;
-      background-color: #2c3e50;
-      color: white;
-      box-shadow: 2px 0 5px rgba(0,0,0,.1);
-      overflow-y: auto;
-    }
-    .nav-fixed a {
-      color: #ecf0f1;
-      text-decoration: none;
-      display: block;
-      padding: 10px 0;
-      transition: all 0.3s ease;
-    }
-    .nav-fixed a:hover {
-      background-color: #34495e;
-      padding-left: 10px;
-    }
-    .nav-title {
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-  </style>
+  <link rel="stylesheet" href="css/04-expression.css">
 </head>
 <body>
 
@@ -163,14 +62,7 @@
   <li><strong>小提琴图 / 箱线图（Violin/Box Plot）</strong>：比较特定基因在不同组间的表达分布。</li>
 </ul>
 
-<h4>数据文件下载</h4>
-<p>（点击链接 → 右键“链接另存为”）</p>
-<div class="file-list">
-  <a href="./files/ExpressionMatrixData.txt">ExpressionMatrixData（基因表达矩阵）</a><br>
-  <a href="./files/DifferentExpressionData.txt">DifferentExpressionData（差异表达结果）</a><br>
-  <a href="./files/SampleInformationData.txt">SampleInformationData（样本信息文件）</a><br>
-  <a href="./files/基因表达示例数据.xlsx">整合Excel文件</a>
-</div>
+<p class="note">示例数据文件已移除，请自行准备基因表达矩阵与差异表达结果后按下方步骤练习。</p>
 
 <h4>思考题</h4>
 <p><strong>基因表达矩阵</strong> 和 <strong>差异表达结果</strong> 在数据格式上有何区别？</p>

@@ -1,0 +1,157 @@
+body {
+  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+  line-height: 1.6;
+  color: #333;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: 260px; /* 给左侧导航预留空间 */
+  background-color: #fafafa;
+}
+h1, h2, h3, h4 {
+  color: #2c3e50;
+}
+h1 {
+  text-align: center;
+  margin: 20px 0 30px;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+h2 {
+  margin-top: 30px;
+  border-left: 4px solid #3498db;
+  padding-left: 10px;
+}
+h3 {
+  margin-top: 20px;
+  color: #2980b9;
+}
+h4 {
+  margin-top: 16px;
+}
+ul, ol {
+  padding-left: 22px;
+}
+li {
+  margin-bottom: 6px;
+}
+pre, code, textarea {
+  background-color: #f4f4f4;
+  border-radius: 4px;
+  font-family: Consolas, Monaco, monospace;
+  font-size: 0.9em;
+}
+pre {
+  padding: 10px 12px;
+  border-left: 3px solid #3498db;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+textarea {
+  width: 100%;
+  min-height: 130px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  resize: vertical;
+  box-sizing: border-box;
+}
+.note {
+  background-color: #fff8e1;
+  border-left: 4px solid #ffc107;
+  padding: 10px 12px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.95em;
+}
+.tip {
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  padding: 10px 12px;
+  margin: 10px 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.95em;
+}
+.warning {
+  background-color: #ffebee;
+  border-left: 4px solid #e53935;
+  padding: 10px 12px;
+  margin: 10px 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.95em;
+}
+a {
+  color: #1976d2;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.step {
+  background-color: #ffffff;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 12px 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.step-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+footer {
+  margin: 40px 0 20px;
+  text-align: center;
+  color: #7f8c8d;
+  font-size: 0.9em;
+}
+.highlight-box {
+  border: 1px dashed #90caf9;
+  background-color: #f1f8ff;
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  margin: 8px 0 4px;
+}
+
+/* ---------------- 左侧本章目录 ---------------- */
+.chapter-nav {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 200px;
+  background: #2c3e50;
+  padding: 16px 14px;
+  border-radius: 6px;
+  color: white;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+.chapter-nav h3 {
+  color: #ecf0f1;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1em;
+  font-weight: bold;
+}
+.chapter-nav a {
+  display: block;
+  padding: 6px 0;
+  color: #ecf0f1;
+  font-size: 0.92em;
+}
+.chapter-nav a:hover {
+  background: rgba(255,255,255,0.1);
+  padding-left: 6px;
+}
+
+/* ---------------- 复制按钮 ---------------- */
+#copyBtn {
+  float: right;
+  margin-bottom: 6px;
+  padding: 6px 12px;
+  background:#3498db;
+  color:white;
+  border:none;
+  border-radius:4px;
+  cursor:pointer;
+}
+#copyBtn:hover {
+  background:#217dbb;
+}

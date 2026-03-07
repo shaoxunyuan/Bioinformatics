@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 from scipy import stats
@@ -93,5 +94,7 @@ axes[1, 1].legend()
 axes[1, 1].grid(True, alpha=0.3)
 
 plt.tight_layout()
-plt.savefig('../figures/expression_analysis.png', dpi=300, bbox_inches='tight')
-print("\n图表已保存到 ../figures/expression_analysis.png")
+out_dir = os.path.join(os.path.dirname(__file__), '..', 'docs', 'images')
+os.makedirs(out_dir, exist_ok=True)
+plt.savefig(os.path.join(out_dir, 'expression_analysis.png'), dpi=300, bbox_inches='tight')
+print("\n图表已保存到 docs/images/expression_analysis.png")

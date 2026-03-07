@@ -1,0 +1,186 @@
+body {
+  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+  line-height: 1.6;
+  color: #333;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: 260px;
+  background-color: #fafafa;
+}
+h1, h2, h3, h4 {
+  color: #2c3e50;
+}
+h1 {
+  text-align: center;
+  margin: 20px 0 30px;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+h2 {
+  margin-top: 30px;
+  border-left: 4px solid #3498db;
+  padding-left: 10px;
+}
+h3 {
+  margin-top: 20px;
+  color: #2980b9;
+}
+h4 {
+  margin-top: 16px;
+}
+ul, ol {
+  padding-left: 22px;
+}
+li {
+  margin-bottom: 6px;
+}
+pre, code {
+  background-color: #f4f4f4;
+  border-radius: 4px;
+  font-family: Consolas, Monaco, monospace;
+  font-size: 0.9em;
+}
+.code-wrap {
+  position: relative;
+  margin: 12px 0;
+}
+pre {
+  padding: 10px 12px 36px 12px;
+  border-left: 3px solid #3498db;
+  overflow-x: auto;
+  margin: 0;
+}
+.code-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 6px 12px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85em;
+}
+.code-copy-btn:hover {
+  background: #217dbb;
+}
+.code-copy-btn.copied {
+  background: #27ae60;
+}
+code {
+  padding: 2px 6px;
+}
+.note {
+  background-color: #fff8e1;
+  border-left: 4px solid #ffc107;
+  padding: 10px 12px;
+  margin: 15px 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.95em;
+}
+.tip {
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196f3;
+  padding: 10px 12px;
+  margin: 10px 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.95em;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0;
+  font-size: 0.95em;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  text-align: left;
+}
+th {
+  background-color: #3498db;
+  color: white;
+}
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+a {
+  color: #1976d2;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+footer {
+  margin: 40px 0 20px;
+  text-align: center;
+  color: #7f8c8d;
+  font-size: 0.9em;
+}
+.chapter-nav {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 200px;
+  background: #2c3e50;
+  padding: 16px 14px;
+  border-radius: 6px;
+  color: white;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+.chapter-nav h3 {
+  color: #ecf0f1;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1em;
+  font-weight: bold;
+}
+.chapter-nav a {
+  display: block;
+  padding: 6px 0;
+  color: #ecf0f1;
+  text-decoration: none;
+}
+.chapter-nav a:hover {
+  background: rgba(255,255,255,0.1);
+  padding-left: 6px;
+}
+/* 一级菜单：六大章节 */
+.chapter-nav a.nav-top {
+  font-size: 0.98em;
+  font-weight: 600;
+  padding: 6px 0 4px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 2px;
+}
+.chapter-nav a.nav-top:hover {
+  padding-left: 6px;
+}
+/* 二级菜单：小节 */
+.chapter-nav a.nav-sub {
+  font-size: 0.85em;
+  font-weight: 400;
+  color: #bdc3c7;
+  padding: 4px 0 4px 14px;
+}
+.chapter-nav a.nav-sub:hover {
+  color: #ecf0f1;
+  padding-left: 18px;
+}
+/* 代码对应示例图 */
+.fig-wrap {
+  margin: 14px 0;
+  text-align: center;
+}
+.fig-wrap img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.fig-cap {
+  font-size: 0.9em;
+  color: #666;
+  margin-top: 6px;
+}
