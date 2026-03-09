@@ -3,38 +3,346 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>生物信息学基础教程 - 序列比对</title>
+  <title>生物信息学基础教程 - 序列比对（R语言）</title>
   <link rel="stylesheet" href="css/01-alignment.css">
 </head>
 <body>
 
-<!-- 左侧固定导航栏 -->
-<div class="nav-fixed">
-  <div class="nav-title">生物信息学基础教程</div>
-  <a href="index.html">返回首页</a>
-  <a href="01-alignment.html">1. 序列比对</a>
-  <a href="02-evolution.html">2. 分子进化</a>
-  <a href="03-mapping.html">3. 测序数据回帖</a>
-  <a href="04-expression.html">4. 基因表达数据分析</a>
-  <a href="05-visualization.html">5. 生物信息学数据可视化</a>
-  <a href="06-enrichments.html">6. 基因注释与富集分析</a>
-  <a href="07-seurat.html">7. 单细胞数据分析（Seurat）</a>
-</div>
+<main class="page">
+  <header class="page-header">
+    <div class="kicker">生物信息学基础教程</div>
+    <h1>01 序列比对（R语言）</h1>
+    <p class="subtitle">
+      本页聚焦<strong>可复现实操</strong>：两两比对（全局/局部）、多序列比对（MSA）、一致性/距离矩阵、变异位点与进化树。
+      示例以 <code>Biostrings</code> / <code>DECIPHER</code> / <code>msa</code> 为核心，并给出一键运行脚本。
+    </p>
+  </header>
 
-<h1>生物信息学基础教程</h1>
+  <section class="callout">
+    <h2 class="callout-title" id="quickstart">快速开始（建议先跑通一次）</h2>
+    <ol>
+      <li>打开 PowerShell，进入项目根目录（也就是包含 <code>docs/</code> 的文件夹）。</li>
+      <li>运行下面命令（会自动安装所需 R 包，并在 <code>docs/images/alignment/</code> 生成示例图片/表格）：</li>
+    </ol>
+<pre class="code"><code class="language-bash">Rscript docs/01-alignment-demo.R</code></pre>
+    <p class="muted">
+      如果你在 PowerShell 里输入 <code>R</code> 会被系统当作历史命令别名，请优先用 <code>Rscript</code> 或显式调用 <code>R.exe</code>。
+    </p>
+  </section>
 
-<h2>1. 序列比对</h2>
-<p>序列比对是生物信息学中最基础的分析任务之一，用于识别不同 DNA、RNA 或蛋白质序列之间的相似性与差异。常见的比对类型包括：</p>
-<ul>
-  <li><strong>全局比对（Global Alignment）</strong>：适用于长度相近、整体同源的序列，如 Needleman-Wunsch 算法。</li>
-  <li><strong>局部比对（Local Alignment）</strong>：用于寻找高相似性片段，如 BLAST 和 Smith-Waterman 算法。</li>
-  <li><strong>多序列比对（MSA）</strong>：对三个及以上序列进行比对，常用于保守区域识别和系统发育分析，工具包括 Clustal Omega、MAFFT 和 MUSCLE。</li>
-</ul>
-<p>比对结果可用于功能注释、变异检测、引物设计等下游分析。</p>
+  <section class="results" id="outputs">
+    <h2>运行脚本后会生成什么</h2>
+    <p class="muted">脚本会把所有可复现的结果写到 <code>docs/images/alignment/</code>，方便你直接插入报告或复用到下游分析。</p>
+    <ul>
+      <li><strong>两两比对文本</strong>：<code>pairwise_dna.txt</code>、<code>pairwise_protein.txt</code></li>
+      <li><strong>MSA</strong>：<code>msa_dna.fasta</code>（对齐后序列）</li>
+      <li><strong>一致性与距离</strong>：<code>pid_matrix.csv</code>、<code>dist_k80.csv</code></li>
+      <li><strong>变异与 motif</strong>：<code>variant_sites.csv</code>、<code>motif_hits.csv</code></li>
+      <li><strong>可视化</strong>：<code>dist_heatmap.png</code>、<code>tree_nj.png</code></li>
+    </ul>
 
-<footer>
-  <p>© 2025 南京中医药大学 人工智能与信息技术学院</p>
-</footer>
+    <div class="grid">
+      <figure class="figure">
+        <img src="images/alignment/dist_heatmap.png" alt="K80距离矩阵热图" loading="lazy" />
+        <figcaption>距离矩阵热图（K80，示例数据）</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="images/alignment/tree_nj.png" alt="邻接法NJ进化树" loading="lazy" />
+        <figcaption>NJ 进化树（由距离矩阵构建，示例数据）</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <nav class="toc" aria-label="页面内目录">
+    <div class="toc-title">本页目录</div>
+    <ul>
+      <li><a href="#packages">0. 环境与依赖（Bioconductor）</a></li>
+      <li><a href="#pairwise">1. 两两序列比对（全局 / 局部）</a></li>
+      <li><a href="#msa">2. 多序列比对（MSA）</a></li>
+      <li><a href="#quant">3. 一致性 / 相似性量化</a></li>
+      <li><a href="#dist">4. 进化距离矩阵</a></li>
+      <li><a href="#variants">5. 变异位点（SNP / Indel）</a></li>
+      <li><a href="#phylo">6. 系统发育树（NJ / ML）</a></li>
+      <li><a href="#motif">7. Motif / 保守片段检索</a></li>
+      <li><a href="#faq">FAQ：常见报错与排查</a></li>
+    </ul>
+  </nav>
+
+  <section id="packages">
+    <h2>0. 环境与依赖（Bioconductor）</h2>
+    <p>
+      两两比对与基础字符串操作推荐 <code>Biostrings</code>；大样本 DNA/RNA MSA 推荐 <code>DECIPHER</code>；
+      蛋白 MSA 可用 <code>msa</code>（ClustalOmega/MUSCLE/ClustalW）；距离与系统发育常用 <code>ape</code>、<code>phangorn</code>。
+    </p>
+    <p class="muted">下面代码会自动安装缺失包。首次安装可能需要几分钟。</p>
+<pre class="code"><code class="language-r"># 安装/加载：核心依赖
+pkgs_cran &lt;- c("ape", "phangorn", "ggplot2")
+pkgs_bioc &lt;- c("Biostrings", "DECIPHER", "msa")
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager", repos = "https://cloud.r-project.org")
+}
+
+for (p in pkgs_cran) {
+  if (!requireNamespace(p, quietly = TRUE)) {
+    install.packages(p, repos = "https://cloud.r-project.org")
+  }
+}
+
+for (p in pkgs_bioc) {
+  if (!requireNamespace(p, quietly = TRUE)) {
+    BiocManager::install(p, ask = FALSE, update = FALSE)
+  }
+}
+
+library(Biostrings)
+library(DECIPHER)
+library(msa)
+library(ape)
+library(phangorn)
+library(ggplot2)</code></pre>
+  </section>
+
+  <section id="pairwise">
+    <h2>1. 两两序列比对（全局 / 局部）</h2>
+    <p>
+      <strong>全局比对</strong>（Needleman–Wunsch）适合整体同源、长度相近序列；
+      <strong>局部比对</strong>（Smith–Waterman）适合在长序列中找最高相似片段（保守结构域/突变邻域）。
+      R 中可用 <code>Biostrings::pairwiseAlignment()</code> 直接完成，并支持替换矩阵与空位罚分。
+    </p>
+
+    <h3>1.1 DNA：全局 vs 局部</h3>
+<pre class="code"><code class="language-r">dna1 &lt;- DNAString("ACGTTGACCTGAACTGAC")
+dna2 &lt;- DNAString("ACGTCGACCTGA---GAC") # 这里故意放入缺口仅用于说明（真实数据一般先不带'-'）
+
+# 实际比对时输入应为不带 '-' 的原始序列，这里先清理缺口
+dna2_raw &lt;- DNAString(gsub("-", "", as.character(dna2)))
+
+aln_global &lt;- pairwiseAlignment(
+  pattern = dna1,
+  subject = dna2_raw,
+  type = "global",
+  substitutionMatrix = nucleotideSubstitutionMatrix(match = 2, mismatch = -1, baseOnly = TRUE),
+  gapOpening = -5,
+  gapExtension = -2
+)
+
+aln_local &lt;- pairwiseAlignment(
+  pattern = dna1,
+  subject = dna2_raw,
+  type = "local",
+  substitutionMatrix = nucleotideSubstitutionMatrix(match = 2, mismatch = -1, baseOnly = TRUE),
+  gapOpening = -5,
+  gapExtension = -2
+)
+
+score(aln_global)
+score(aln_local)
+aln_global
+aln_local</code></pre>
+
+    <details class="details">
+      <summary>查看脚本运行后的示例输出（节选）</summary>
+<pre class="output">## Global alignment (DNA)
+score = 33
+Global PairwiseAlignmentsSingleSubject (1 of 1)
+pattern: ACGTTGACCTGAACTGAC
+subject: ACGTCGACCTGAACTGAC
+score: 33
+
+## Local alignment (DNA)
+score = 33
+Local PairwiseAlignmentsSingleSubject (1 of 1)
+pattern: [1] ACGTTGACCTGAACTGAC
+subject: [1] ACGTCGACCTGAACTGAC
+score: 33</pre>
+      <p class="muted">完整输出见 <code>docs/images/alignment/pairwise_dna.txt</code>。</p>
+    </details>
+
+    <h3>1.2 蛋白：使用 BLOSUM62</h3>
+<pre class="code"><code class="language-r">prot1 &lt;- AAString("MKWVTFISLLFLFSSAYSRGVFRRDAHKSEVAHRFKDLGE")
+prot2 &lt;- AAString("MKWVTFISLLFLFSSAYSRAIYEKLGLDYYKDDDDKSEVAH")
+
+data("BLOSUM62", package = "Biostrings")
+
+aln_prot &lt;- pairwiseAlignment(
+  pattern = prot1,
+  subject = prot2,
+  type = "local",
+  substitutionMatrix = BLOSUM62,
+  gapOpening = -10,
+  gapExtension = -1
+)
+
+score(aln_prot)
+aln_prot</code></pre>
+  </section>
+
+  <section id="msa">
+    <h2>2. 多序列比对（MSA）</h2>
+    <p>
+      MSA 常用于识别保守区/变异位点，并作为系统发育分析输入。
+      这里给出两套常用路线：<code>DECIPHER::AlignSeqs()</code>（DNA/RNA，适合大样本）与 <code>msa</code>（蛋白/核酸，经典算法封装）。
+    </p>
+
+    <h3>2.1 DNA/RNA：DECIPHER（推荐）</h3>
+<pre class="code"><code class="language-r">dna_set &lt;- DNAStringSet(c(
+  s1 = "ACGTTGACCTGAACTGAC",
+  s2 = "ACGTCGACCTGAACTGAC",
+  s3 = "ACGTTGACCTGAGCTGAC",
+  s4 = "ACGTTGACCTGAACTAAC"
+))
+
+msa_dna &lt;- AlignSeqs(dna_set, processors = 1)  # processors 可按机器核心调整
+msa_dna</code></pre>
+
+    <h3>2.2 蛋白：msa（ClustalOmega/MUSCLE/ClustalW）</h3>
+<pre class="code"><code class="language-r">aa_set &lt;- AAStringSet(c(
+  p1 = "MKWVTFISLLFLFSSAYSRA",
+  p2 = "MKWVTFISLLFLFSSAYSRA",
+  p3 = "MKWVTFISLLFLFSSAYARA",
+  p4 = "MKWVTFISLLFLFSSAYSRV"
+))
+
+msa_aa &lt;- msaClustalOmega(aa_set)
+msa_aa</code></pre>
+  </section>
+
+  <section id="quant">
+    <h2>3. 一致性 / 相似性量化</h2>
+    <p>
+      常用指标包括：<strong>percent identity（PID，一致性）</strong>、以及基于替换矩阵的<strong>相似性</strong>（蛋白更常用）。
+      这里用 <code>Biostrings::pid()</code> 对 MSA 直接算两两 PID 矩阵。
+    </p>
+<pre class="code"><code class="language-r"># 常用口径：忽略 gap 的 percent identity（PID, %）
+pid_matrix_from_aligned &lt;- function(aligned_set, ignore_gaps = TRUE) {
+  aln_strings &lt;- toupper(as.character(aligned_set))
+  x &lt;- do.call(rbind, strsplit(aln_strings, ""))
+  n &lt;- nrow(x)
+  out &lt;- matrix(NA_real_, nrow = n, ncol = n, dimnames = list(names(aln_strings), names(aln_strings)))
+
+  for (i in seq_len(n)) {
+    for (j in seq_len(n)) {
+      a &lt;- x[i, ]
+      b &lt;- x[j, ]
+      keep &lt;- if (ignore_gaps) (a != "-" &amp; b != "-") else rep(TRUE, length(a))
+      denom &lt;- sum(keep)
+      out[i, j] &lt;- if (denom == 0) NA_real_ else 100 * sum(a[keep] == b[keep]) / denom
+    }
+  }
+  out
+}
+
+aligned_dna_set &lt;- msa_dna  # AlignSeqs 的返回本身就是 DNAStringSet（带 gap）
+pid_dna &lt;- pid_matrix_from_aligned(aligned_dna_set, ignore_gaps = TRUE)
+round(pid_dna, 2)</code></pre>
+
+    <details class="details">
+      <summary>查看脚本生成的 PID 矩阵（CSV 预览）</summary>
+<pre class="output">"","s1","s2","s3","s4"
+"s1",100,94.4444,94.4444,94.4444
+"s2",94.4444,100,88.8889,88.8889
+"s3",94.4444,88.8889,100,88.8889
+"s4",94.4444,88.8889,88.8889,100</pre>
+      <p class="muted">完整文件见 <code>docs/images/alignment/pid_matrix.csv</code>。</p>
+    </details>
+  </section>
+
+  <section id="dist">
+    <h2>4. 进化距离矩阵</h2>
+    <p>
+      距离矩阵是构树的数值基础。DNA 常见模型：Jukes-Cantor、Kimura 2-parameter（K80）。
+      这里用 <code>phangorn</code> 将对齐结果转换为 <code>phyDat</code>，再计算距离。
+    </p>
+<pre class="code"><code class="language-r"># ape::dist.dna 支持 K80（Kimura 2-parameter）
+aligned_dna_set &lt;- msa_dna
+aln_strings &lt;- tolower(as.character(aligned_dna_set))
+aln_strings &lt;- gsub("-", "n", aln_strings)  # gap 视作未知 n，便于距离计算
+
+m_char &lt;- do.call(rbind, strsplit(aln_strings, ""))
+rownames(m_char) &lt;- names(aln_strings)
+dnabin &lt;- ape::as.DNAbin(m_char)
+
+dist_k80 &lt;- ape::dist.dna(dnabin, model = "K80", pairwise.deletion = TRUE)
+as.matrix(dist_k80)</code></pre>
+  </section>
+
+  <section id="variants">
+    <h2>5. 变异位点（SNP / Indel）</h2>
+    <p>
+      下面给出一个“按列扫描对齐”的实用做法：找出有变异的列、区分是否包含缺口（Indel），并输出位点表（可用于下游筛选高变异区域）。
+    </p>
+<pre class="code"><code class="language-r">variant_sites &lt;- function(aligned_set) {
+  aln_strings &lt;- toupper(as.character(aligned_set))
+  m &lt;- do.call(rbind, strsplit(aln_strings, ""))  # rows = sequences, cols = alignment positions
+  col_is_var &lt;- apply(m, 2, function(x) length(unique(x)) &gt; 1)
+  col_has_gap &lt;- apply(m, 2, function(x) any(x == "-"))
+  idx &lt;- which(col_is_var)
+
+  data.frame(
+    pos = idx,
+    has_gap = col_has_gap[idx],
+    pattern = apply(m[, idx, drop = FALSE], 2, function(x) paste(x, collapse = "")),
+    stringsAsFactors = FALSE
+  )
+}
+
+aligned_dna_set &lt;- msa_dna
+var_tbl &lt;- variant_sites(aligned_dna_set)
+head(var_tbl, 10)</code></pre>
+
+    <details class="details">
+      <summary>查看脚本生成的变异位点表（CSV 预览）</summary>
+<pre class="output">"pos","has_gap","pattern"
+5,FALSE,"TCTT"
+13,FALSE,"AAGA"
+16,FALSE,"GGGA"</pre>
+      <p class="muted">完整文件见 <code>docs/images/alignment/variant_sites.csv</code>。</p>
+    </details>
+  </section>
+
+  <section id="phylo">
+    <h2>6. 系统发育树（NJ / ML）</h2>
+    <p>
+      快速上手通常从<strong>邻接法（NJ）</strong>开始；更严格可做<strong>最大似然（ML）</strong>。
+      这里展示用距离矩阵构 NJ 树并画图保存。
+    </p>
+<pre class="code"><code class="language-r">tree_nj &lt;- nj(dist_k80)
+tree_nj$tip.label
+
+plot(tree_nj, main = "NJ tree (K80 distance)")
+add.scale.bar()</code></pre>
+    <p class="muted">可视化增强：<code>ggtree</code> 很强，但依赖较多；需要漂亮图时再装即可。</p>
+  </section>
+
+  <section id="motif">
+    <h2>7. Motif / 保守片段检索</h2>
+    <p>
+      <code>Biostrings</code> 支持在 DNA/蛋白序列上做快速模式匹配（精确/模糊）。
+      示例：在一组序列中查找 motif “ACCTG” 出现的位置。
+    </p>
+<pre class="code"><code class="language-r">motif &lt;- DNAString("ACCTG")
+hits &lt;- lapply(dna_set, function(x) {
+  h &lt;- matchPattern(motif, x)
+  if (length(h) == 0) return(data.frame(start = integer(), width = integer()))
+  data.frame(start = start(h), width = width(h))
+})
+hits</code></pre>
+  </section>
+
+  <section id="faq">
+    <h2>FAQ：常见报错与排查</h2>
+    <ul>
+      <li><strong>Bioconductor 包装不上 / 下载慢</strong>：重试即可；必要时切换网络或设置代理。也可先跑脚本，它会自动补齐缺失包。</li>
+      <li><strong>PowerShell 里运行 <code>R --version</code> 失败</strong>：这是因为 <code>R</code> 常被当作历史命令别名；用 <code>Rscript --version</code> 或 <code>&amp; "C:\\...\\R.exe" --version</code>。</li>
+      <li><strong>对齐对象维度不一致</strong>：不同包的对齐对象类型不同（<code>DNAStringSet</code>/<code>MultipleAlignment</code>/<code>Msa*</code>），建议 <code>class()</code>、<code>str()</code> 先确认再转换。</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>© 2025 南京中医药大学 人工智能与信息技术学院</p>
+  </footer>
+</main>
 
 </body>
 </html>

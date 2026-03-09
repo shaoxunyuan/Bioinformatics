@@ -1,0 +1,6 @@
+## Local alignment (Protein, BLOSUM62)
+score = 119
+Local PairwiseAlignmentsSingleSubject (1 of 1)
+pattern: [1] MKWVTFISLLFLFSSAYSRGVFRR--------DAHKSEVAH
+subject: [1] MKWVTFISLLFLFSSAYSRAIYEKLGLDYYKDDDDKSEVAH
+score: 119 
