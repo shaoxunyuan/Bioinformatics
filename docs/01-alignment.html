@@ -3,6 +3,825 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>01 · 在线 BLAST 实战（NCBI / CNGB）</title>
+  <link rel="stylesheet" href="css/01-alignment.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafafa;
+      --bg-elevated: #ffffff;
+      --border-subtle: #e1e1e1;
+      --border-strong: #c7c7c7;
+      --text-main: #111111;
+      --text-muted: #555555;
+      --text-soft: #888888;
+      --shadow-soft: 0 18px 40px rgba(0,0,0,0.04);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+      --max-width: 1080px;
+      --transition-fast: 160ms ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: "Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+      line-height: 1.7;
+      letter-spacing: 0.02em;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: color-mix(in srgb, var(--bg) 88%, #ffffff 12%);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .site-header-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .brand-sub {
+      color: var(--text-soft);
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0.04em;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .nav a {
+      color: var(--text-soft);
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+      transition: color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .nav a:hover {
+      color: var(--text-main);
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .nav-cta {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-strong);
+      padding: 7px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.7);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.03);
+    }
+
+    .nav-cta span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #111;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 52px 24px 80px;
+    }
+
+    .hero {
+      border-radius: 24px;
+      border: 1px solid var(--border-subtle);
+      background: radial-gradient(circle at top left,#ffffff 0,#fafafa 50%,#f3f3f3 100%);
+      padding: 38px 40px 34px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 52px;
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--text-soft);
+      margin-bottom: 18px;
+    }
+
+    .hero-kicker::before {
+      content: "";
+      width: 32px;
+      height: 1px;
+      background: #c0c0c0;
+    }
+
+    .hero-title {
+      font-size: clamp(30px, 4vw, 40px);
+      line-height: 1.2;
+      margin: 0 0 16px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 40rem;
+      margin: 0 0 22px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-size: 12px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      margin-bottom: 22px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 9px 20px;
+      border: 1px solid var(--border-strong);
+      background: transparent;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .btn-primary {
+      background: #111111;
+      color: #f5f5f5;
+      border-color: #111111;
+      box-shadow: 0 16px 30px rgba(0,0,0,0.18);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.22);
+    }
+
+    .btn-ghost:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+    }
+
+    .hero-note {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin: 0;
+    }
+
+    .layout-two {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+      gap: 46px;
+      margin-top: 26px;
+    }
+
+    .card {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-elevated);
+      padding: 18px 20px 18px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.03);
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--text-soft);
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      margin: 0 0 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .section {
+      margin-top: 56px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--text-soft);
+    }
+
+    .section-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 360px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .step-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .step-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .step-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-soft);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .mono-block {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      background: #f0f0f0;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      padding: 10px 12px;
+      overflow-x: auto;
+      white-space: pre;
+      color: #222;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-soft);
+      background: #fafafa;
+    }
+
+    .highlight-box {
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .highlight-box strong {
+      color: #111;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .metric {
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .metric-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      color: #111;
+      font-weight: 500;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 18px 24px 22px;
+      font-size: 11px;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: center;
+    }
+
+    footer span.dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #111;
+      display: inline-block;
+      margin: 0 8px;
+    }
+
+    @media (max-width: 960px) {
+      .site-header-inner {
+        padding-inline: 18px;
+      }
+      .page {
+        padding-inline: 18px;
+      }
+      .layout-two {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .grid-2 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav {
+        gap: 12px;
+        font-size: 11px;
+        letter-spacing: 0.16em;
+      }
+      .hero {
+        padding-inline: 20px;
+      }
+      .metrics-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <div class="brand-mark">01</div>
+        <div>
+          <div>Alignment · BLAST</div>
+          <div class="brand-sub">Online NCBI / CNGB Practice</div>
+        </div>
+      </div>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#ncbi">NCBI BLAST</a>
+        <a href="#cngb">CNGB BLAST</a>
+        <a href="#interpret">结果解读</a>
+        <a href="#faq" class="nav-cta">
+          <span class="dot"></span>
+          <span>FAQ</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="page">
+      <section class="hero" id="top">
+        <div class="hero-kicker">序列比对 · 在线 BLAST</div>
+        <h1 class="hero-title">不用安装任何软件，直接用浏览器完成第一次序列比对。</h1>
+        <p class="hero-subtitle">
+          本页演示如何在 <strong>NCBI BLAST</strong> 和 <strong>CNGB BLAST</strong> 上完成一个完整的比对流程：
+          选定示例序列 → 粘贴到网站 → 选择数据库与参数 → 运行比对 → 阅读 hits 表与比对详情。
+        </p>
+        <div class="hero-meta">
+          <span>BLASTn / BLASTp</span>
+          <span>NCBI nr / nt</span>
+          <span>CNGB 本地库</span>
+        </div>
+        <div class="hero-actions">
+          <a href="#ncbi" class="btn btn-primary">从 NCBI BLAST 开始</a>
+          <a href="#example" class="btn btn-ghost">查看示例序列</a>
+        </div>
+        <p class="hero-note">
+          建议边看边操作：一侧打开本页面，一侧打开 BLAST 网站，严格按照步骤走一遍。
+        </p>
+
+        <div class="layout-two">
+          <article class="card" id="example">
+            <div class="card-title">示例 1 · DNA 序列（BLASTn）</div>
+            <p>复制下面任意一条（或两条）FASTA 格式序列，作为本页练习用的查询序列（query）。</p>
+            <div class="mono-block">
+&gt;demo_dna_1
+ATGGTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGAAGGTC
+TTCGACTACAAAGACGATGACGACAAG
+
+&gt;demo_dna_2
+ATGGTGCTGCTGATGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGAAGGTC
+TTCGACTATGAAGACGACGACGACAAG
+            </div>
+            <div class="pill-row">
+              <span class="pill">短片段 · 适合教学演示</span>
+              <span class="pill">可用于 NCBI / CNGB BLASTn</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-title">示例 2 · 蛋白序列（BLASTp）</div>
+            <p>下面是一段简化的蛋白氨基酸序列，可用于 BLASTp 演示。</p>
+            <div class="mono-block">
+&gt;demo_protein_1
+MKWVTFISLLFLFSSAYSRGVFRRDAHKSEVAHRFKDLGE
+            </div>
+            <p>在 NCBI 选择 <code>Protein BLAST</code>；在 CNGB 中选择蛋白数据库与对应程序。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="ncbi">
+        <div class="section-header">
+          <h2 class="section-title">一、在 NCBI 上运行 BLAST</h2>
+          <p class="section-desc">
+            以 <strong>demo_dna_1</strong> 为例演示 BLASTn；流程对 BLASTp 也完全类似，只是选择的程序与数据库不同。
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <div class="card-title">步骤 A · 打开 NCBI BLAST 页面</div>
+            <ol class="step-list">
+              <li>
+                <span class="step-label">A1 · 访问网站</span>
+                在浏览器打开：<br>
+                <span class="mono-block">https://blast.ncbi.nlm.nih.gov/Blast.cgi</span>
+              </li>
+              <li>
+                <span class="step-label">A2 · 选择程序</span>
+                对 DNA 序列：点 <strong>nucleotide BLAST</strong>（BLASTn）；
+                对蛋白序列：点 <strong>protein BLAST</strong>（BLASTp）。
+              </li>
+              <li>
+                <span class="step-label">A3 · 粘贴查询序列</span>
+                在 “Enter Query Sequence” 文本框中粘贴上方的 <code>demo_dna_1</code> FASTA。
+              </li>
+            </ol>
+          </article>
+
+          <article class="card">
+            <div class="card-title">步骤 B · 选择数据库与参数</div>
+            <ol class="step-list">
+              <li>
+                <span class="step-label">B1 · Database</span>
+                教学演示可选择：
+                <ul style="margin:4px 0 0 0;padding-left:16px;">
+                  <li><strong>nt</strong>：所有核酸序列（较慢，命中多）；</li>
+                  <li>或一个较小的 genome / RefSeq 库，速度更快。</li>
+                </ul>
+              </li>
+              <li>
+                <span class="step-label">B2 · Program Selection</span>
+                保持默认（<code>megablast</code>）即可；如果希望找到更远的同源，可以选择
+                <code>discontiguous megablast</code>。
+              </li>
+              <li>
+                <span class="step-label">B3 · 其他设置</span>
+                初学者可以先保持默认，只确认：
+                <span class="pill-row">
+                  <span class="pill">Expect threshold：10 或 0.05</span>
+                  <span class="pill">Max target sequences：50–100</span>
+                </span>
+              </li>
+              <li>
+                <span class="step-label">B4 · 提交任务</span>
+                点击页面底部的 <strong>BLAST</strong> 按钮，等待队列运行完成。
+              </li>
+            </ol>
+          </article>
+        </div>
+
+        <div class="section" style="margin-top:34px;">
+          <div class="section-header">
+            <h2 class="section-title">NCBI 结果页面怎么看？</h2>
+            <p class="section-desc">
+              NCBI BLAST 的结果可分为三块：概要（Graphic summary）、hits 表格（Descriptions）、以及具体比对详情（Alignments）。
+            </p>
+          </div>
+
+          <div class="grid-2">
+            <article class="card">
+              <div class="card-title">C · Hits 表（Descriptions 区）</div>
+              <p>这个表格是 “命中列表”，每一行代表一条满足条件的 subject 序列。</p>
+              <div class="metrics-grid">
+                <div class="metric">
+                  <div class="metric-label">Score</div>
+                  <div class="metric-value">Score</div>
+                  <div>比对得分，越高说明越匹配。</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-label">E-value</div>
+                  <div class="metric-value">E</div>
+                  <div>期望值，越小越显著，<strong>10⁻³ 以下通常认为有意义</strong>。</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-label">Query cover</div>
+                  <div class="metric-value">%</div>
+                  <div>命中覆盖了 query 的多少百分比。</div>
+                </div>
+                <div class="metric">
+                  <div class="metric-label">Ident</div>
+                  <div class="metric-value">%</div>
+                  <div>相同碱基/氨基酸的百分比（percent identity）。</div>
+                </div>
+              </div>
+              <p style="margin-top:12px;">
+                选择一条 <strong>高 coverage + 高 identity + 低 E-value</strong> 的记录，点击 accession
+                或 “Description” 进入比对详情。
+              </p>
+            </article>
+
+            <article class="card">
+              <div class="card-title">D · Alignments 区（具体比对）</div>
+              <p>在 Alignments 部分，你会看到类似下面的三行结构：</p>
+              <div class="mono-block">
+Query  1  ATGGTGCTGCTGCTGCTGC---TGCTGCTGCTGCTGCTGCTG  45
+             ||||||||||||||||||   |||||||||||||||||
+Sbjct 10 ATGGTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTG  54
+              </div>
+              <p>阅读要点：</p>
+              <ul style="margin:6px 0 0 0;padding-left:18px;font-size:13px;color:var(--text-muted);">
+                <li><strong>Query / Sbjct</strong>：分别是查询序列与数据库中的序列。</li>
+                <li><strong>中间行符号</strong>：<code>|</code> 表示完全相同，空格/其他符号表示 mismatch。</li>
+                <li><strong>缺口（-）</strong>：代表插入 / 缺失（indel）。</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="cngb">
+        <div class="section-header">
+          <h2 class="section-title">二、在 CNGB 上运行 BLAST</h2>
+          <p class="section-desc">
+            CNGB（国家基因库）提供针对本地数据资源的 BLAST 服务，界面与 NCBI 类似，但数据库多为国人自己构建的数据集。
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <div class="card-title">步骤 E · 进入 BLAST 工具</div>
+            <ol class="step-list">
+              <li>
+                <span class="step-label">E1 · 登录 CNGB</span>
+                在浏览器访问 CNGB 主站，登录个人账号（部分数据或工具需要登录后使用）。
+              </li>
+              <li>
+                <span class="step-label">E2 · 打开 BLAST 页面</span>
+                通常在 “Tools / 工具” 或 “Sequence Analysis / 序列分析” 模块中找到 <strong>BLAST</strong> 入口。
+              </li>
+              <li>
+                <span class="step-label">E3 · 选择程序 &amp; 数据库</span>
+                根据你的需求选择：
+                <ul style="margin:4px 0 0 0;padding-left:16px;">
+                  <li><strong>BLASTn / BLASTp</strong> 等程序类型；</li>
+                  <li>相应的 <strong>本地数据库</strong>（如某个物种基因组、转录组、宏基因组项目等）。</li>
+                </ul>
+              </li>
+            </ol>
+          </article>
+
+          <article class="card">
+            <div class="card-title">步骤 F · 粘贴序列并运行</div>
+            <ol class="step-list">
+              <li>
+                <span class="step-label">F1 · 输入查询序列</span>
+                将上文的 <code>demo_dna_1</code> 或 <code>demo_protein_1</code> 粘贴到 query 文本框，保持 FASTA 格式。
+              </li>
+              <li>
+                <span class="step-label">F2 · 设置阈值</span>
+                类似 NCBI，可设置 E-value 阈值、最大返回条数。教学示例可以使用默认值。
+              </li>
+              <li>
+                <span class="step-label">F3 · 运行与查看</span>
+                点击 “Run / Submit” 按钮。任务完成后，CNGB 一般也会给出：
+                <ul style="margin:4px 0 0 0;padding-left:16px;">
+                  <li>命中列表（含 E-value、identity、coverage）；</li>
+                  <li>每条 hit 的比对详情（alignment，可下载或导出）。</li>
+                </ul>
+                阅读方法与 NCBI BLAST 基本相同。
+              </li>
+            </ol>
+          </article>
+        </div>
+
+        <div class="highlight-box" style="margin-top:24px;">
+          <strong>何时优先选择 CNGB BLAST？</strong><br>
+          如果你的研究数据来自某个特定 CNGB 项目（比如大规模队列、特定物种资源库），
+          或者你想优先匹配国内已经整理好的数据库，那么在 CNGB 上跑 BLAST 会比 NCBI 更有针对性。
+        </div>
+      </section>
+
+      <section class="section" id="interpret">
+        <div class="section-header">
+          <h2 class="section-title">三、如何系统解读 BLAST 结果</h2>
+          <p class="section-desc">
+            不论是在 NCBI 还是 CNGB，BLAST 的核心解读逻辑完全一致：看的是 “相似程度” 与 “统计显著性”。
+          </p>
+        </div>
+
+        <article class="card">
+          <div class="card-title">关键指标速记</div>
+          <div class="metrics-grid">
+            <div class="metric">
+              <div class="metric-label">Query cover</div>
+              <div class="metric-value">覆盖度</div>
+              <div>命中序列覆盖 query 的比例。越高越好；低于 50% 时通常需要谨慎解读。</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Percent identity</div>
+              <div class="metric-value">一致性</div>
+              <div>碱基/氨基酸逐位相同的百分比。> 90% 多为高度同源，70–90% 可能为同源/近源。</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">E-value</div>
+              <div class="metric-value">显著性</div>
+              <div>越小越好，10⁻³ 以下常被认为是可靠 hits；功能注释时会更严格。</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Gaps / mismatches</div>
+              <div class="metric-value">变异位置</div>
+              <div>可以帮助你定位突变、保守区和潜在的结构/功能域差异。</div>
+            </div>
+          </div>
+
+          <div style="margin-top:18px;">
+            <p style="margin:0 0 6px;font-size:13px;color:var(--text-muted);">
+              对于教学示例（短序列），你可以尝试：
+            </p>
+            <ul style="margin:0;padding-left:18px;font-size:13px;color:var(--text-muted);">
+              <li>先用 <code>demo_dna_1</code> 比对，记录 top hit 的 identity / coverage / E-value；</li>
+              <li>再把 <code>demo_dna_2</code> 作为 query，比对结果与上一次对比，体会少量碱基变化对指标的影响。</li>
+            </ul>
+          </div>
+        </article>
+      </section>
+
+      <section class="section" id="faq">
+        <div class="section-header">
+          <h2 class="section-title">四、常见问题（FAQ）</h2>
+          <p class="section-desc">
+            初学者在用 BLAST 时最常遇到的几个问题，可以在课堂或自学时直接对照排查。
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <div class="card-title">Q1 · 结果一片空白，没有任何 hits？</div>
+            <ul style="margin:0;padding-left:18px;font-size:13px;color:var(--text-muted);">
+              <li>确认是否选择了适合的数据库（不要选错类型，如用蛋白去查核酸库）。</li>
+              <li>检查 query 是否为有效序列：是否包含非法字符、过于短（&lt; 15 bp）或全是 N。</li>
+              <li>尝试放宽 E-value 阈值或增加最大返回序列数。</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-title">Q2 · 命中很多，但描述五花八门，看不懂？</div>
+            <ul style="margin:0;padding-left:18px;font-size:13px;color:var(--text-muted);">
+              <li>优先关注：已注释的基因 / 蛋白（description 中含 gene/protein 名称的）。</li>
+              <li>按 E-value 递增、identity 递减排序，选前几条看 alignments 是否合理。</li>
+              <li>如果 hits 多为 “hypothetical protein”，可能说明该区域功能尚不明确。</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="grid-2" style="margin-top:18px;">
+          <article class="card">
+            <div class="card-title">Q3 · NCBI 与 CNGB 结果不一致？</div>
+            <ul style="margin:0;padding-left:18px;font-size:13px;color:var(--text-muted);">
+              <li>两者使用的数据库不同：一个是全球公开数据，一个是特定本地库。</li>
+              <li>同一条序列在不同库中可能有不同的注释版本。</li>
+              <li>比较时请记录：<strong>数据库名 + 版本 + 运行日期</strong>。</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="card-title">Q4 · 如何在报告/作业中描述 BLAST 结果？</div>
+            <ul style="margin:0;padding-left:18px;font-size:13px;color:var(--text-muted);">
+              <li>说明所用网站（NCBI / CNGB）、程序类型（BLASTn / BLASTp）与数据库。</li>
+              <li>给出 top hit 的 accession、物种名、identity、coverage、E-value。</li>
+              <li>可附上一段 alignment 截图或文本，标出关键突变位点。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      <span>01 · 在线 BLAST 实战</span>
+      <span class="dot"></span>
+      <span>极简 · 留白 · 可复制课堂笔记</span>
+    </div>
+  </footer>
+</div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>极简作品集 · Alignment Studio</title>
   <link rel="stylesheet" href="css/01-alignment.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
