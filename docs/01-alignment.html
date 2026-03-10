@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01 · 使用 NCBI 在线 BLAST 进行序列比对</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="./01.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+  <div class="book-shell">
+    <aside class="book-sidebar" aria-label="目录">
+      <div class="book-brand"><a href="../index.html">生物信息学基础与实践</a></div>
+      <div class="toc-scroll">
+        <div class="toc__title">目录</div>
+        <ul class="book-nav toc">
+          <li><a class="lv1" href="#sec-0">一、BLAST 与 NCBI 在线平台简介</a>
+            <div class="lv2">
+              <div class="lv2-group">
+                <a href="#sec-0-1"><span class="n">1.1</span><span>什么是 BLAST？</span></a>
+                <a href="#sec-0-2"><span class="n">1.2</span><span>NCBI 在线 BLAST 入口与界面</span></a>
+              </div>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-1">二、准备示例序列</a>
+            <div class="lv2">
+              <a href="#sec-1-1"><span class="n">2.1</span><span>核酸序列示例（nt BLAST）</span></a>
+              <a href="#sec-1-2"><span class="n">2.2</span><span>蛋白序列示例（protein BLAST）</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-2">三、一步步完成核酸 BLAST（BLASTN）</a>
+            <div class="lv2">
+              <a href="#sec-2-1"><span class="n">3.1</span><span>打开 BLASTN 页面</span></a>
+              <a href="#sec-2-2"><span class="n">3.2</span><span>粘贴序列与基本设置</span></a>
+              <a href="#sec-2-3"><span class="n">3.3</span><span>重要参数说明</span></a>
+              <a href="#sec-2-4"><span class="n">3.4</span><span>提交任务与运行过程</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-3">四、一步步完成蛋白 BLAST（BLASTP）</a>
+            <div class="lv2">
+              <a href="#sec-3-1"><span class="n">4.1</span><span>打开 BLASTP 页面</span></a>
+              <a href="#sec-3-2"><span class="n">4.2</span><span>粘贴序列与参数设置</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-4">五、结果页面结构与解读</a>
+            <div class="lv2">
+              <a href="#sec-4-1"><span class="n">5.1</span><span>图形概览（Graphic Summary）</span></a>
+              <a href="#sec-4-2"><span class="n">5.2</span><span>匹配列表（Descriptions）</span></a>
+              <a href="#sec-4-3"><span class="n">5.3</span><span>比对详情（Alignments）</span></a>
+              <a href="#sec-4-4"><span class="n">5.4</span><span>如何下载与分享结果</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-5">六、常见问题与实战小技巧</a>
+            <div class="lv2">
+              <a href="#sec-5-1"><span class="n">6.1</span><span>常见报错与处理</span></a>
+              <a href="#sec-5-2"><span class="n">6.2</span><span>如何根据研究目的调整参数</span></a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="book-main">
+      <article class="article">
+        <h1>01 · 使用 NCBI 在线 BLAST 进行序列比对</h1>
+        <p>本节将通过完整的图文步骤，带你从零开始使用 <strong>NCBI 在线 BLAST</strong> 对核酸和蛋白序列进行比对，包括：</p>
+        <ul>
+          <li>如何进入 NCBI BLAST 网站、界面长什么样</li>
+          <li>如何准备和粘贴示例序列</li>
+          <li>关键参数（数据库、算法、E-value 等）具体含义</li>
+          <li>如何阅读 BLAST 结果页面中的图形和表格</li>
+          <li>根据不同研究目的如何调整参数</li>
+        </ul>
+
+        <h2 id="sec-0">一、BLAST 与 NCBI 在线平台简介</h2>
+
+        <h3 id="sec-0-1">1.1 什么是 BLAST？</h3>
+        <p><strong>BLAST（Basic Local Alignment Search Tool）</strong> 是一类用于“在数据库中查找与给定序列相似序列”的局部比对算法家族，常见变体包括：</p>
+        <ul>
+          <li><strong>BLASTN</strong>：核酸 vs 核酸</li>
+          <li><strong>BLASTP</strong>：蛋白 vs 蛋白</li>
+          <li><strong>BLASTX</strong>：核酸（翻译成蛋白）vs 蛋白</li>
+          <li><strong>TBLASTN</strong>：蛋白 vs 翻译后的核酸库</li>
+        </ul>
+        <p>BLAST 的典型应用包括：</p>
+        <ul>
+          <li>判断一个未知序列可能来自哪个物种、对应哪个基因或蛋白</li>
+          <li>查找同源基因（ortholog/paralog）</li>
+          <li>验证测序结果是否正确、是否被污染</li>
+        </ul>
+
+        <h3 id="sec-0-2">1.2 NCBI 在线 BLAST 入口与界面</h3>
+        <p>NCBI 提供了免费的在线 BLAST 服务，无需本地安装软件，只要有浏览器即可使用。</p>
+        <div class="cols">
+          <div class="card">
+            <div class="t">步骤 1：打开 NCBI 网站</div>
+            <div class="d">
+              在浏览器地址栏输入：
+              <pre><code class="language-text">https://blast.ncbi.nlm.nih.gov/</code></pre>
+              或在搜索引擎中搜索 “NCBI BLAST”，点击官方链接（通常标题为 “BLAST: Basic Local Alignment Search Tool”）。
+            </div>
+          </div>
+          <div class="card">
+            <div class="t">步骤 2：认识 BLAST 首页</div>
+            <div class="d">
+              典型的 BLAST 首页包含几个大模块：
+              <ul>
+                <li><strong>Nucleotide BLAST</strong>（核酸 BLAST）</li>
+                <li><strong>Protein BLAST</strong>（蛋白 BLAST）</li>
+                <li><strong>BLAST Assembled Genomes</strong> 等高级入口</li>
+              </ul>
+              我们本节主要用到 <strong>Nucleotide BLAST</strong> 和 <strong>Protein BLAST</strong> 两个入口。
+            </div>
+          </div>
+        </div>
+
+        <h2 id="sec-1">二、准备示例序列</h2>
+        <p>为了演示整个流程，我们先准备两条简短的示例序列，你可以直接复制使用。</p>
+
+        <h3 id="sec-1-1">2.1 核酸序列示例（nt BLAST）</h3>
+        <p>下面是一段来自人类线粒体基因组（COI 片段）的核酸序列，已用 <strong>FASTA 格式</strong> 标注好：</p>
+        <pre><code class="language-text">&gt;Example_COI_human_mtDNA
+ATGATTATGGAAGCTTCTAGGAGCCATCAAGTATTTAGCTGACTATGAACCCCCT
+ACAAATCATTAATCGGAGGCTTTGGCAACTGACTAGTTCCCCTAATAATCGGAGG
+CTTTGGAAACTGACTAGTCCCTCTAATAATCGGAGGCTTTGGCAACTGACTAGTT</code></pre>
+        <p>说明：</p>
+        <ul>
+          <li>第一行以 <code>&gt;</code> 开头的是序列 ID，可以任意命名</li>
+          <li>后面几行是碱基序列，只包含 <code>A/C/G/T</code>（以及少量其他 IUPAC 碱基符号）</li>
+        </ul>
+
+        <h3 id="sec-1-2">2.2 蛋白序列示例（protein BLAST）</h3>
+        <p>下面是一条简化的蛋白氨基酸序列，同样是 FASTA 格式：</p>
+        <pre><code class="language-text">&gt;Example_Protein
+MALWMRLLPLLALLALWGPGPGAGGHEGSLQPLALEGSLQKRGIVEQCCTSICSL
+YQLENYCN</code></pre>
+        <p>说明：</p>
+        <ul>
+          <li>第一行以 <code>&gt;</code> 开头的是蛋白 ID</li>
+          <li>后面是氨基酸单字母码（A、R、N、D、...）</li>
+        </ul>
+
+        <h2 id="sec-2">三、一步步完成核酸 BLAST（BLASTN）</h2>
+
+        <h3 id="sec-2-1">3.1 打开 BLASTN 页面</h3>
+        <ol>
+          <li>访问 <code>https://blast.ncbi.nlm.nih.gov/</code></li>
+          <li>在首页点击 <strong>Nucleotide BLAST</strong> 按钮，进入核酸 BLAST 页面。</li>
+        </ol>
+        <p>进入后，你会看到几个主要区域：</p>
+        <ul>
+          <li><strong>Enter Query Sequence</strong>：粘贴或上传你的核酸序列</li>
+          <li><strong>Choose Search Set</strong>：选择比对的数据库和物种范围</li>
+          <li><strong>Program Selection</strong>：选择 BLAST 算法模式（Highly similar sequences / Somewhat similar sequences）</li>
+          <li><strong>Algorithm parameters</strong>：展开的高级参数区（Word size、Match/Mismatch scores 等）</li>
+        </ul>
+
+        <h3 id="sec-2-2">3.2 粘贴序列与基本设置</h3>
+        <p>在 <strong>Enter Query Sequence</strong> 区域进行如下操作：</p>
+        <ol>
+          <li>将上文给出的核酸 FASTA 序列整体复制，粘贴到 <strong>“Enter Query Sequence”</strong> 的文本框中。</li>
+          <li>保持 <strong>Query subrange</strong> 为空（代表比对整条序列）。</li>
+          <li>如果有多个序列，可以继续往下粘贴，每条以 <code>&gt;</code> 开头。</li>
+        </ol>
+        <p>在 <strong>Choose Search Set</strong> 区域：</p>
+        <ul>
+          <li><strong>Database</strong> 建议初学者选择：<strong>nr/nt</strong>（Non-redundant nucleotide sequences）</li>
+          <li><strong>Organism</strong>：
+            <ul>
+              <li>如果你大致知道来自哪个物种，可输入例如 “Homo sapiens (taxid:9606)”</li>
+              <li>如果完全未知，建议先留空，搜索所有物种</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3 id="sec-2-3">3.3 重要参数说明</h3>
+        <p>在 <strong>Program Selection</strong> 和 <strong>Algorithm parameters</strong> 部分，有一些关键参数值得理解：</p>
+        <div class="cols">
+          <div class="card">
+            <div class="t">Program Selection</div>
+            <div class="d">
+              一般会有类似选项：
+              <ul>
+                <li><strong>Highly similar sequences (megablast)</strong>：适合比对<strong>高度相似</strong>的序列，例如不同样本同一物种</li>
+                <li><strong>More dissimilar sequences (discontiguous megablast)</strong>：适合更远缘的同源性搜索</li>
+              </ul>
+              初学者若只是验证测序结果，多选 <strong>megablast</strong> 即可。
+            </div>
+          </div>
+          <div class="card">
+            <div class="t">E-value（Expect value）</div>
+            <div class="d">
+              <ul>
+                <li>E-value 表示“在当前数据库大小下，随机出现<strong>同等或更好比对得分</strong>的期望次数”</li>
+                <li>数值越小，说明该比对越不可能是随机产生的，可信度越高</li>
+                <li>常见默认值为 <strong>10</strong>，对于高质量比对，可关注 E-value &lt; 1e-5 或更小的 hits</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="cols">
+          <div class="card">
+            <div class="t">Word size（词长）</div>
+            <div class="d">
+              <ul>
+                <li>BLAST 首先寻找长度为 word size 的完全匹配“种子”</li>
+                <li>word size 越小，敏感性越高，但速度更慢</li>
+                <li>对较短或较不保守的序列，可以适当减小 word size 提高灵敏度</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card">
+            <div class="t">Match/Mismatch 与 Gap penalty</div>
+            <div class="d">
+              <ul>
+                <li><strong>Match/Mismatch</strong>：匹配奖励与错配惩罚（如 +2/-3）</li>
+                <li><strong>Gap costs</strong>：插入/缺失的开启动作和延长动作的惩罚</li>
+                <li>默认设置通常已对大多数情况较为合理，一般无需修改</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h3 id="sec-2-4">3.4 提交任务与运行过程</h3>
+        <ol>
+          <li>确认序列与参数设置无误后，点击页面下方的 <strong>BLAST</strong> 按钮。</li>
+          <li>页面会跳转到一个“搜索进行中”的等待界面，显示队列位置和预计剩余时间。</li>
+          <li>完成后会自动跳转到结果页面，包含多个标签页（Overview、Descriptions、Alignments、Graphics 等）。</li>
+        </ol>
+
+        <h2 id="sec-3">四、一步步完成蛋白 BLAST（BLASTP）</h2>
+
+        <h3 id="sec-3-1">4.1 打开 BLASTP 页面</h3>
+        <ol>
+          <li>同样访问 <code>https://blast.ncbi.nlm.nih.gov/</code></li>
+          <li>在 BLAST 首页点击 <strong>Protein BLAST</strong>。</li>
+        </ol>
+        <p>蛋白 BLAST 的页面结构与核酸 BLAST 非常类似，只是数据库和参数的默认设置稍有不同。</p>
+
+        <h3 id="sec-3-2">4.2 粘贴序列与参数设置</h3>
+        <p>在 <strong>Enter Query Sequence</strong> 区域：</p>
+        <ol>
+          <li>将上文给出的蛋白 FASTA 序列复制粘贴到文本框。</li>
+          <li>确认下方的 <strong>Query subrange</strong> 为空，表示使用全长蛋白。</li>
+        </ol>
+        <p>在 <strong>Choose Search Set</strong> 中：</p>
+        <ul>
+          <li><strong>Database</strong>：建议选择 <strong>nr</strong>（Non-redundant protein sequences）</li>
+          <li><strong>Organism</strong>：可留空，或填写预期物种（如 <code>Homo sapiens</code>）。</li>
+        </ul>
+        <p>蛋白 BLAST 常见的额外参数：</p>
+        <ul>
+          <li><strong>Matrix</strong>（替换矩阵）：如 BLOSUM62、PAM30 等，决定不同氨基酸替换的得分</li>
+          <li><strong>Comp. based stats</strong>：成分校正设置，一般保持默认</li>
+        </ul>
+        <p>设置好后同样点击 <strong>BLAST</strong> 等待结果。</p>
+
+        <h2 id="sec-4">五、结果页面结构与解读</h2>
+        <p>无论是核酸 BLAST 还是蛋白 BLAST，结果页面结构非常类似，主要包含以下几个关键部分。</p>
+
+        <h3 id="sec-4-1">5.1 图形概览（Graphic Summary）</h3>
+        <p>通常位于结果页面靠上的 “Graphic Summary” 区域，用彩色条带展示：</p>
+        <ul>
+          <li>横轴：你的查询序列（Query），从 5' 到 3'（或 N 端到 C 端）</li>
+          <li>每一条彩色横线：一个数据库匹配（Hit）的局部比对位置</li>
+          <li>颜色深浅：代表得分高低（Score），颜色越深表示匹配质量越高</li>
+        </ul>
+        <p>解读要点：</p>
+        <ul>
+          <li>如果在整条 Query 上都能看到一条长而连续的深色条，说明有高度相似的同源序列存在</li>
+          <li>如果只在局部有短片段比对，可能对应保守结构域或局部保守区域</li>
+        </ul>
+
+        <h3 id="sec-4-2">5.2 匹配列表（Descriptions）</h3>
+        <p>在 “Descriptions” 或 “Sequences producing significant alignments” 表格中，常见列包括：</p>
+        <ul>
+          <li><strong>Description</strong>：匹配序列的注释信息（基因名、物种、功能描述等）</li>
+          <li><strong>Max score / Total score</strong>：比对得分，数值越大表示比对越好</li>
+          <li><strong>Query cover</strong>：查询序列中被覆盖的比例（%）</li>
+          <li><strong>E value</strong>：显著性指标，数值越小越可信</li>
+          <li><strong>Per. Ident</strong>：身份性（Identity）比例，即完全匹配的碱基/氨基酸比例</li>
+        </ul>
+        <p>一般经验：</p>
+        <ul>
+          <li><strong>E-value &lt; 1e-5</strong> 且 <strong>Per. Ident &gt; 80%</strong>，通常可以认为是比较可靠的同源关系（具体阈值依研究而定）</li>
+          <li>Query cover 较低但 Identity 很高时，说明只是局部高度保守</li>
+        </ul>
+
+        <h3 id="sec-4-3">5.3 比对详情（Alignments）</h3>
+        <p>点击某一条 Hit，可以看到具体的序列比对：</p>
+        <ul>
+          <li><strong>Query</strong>：你的查询序列</li>
+          <li><strong>Subject</strong>：数据库中的匹配序列</li>
+          <li>中间一行的符号：
+            <ul>
+              <li><code>|</code>：完全相同</li>
+              <li><code>+</code>：相近/保守替换（蛋白）</li>
+              <li>空格或其他：错配或 gap</li>
+            </ul>
+          </li>
+          <li><strong>Identities</strong>：完全匹配的碱基/氨基酸数量及比例</li>
+          <li><strong>Gaps</strong>：插入/缺失的数量</li>
+        </ul>
+        <p>通过该区域可以直观判断：</p>
+        <ul>
+          <li>是否存在大片段连续匹配</li>
+          <li>是否有大量 gap 或集中错配区域</li>
+        </ul>
+
+        <h3 id="sec-4-4">5.4 如何下载与分享结果</h3>
+        <p>在结果页面通常可以看到：</p>
+        <ul>
+          <li><strong>Download</strong> 按钮：支持下载为 TSV、XML、FASTA 等多种格式，以便本地保存或进一步分析</li>
+          <li><strong>Send to</strong>：可将结果发送到文件、本地计算机、或保存到 NCBI 账号</li>
+          <li><strong>Request ID（RID）</strong>：一个唯一的任务 ID，可以在一定时间内用来重新访问结果</li>
+        </ul>
+
+        <h2 id="sec-5">六、常见问题与实战小技巧</h2>
+
+        <h3 id="sec-5-1">6.1 常见报错与处理</h3>
+        <ul>
+          <li><strong>提交后很久没有结果</strong>：
+            <ul>
+              <li>可能是数据库选择过大（如 nr）且序列较长，耐心等待</li>
+              <li>可尝试限制 Organism 或选择更小的数据库加快速度</li>
+            </ul>
+          </li>
+          <li><strong>提示序列格式错误</strong>：
+            <ul>
+              <li>检查是否包含非法字符（如中文、空格、特殊符号）</li>
+              <li>确保 FASTA ID 行以 <code>&gt;</code> 开头，后面不要再有 <code>&gt;</code> 或 HTML 符号</li>
+            </ul>
+          </li>
+          <li><strong>结果为空或只有很差的匹配</strong>：
+            <ul>
+              <li>确认序列方向、是否含有大量 N（不确定碱基）</li>
+              <li>适当提高 E-value 阈值或减小 word size</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3 id="sec-5-2">6.2 如何根据研究目的调整参数</h3>
+        <p>不同研究问题对 BLAST 的参数需求不同，可参考下表思路：</p>
+        <div class="cols">
+          <div class="card">
+            <div class="t">验证测序结果/物种鉴定</div>
+            <div class="d">
+              <ul>
+                <li>Program：<strong>Highly similar sequences (megablast)</strong></li>
+                <li>E-value：默认或更严格，如 1e-10</li>
+                <li>Database：<strong>nr/nt</strong> 或针对目标物种数据库</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card">
+            <div class="t">寻找远缘同源基因/蛋白</div>
+            <div class="d">
+              <ul>
+                <li>Program：<strong>More dissimilar sequences</strong> 或使用 BLASTX/PSI-BLAST</li>
+                <li>适当提高 E-value 阈值以捕获更多远缘 hits</li>
+                <li>适当减小 word size 提高敏感性</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card">
+            <div class="t">功能预测与结构域分析</div>
+            <div class="d">
+              <ul>
+                <li>推荐以蛋白序列为 Query，使用 <strong>BLASTP</strong></li>
+                <li>多关注 Descriptions 中的功能注释和保守结构域</li>
+                <li>可结合 CDD（Conserved Domain Database）进行结构域扫描</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <p>通过本节的练习，你应该已经能够：</p>
+        <ul>
+          <li>熟练打开 NCBI 在线 BLAST 平台，并选择合适的 BLAST 类型</li>
+          <li>用 FASTA 格式准备并提交核酸/蛋白序列</li>
+          <li>理解并调整常用参数（数据库、Organism、E-value、Program 等）</li>
+          <li>读懂 BLAST 结果中的图形概览、匹配列表和比对详情</li>
+        </ul>
+        <p>建议你在实际工作中多尝试不同的序列与参数组合，逐渐形成适合自己研究方向的 BLAST 使用习惯。</p>
+      </article>
+      <div class="book-footer"><a href="../index.html">返回目录</a></div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const pres = document.querySelectorAll('pre');
+      pres.forEach((pre) => {
+        const code = pre.querySelector('code');
+        if (!code) return;
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.type = 'button';
+        btn.textContent = '复制';
+        btn.addEventListener('click', async () => {
+          const text = code.textContent.replace(/\n$/, '');
+          try {
+            await navigator.clipboard.writeText(text);
+            btn.textContent = '已复制';
+            btn.dataset.state = 'ok';
+            setTimeout(() => { btn.textContent = '复制'; btn.dataset.state = ''; }, 1200);
+          } catch (e) {
+            const range = document.createRange();
+            range.selectNodeContents(code);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            btn.textContent = '请 Ctrl+C';
+            setTimeout(() => { btn.textContent = '复制'; }, 1200);
+          }
+        });
+        pre.appendChild(btn);
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      const links = Array.from(document.querySelectorAll('.toc a[href^="#"]'));
+      const idToLink = new Map();
+      links.forEach((a) => {
+        const id = decodeURIComponent(a.getAttribute('href').slice(1));
+        if (id) idToLink.set(id, a);
+      });
+      const headings = Array.from(document.querySelectorAll('h2[id], h3[id], h4[id]')).filter((h) => idToLink.has(h.id));
+      if (headings.length === 0) return;
+      const clear = () => links.forEach((a) => a.classList.remove('is-active'));
+      const setActive = (id) => { clear(); const a = idToLink.get(id); if (a) a.classList.add('is-active'); };
+      setActive(decodeURIComponent(location.hash.slice(1)) || headings[0].id);
+      const obs = new IntersectionObserver((entries) => {
+        const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length > 0) setActive(visible[0].target.id);
+      }, { rootMargin: '-15% 0px -75% 0px', threshold: [0, 1] });
+      headings.forEach((h) => obs.observe(h));
+      window.addEventListener('hashchange', () => { const id = decodeURIComponent(location.hash.slice(1)); if (id) setActive(id); });
+    })();
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
+
