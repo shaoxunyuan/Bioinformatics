@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>01 · 在线 BLAST 实战（NCBI / CNGB）</title>
+  <title>01 · 在线 BLAST 实战（NCBI）</title>
   <link rel="stylesheet" href="css/01-alignment.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -210,7 +210,7 @@
 <main>
   <header class="page-header">
     <div class="kicker">生物信息学基础 · 序列比对</div>
-    <h1>01 · 在线 BLAST 实战（NCBI / CNGB）</h1>
+    <h1>01 · 在线 BLAST 实战（NCBI）</h1>
     <p class="subtitle">
       本页整理几篇常见教程（例如密码子学院的
       <a href="https://college.mimazi.net/cms/article-223.html" target="_blank" rel="noreferrer">NCBI 在线比对教程</a>
@@ -224,9 +224,8 @@
       <li><a href="#concept">0. BLAST 常用程序一览</a></li>
       <li><a href="#example">1. 示例序列（DNA / 蛋白）</a></li>
       <li><a href="#ncbi">2. 在 NCBI 上运行 BLAST</a></li>
-      <li><a href="#cngb">3. 在 CNGB 上运行 BLAST</a></li>
-      <li><a href="#interpret">4. 结果解读要点</a></li>
-      <li><a href="#faq">5. 常见问题（FAQ）</a></li>
+      <li><a href="#interpret">3. 结果解读要点</a></li>
+      <li><a href="#faq">4. 常见问题（FAQ）</a></li>
     </ul>
   </nav>
 
@@ -393,38 +392,8 @@ Sbjct 10  ATGGTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTG  54</code></pre>
     </ul>
   </section>
 
-  <section id="cngb">
-    <h2>3. 在 CNGB 上运行 BLAST</h2>
-
-    <p>CNGB（国家基因库）提供的 BLAST 工具界面和 NCBI 思路类似：选择程序 → 选择数据库 → 输入 query → 设置参数 → 运行。</p>
-
-    <h3>3.1 入口与登录</h3>
-    <ol>
-      <li>访问 CNGB 主站，根据实际账户情况登录。</li>
-      <li>在 “Tools / 工具” 或 “Sequence Analysis / 序列分析” 等模块下找到 BLAST 工具入口。</li>
-    </ol>
-
-    <h3>3.2 选择程序和数据库</h3>
-    <ul>
-      <li>按查询序列类型选择 <code>BLASTn</code>、<code>BLASTp</code> 等程序。</li>
-      <li>在数据库列表中选择与你项目相关的数据库，例如某个物种基因组、宏基因组项目或特定资源库。</li>
-    </ul>
-
-    <h3>3.3 输入序列并运行</h3>
-    <ol>
-      <li>粘贴 <code>demo_dna_1</code> 或 <code>demo_protein_1</code> 到 query 输入框，保持 FASTA 格式。</li>
-      <li>按界面提示设置 E-value、最大返回条数等参数，一般可以先用默认值。</li>
-      <li>提交任务，等待结果列表与比对详情生成。</li>
-    </ol>
-
-    <div class="note">
-      如果研究数据本身来自 CNGB 项目，或者目标序列主要集中在某个 CNGB 数据库中，
-      优先在 CNGB 上进行 BLAST 通常更有针对性；阅读结果时的指标含义与 NCBI BLAST 完全一致。
-    </div>
-  </section>
-
   <section id="interpret">
-    <h2>4. 结果解读要点</h2>
+    <h2>3. 结果解读要点</h2>
 
     <p>综合几篇教程的观点，可以用下面几个问题来检查一次 BLAST 结果：</p>
 
@@ -456,7 +425,7 @@ Sbjct 10  ATGGTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTG  54</code></pre>
   </section>
 
   <section id="faq">
-    <h2>5. 常见问题（FAQ）</h2>
+    <h2>4. 常见问题（FAQ）</h2>
 
     <h3>5.1 完全没有 hits？</h3>
     <ul>
@@ -472,14 +441,7 @@ Sbjct 10  ATGGTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTG  54</code></pre>
       <li>如果大量条目都是 “hypothetical protein”，说明该区域功能注释有限。</li>
     </ul>
 
-    <h3>5.3 NCBI 和 CNGB 结果不同？</h3>
-    <ul>
-      <li>两者使用的数据库不同，自然会得到不同的 hits。</li>
-      <li>同一序列在不同版本数据库中的注释也可能不完全相同。</li>
-      <li>做对比时，建议记录：网站名称、数据库名、版本（若有）、运行日期。</li>
-    </ul>
-
-    <h3>5.4 在报告或作业中如何描述 BLAST 分析？</h3>
+    <h3>5.3 在报告或作业中如何描述 BLAST 分析？</h3>
     <ul>
       <li>写清楚使用的网站（NCBI / CNGB）、程序类型（blastn / blastp / …）和数据库。</li>
       <li>列出 top hit 的 accession、物种名、identity、coverage 和 E-value。</li>
