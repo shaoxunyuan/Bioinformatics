@@ -113,7 +113,7 @@
           </div>
         </div>
         <figure class="figure-row" aria-label="NCBI BLAST 首页示意">
-          <img src="./images/alignment/BlastHome.png" alt="NCBI BLAST 首页：Nucleotide BLAST 与 Protein BLAST 入口" width="600" height="360">
+          <img src="./images/alignment/BlastHome.png" alt="NCBI BLAST 首页：Nucleotide BLAST 与 Protein BLAST 入口" width="1200" height="720">
         </figure>
 
         <h2 id="sec-1">二、准备示例序列</h2>
@@ -267,8 +267,9 @@ YQLENYCN</code></pre>
           <li>每一条彩色横线：一个数据库匹配（Hit）的局部比对位置</li>
           <li>颜色深浅：代表得分高低（Score），颜色越深表示匹配质量越高</li>
         </ul>
-        <figure class="figure-row" aria-label="BLAST 结果页示意">
-          <img src="../assets/blast-results.png" alt="BLAST 结果页：图形概览、匹配列表与比对详情" width="600" height="420">
+        <figure class="figure-row" aria-label="Graphic Summary 标签页示意">
+          <img src="./images/alignment/graphicsummarytab.png" alt="BLAST 结果页：Graphic Summary（图形概览）标签页" width="900" height="270">
+          <figcaption>Graphic Summary：以彩色条带概览各条 Hit 在 Query 上的比对位置与得分分布。</figcaption>
         </figure>
         <p>解读要点：</p>
         <ul>
@@ -285,6 +286,10 @@ YQLENYCN</code></pre>
           <li><strong>E value</strong>：显著性指标，数值越小越可信</li>
           <li><strong>Per. Ident</strong>：身份性（Identity）比例，即完全匹配的碱基/氨基酸比例</li>
         </ul>
+        <figure class="figure-row" aria-label="Descriptions 标签页示意">
+          <img src="./images/alignment/descriptionstab.png" alt="BLAST 结果页：Descriptions（匹配列表）标签页" width="900" height="330">
+          <figcaption>Descriptions：按显著性排序展示 hits，并提供 Query cover、E value、Identity 等关键指标。</figcaption>
+        </figure>
         <p>一般经验：</p>
         <ul>
           <li><strong>E-value &lt; 1e-5</strong> 且 <strong>Per. Ident &gt; 80%</strong>，通常可以认为是比较可靠的同源关系（具体阈值依研究而定）</li>
@@ -311,6 +316,15 @@ YQLENYCN</code></pre>
           <li>是否存在大片段连续匹配</li>
           <li>是否有大量 gap 或集中错配区域</li>
         </ul>
+        <figure class="figure-row" aria-label="Alignments 标签页示意">
+          <img src="./images/alignment/alignmentstab.png" alt="BLAST 结果页：Alignments（比对详情）标签页" width="900" height="330">
+          <figcaption>Alignments：展示 Query 与 Subject 的逐位比对，可用于定位错配、缺失/插入与局部保守区域。</figcaption>
+        </figure>
+        <p>结果页的 “Taxonomy” 标签用于按物种谱系汇总 hits，便于快速判断匹配序列的物种分布与潜在污染来源。</p>
+        <figure class="figure-row" aria-label="Taxonomy 标签页示意">
+          <img src="./images/alignment/taxonomytab.png" alt="BLAST 结果页：Taxonomy（物种分类）标签页" width="900" height="330">
+          <figcaption>Taxonomy：按谱系层级统计 hits，可用于查看命中结果在不同类群中的分布情况。</figcaption>
+        </figure>
 
         <h3 id="sec-4-4">5.4 如何下载与分享结果</h3>
         <p>在结果页面通常可以看到：</p>
