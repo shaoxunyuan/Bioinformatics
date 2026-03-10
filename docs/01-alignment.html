@@ -62,8 +62,7 @@
 
     <main class="book-main">
       <article class="article">
-        <h1>01 · 使用 NCBI 在线 BLAST 进行序列比对</h1>
-        <p>本节将通过完整的图文步骤，带你从零开始使用 <strong>NCBI 在线 BLAST</strong> 对核酸和蛋白序列进行比对，包括：</p>
+        <h1>使用 NCBI 在线 BLAST 进行序列比对</h1>
         <ul>
           <li>如何进入 NCBI BLAST 网站、界面长什么样</li>
           <li>如何准备和粘贴示例序列</li>
@@ -109,7 +108,7 @@
                 <li><strong>Protein BLAST</strong>（蛋白 BLAST）</li>
                 <li><strong>BLAST Assembled Genomes</strong> 等高级入口</li>
               </ul>
-              我们本节主要用到 <strong>Nucleotide BLAST</strong> 和 <strong>Protein BLAST</strong> 两个入口。
+              本节主要使用 <strong>Nucleotide BLAST</strong> 和 <strong>Protein BLAST</strong> 两个入口。
             </div>
           </div>
         </div>
@@ -118,7 +117,7 @@
         </figure>
 
         <h2 id="sec-1">二、准备示例序列</h2>
-        <p>为了演示整个流程，我们先准备两条简短的示例序列，你可以直接复制使用。</p>
+        <p>为演示流程，先给出两条简短的示例序列，可直接复制使用。</p>
 
         <h3 id="sec-1-1">2.1 核酸序列示例（nt BLAST）</h3>
         <p>下面是一段来自人类线粒体基因组（COI 片段）的核酸序列，已用 <strong>FASTA 格式</strong> 标注好：</p>
@@ -150,9 +149,9 @@ YQLENYCN</code></pre>
           <li>访问 <code>https://blast.ncbi.nlm.nih.gov/</code></li>
           <li>在首页点击 <strong>Nucleotide BLAST</strong> 按钮，进入核酸 BLAST 页面。</li>
         </ol>
-        <p>进入后，你会看到几个主要区域：</p>
+        <p>进入页面后，可看到以下主要区域：</p>
         <ul>
-          <li><strong>Enter Query Sequence</strong>：粘贴或上传你的核酸序列</li>
+          <li><strong>Enter Query Sequence</strong>：粘贴或上传核酸序列</li>
           <li><strong>Choose Search Set</strong>：选择比对的数据库和物种范围</li>
           <li><strong>Program Selection</strong>：选择 BLAST 算法模式（Highly similar sequences / Somewhat similar sequences）</li>
           <li><strong>Algorithm parameters</strong>：展开的高级参数区（Word size、Match/Mismatch scores 等）</li>
@@ -170,7 +169,7 @@ YQLENYCN</code></pre>
           <li><strong>Database</strong> 建议初学者选择：<strong>nr/nt</strong>（Non-redundant nucleotide sequences）</li>
           <li><strong>Organism</strong>：
             <ul>
-              <li>如果你大致知道来自哪个物种，可输入例如 “Homo sapiens (taxid:9606)”</li>
+              <li>如果已大致了解来源物种，可输入例如 “Homo sapiens (taxid:9606)”</li>
               <li>如果完全未知，建议先留空，搜索所有物种</li>
             </ul>
           </li>
@@ -267,7 +266,7 @@ YQLENYCN</code></pre>
         <h3 id="sec-4-1">5.1 图形概览（Graphic Summary）</h3>
         <p>通常位于结果页面靠上的 “Graphic Summary” 区域，用彩色条带展示：</p>
         <ul>
-          <li>横轴：你的查询序列（Query），从 5' 到 3'（或 N 端到 C 端）</li>
+          <li>横轴：查询序列（Query），从 5' 到 3'（或 N 端到 C 端）</li>
           <li>每一条彩色横线：一个数据库匹配（Hit）的局部比对位置</li>
           <li>颜色深浅：代表得分高低（Score），颜色越深表示匹配质量越高</li>
         </ul>
@@ -298,7 +297,7 @@ YQLENYCN</code></pre>
         <h3 id="sec-4-3">5.3 比对详情（Alignments）</h3>
         <p>点击某一条 Hit，可以看到具体的序列比对：</p>
         <ul>
-          <li><strong>Query</strong>：你的查询序列</li>
+          <li><strong>Query</strong>：查询序列</li>
           <li><strong>Subject</strong>：数据库中的匹配序列</li>
           <li>中间一行的符号：
             <ul>
@@ -383,14 +382,14 @@ YQLENYCN</code></pre>
           </div>
         </div>
 
-        <p>通过本节的练习，你应该已经能够：</p>
+        <p>完成本节练习后，可：</p>
         <ul>
           <li>熟练打开 NCBI 在线 BLAST 平台，并选择合适的 BLAST 类型</li>
           <li>用 FASTA 格式准备并提交核酸/蛋白序列</li>
           <li>理解并调整常用参数（数据库、Organism、E-value、Program 等）</li>
           <li>读懂 BLAST 结果中的图形概览、匹配列表和比对详情</li>
         </ul>
-        <p>建议你在实际工作中多尝试不同的序列与参数组合，逐渐形成适合自己研究方向的 BLAST 使用习惯。</p>
+        <p>建议在实际工作中多尝试不同的序列与参数组合，逐渐形成适合研究方向的 BLAST 使用习惯。</p>
       </article>
       <div class="book-footer"><a href="../index.html">返回目录</a></div>
     </main>
