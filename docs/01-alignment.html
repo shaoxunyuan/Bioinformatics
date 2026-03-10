@@ -3,12 +3,692 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>生物信息学基础教程 - 序列比对（R语言）</title>
+  <title>极简作品集 · Alignment Studio</title>
   <link rel="stylesheet" href="css/01-alignment.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafafa;
+      --bg-elevated: #ffffff;
+      --border-subtle: #e2e2e2;
+      --border-strong: #d0d0d0;
+      --text-main: #111111;
+      --text-muted: #555555;
+      --text-soft: #888888;
+      --accent: #111111;
+      --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.04);
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+      --nav-height: 68px;
+      --max-width: 1080px;
+      --transition-fast: 160ms ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      line-height: 1.7;
+      letter-spacing: 0.02em;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .site-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: color-mix(in srgb, var(--bg) 88%, #ffffff 12%);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .site-header-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .brand-sub {
+      color: var(--text-soft);
+      font-weight: 500;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .nav a {
+      color: var(--text-soft);
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+      transition: color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .nav a:hover {
+      color: var(--text-main);
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .nav-cta {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-strong);
+      padding: 7px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.02);
+    }
+
+    .nav-cta span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #111;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+      gap: 64px;
+      padding: 42px 40px 40px;
+      border-radius: 24px;
+      border: 1px solid var(--border-subtle);
+      background: radial-gradient(circle at top left, #ffffff 0, #fafafa 46%, #f5f5f5 100%);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.04);
+      margin-bottom: 56px;
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--text-soft);
+      margin-bottom: 18px;
+    }
+
+    .hero-kicker::before {
+      content: "";
+      width: 32px;
+      height: 1px;
+      background: #c0c0c0;
+    }
+
+    .hero-title {
+      font-size: clamp(36px, 4.2vw, 46px);
+      line-height: 1.15;
+      letter-spacing: 0.02em;
+      margin: 0 0 20px;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 36rem;
+      margin: 0 0 26px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-size: 12px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      margin-bottom: 26px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .btn {
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 10px 22px;
+      border: 1px solid var(--border-strong);
+      background: transparent;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .btn-primary {
+      background: #111111;
+      color: #f5f5f5;
+      border-color: #111111;
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-ghost:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .hero-note {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .hero-aside {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      justify-content: space-between;
+    }
+
+    .hero-card {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.85);
+      padding: 18px 20px 20px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .hero-card-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-soft);
+    }
+
+    .hero-card-main {
+      font-size: 14px;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .badge {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      padding: 4px 10px;
+      font-size: 11px;
+      color: var(--text-soft);
+      background: rgba(250, 250, 250, 0.8);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--text-soft);
+    }
+
+    .section-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 360px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      position: relative;
+      padding: 18px 18px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-elevated);
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 150px;
+      transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        border-color var(--transition-fast),
+        background-color var(--transition-fast);
+    }
+
+    .project-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-soft);
+      border-color: var(--border-strong);
+      background-color: #ffffff;
+    }
+
+    .project-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .project-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .project-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-soft);
+      background: #fafafa;
+    }
+
+    .project-link {
+      margin-top: auto;
+      font-size: 12px;
+      color: var(--text-soft);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .project-link span.chevron {
+      font-size: 13px;
+      transform: translateY(0);
+      transition: transform var(--transition-fast);
+    }
+
+    .project-card:hover .project-link span.chevron {
+      transform: translateX(2px);
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin: 40px 0 0;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .meta-item-label {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 6px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 18px 24px 22px;
+      font-size: 11px;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: center;
+    }
+
+    footer span.dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #111;
+      display: inline-block;
+      margin: 0 8px;
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 30px 22px 26px;
+        gap: 32px;
+      }
+      .hero-aside {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .hero-card {
+        flex: 1 1 220px;
+      }
+      .projects-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .site-header-inner {
+        padding-inline: 18px;
+      }
+      .page {
+        padding-inline: 18px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .site-header-inner {
+        gap: 18px;
+      }
+      .nav {
+        gap: 14px;
+        font-size: 11px;
+        letter-spacing: 0.16em;
+      }
+      .page {
+        padding-top: 40px;
+      }
+      .hero-title {
+        font-size: 30px;
+      }
+      .hero {
+        padding-inline: 18px;
+      }
+      .projects-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .meta-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
 </head>
 <body>
 
-<main class="page">
+<div class="site-shell">
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <div class="brand-mark">YS</div>
+        <div>
+          <div>Alignment Studio</div>
+          <div class="brand-sub">Bioinformatics · Portfolio</div>
+        </div>
+      </div>
+      <nav class="nav" aria-label="主导航">
+        <a href="#work">Work</a>
+        <a href="#about">Profile</a>
+        <a href="#notes">Notes</a>
+        <a href="#contact" class="nav-cta">
+          <span class="dot"></span>
+          <span>Contact</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="page">
+      <section class="hero" id="top">
+        <div>
+          <div class="hero-kicker">留白即奢华 · 极简作品集</div>
+          <h1 class="hero-title">把复杂生物信息流程，整理成一目了然的作品集。</h1>
+          <p class="hero-subtitle">
+            这是一个以 <strong>极简主义</strong> 为核心的个人作品集界面模板，适合展示算法研究、可复现分析管线、以及教学型项目。
+            使用大量留白与精细排版，让真正重要的内容被看见。
+          </p>
+          <div class="hero-meta">
+            <span>Bioinformatics · R / Python</span>
+            <span>Reproducible Pipelines</span>
+            <span>Teaching Materials</span>
+          </div>
+          <div class="hero-actions">
+            <a href="#work" class="btn btn-primary">浏览作品</a>
+            <a href="#about" class="btn btn-ghost">关于作者</a>
+          </div>
+          <p class="hero-note">建议：将每个分析项目抽象成一张卡片，控制信息密度，让阅读像翻阅画册。</p>
+        </div>
+
+        <aside class="hero-aside">
+          <article class="hero-card">
+            <div class="hero-card-label">Current Focus</div>
+            <div class="hero-card-main">
+              <strong>序列比对 · Alignment</strong><br/>
+              从两两比对、MSA，到距离矩阵与系统发育树，将一整条分析路径收纳进一个极简界面。
+            </div>
+            <div class="hero-badges">
+              <span class="badge">Pairwise Alignment</span>
+              <span class="badge">MSA</span>
+              <span class="badge">Phylogenetics</span>
+            </div>
+          </article>
+          <article class="hero-card">
+            <div class="hero-card-label">Layout Notes</div>
+            <div class="hero-card-main">
+              使用 <em>generous whitespace</em>、1px 边框和轻微悬浮阴影，营造“画廊”般的阅读体验。
+              所有元素基于黑白灰，避免多余装饰。
+            </div>
+          </article>
+        </aside>
+      </section>
+
+      <section id="work" aria-label="作品列表">
+        <div class="section-header">
+          <h2 class="section-title">Selected Work</h2>
+          <p class="section-desc">
+            三个示例项目卡片，可替换为你的真实作品：每张卡片只保留一行标题、一行解释和若干关键词。
+          </p>
+        </div>
+
+        <div class="projects-grid">
+          <article class="project-card">
+            <div class="project-meta">
+              <span>01 · Alignment</span>
+              <span>R / Bioconductor</span>
+            </div>
+            <h3 class="project-title">全流程序列比对教学管线</h3>
+            <p class="project-desc">
+              从原始序列、两两比对，到 MSA 与 NJ 进化树的完整、可复现示例，面向初学者的教学友好版本。
+            </p>
+            <div class="project-tags">
+              <span class="tag">Biostrings</span>
+              <span class="tag">DECIPHER</span>
+              <span class="tag">msa</span>
+            </div>
+            <a href="#top" class="project-link">
+              <span>查看对齐专题</span>
+              <span class="chevron">↗</span>
+            </a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-meta">
+              <span>02 · Pipelines</span>
+              <span>Reproducible</span>
+            </div>
+            <h3 class="project-title">一键运行的分析脚本设计</h3>
+            <p class="project-desc">
+              将环境检测、包安装、结果导出封装为统一脚本，在教学场景中确保所有同学获得一致输出。
+            </p>
+            <div class="project-tags">
+              <span class="tag">Rscript</span>
+              <span class="tag">CLI</span>
+              <span class="tag">Teaching</span>
+            </div>
+            <a href="#work" class="project-link">
+              <span>预留为仓库链接</span>
+              <span class="chevron">↗</span>
+            </a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-meta">
+              <span>03 · Visuals</span>
+              <span>Figures First</span>
+            </div>
+            <h3 class="project-title">面向论文与课堂的图像输出</h3>
+            <p class="project-desc">
+              将距离热图、系统发育树等图像标准化输出到同一目录，方便写作与幻灯片快速引用。
+            </p>
+            <div class="project-tags">
+              <span class="tag">ggplot2</span>
+              <span class="tag">ape</span>
+              <span class="tag">phangorn</span>
+            </div>
+            <a href="#work" class="project-link">
+              <span>预留为图集链接</span>
+              <span class="chevron">↗</span>
+            </a>
+          </article>
+        </div>
+
+        <div class="meta-row">
+          <div>
+            <div class="meta-item-label">Reading Pace</div>
+            <div>3–5 项目为一屏最佳；每个项目用一句话讲清“为什么值得看”。</div>
+          </div>
+          <div>
+            <div class="meta-item-label">Visual Rhythm</div>
+            <div>避免大段文本；用留白和分栏创造节奏，而不是用色块和插画堆叠。</div>
+          </div>
+          <div>
+            <div class="meta-item-label">Content Strategy</div>
+            <div>可以按「研究 · 教学 · 工程」或「方法 · 数据 · 可视化」来分组作品。</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" style="margin-top:56px;">
+        <div class="section-header">
+          <h2 class="section-title">Profile</h2>
+          <p class="section-desc">
+            用两三段简短文字介绍你的背景与研究兴趣；保持行宽适中、行高充足，让阅读更像杂志专栏。
+          </p>
+        </div>
+      </section>
+
+      <section id="notes" style="margin-top:32px;">
+        <div class="section-header">
+          <h2 class="section-title">Notes</h2>
+          <p class="section-desc">
+            预留给随笔、实验记录或教学反思；可以把每条笔记也做成小卡片，与作品区保持同一视觉系统。
+          </p>
+        </div>
+      </section>
+
+      <section id="contact" style="margin-top:32px;">
+        <div class="section-header">
+          <h2 class="section-title">Contact</h2>
+          <p class="section-desc">
+            在此放置你的邮箱、学术主页或社交账号。保持信息精简，避免堆叠过多链接。
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      <span>Alignment Studio</span>
+      <span class="dot"></span>
+      <span>Minimal Portfolio Layout</span>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
   <header class="page-header">
     <div class="kicker">生物信息学基础教程</div>
     <h1>01 序列比对（R语言）</h1>
