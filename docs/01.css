@@ -286,6 +286,29 @@
   margin-top: 1em;
 }
 
+/* 正文中的图片区域 */
+.article .figure-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1.25em 0 1.5em;
+  align-items: flex-start;
+}
+
+.article .figure-row img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.article .figure-row figcaption {
+  margin-top: 0.5em;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
 /* 语法高亮与正文一致 */
 .book-main pre code.hljs {
   padding: 0;
