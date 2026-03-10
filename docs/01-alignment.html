@@ -193,6 +193,336 @@
     .def-term {
       font-weight: 600;
     }
+  </style>
+</head>
+<body>
+<main>
+  <header class="page-header">
+    <div class="kicker">生物信息学基础 · 序列比对</div>
+    <h1>01 · 在线 BLAST 实战（NCBI）</h1>
+    <p class="subtitle">
+      本页整理几篇常见教程（例如密码子学院的
+      <a href="https://college.mimazi.net/cms/article-223.html" target="_blank" rel="noreferrer">NCBI 在线比对教程</a>
+      以及一些博客文章），合并成一份面向初学者的 BLAST 使用笔记。
+    </p>
+  </header>
+
+  <nav class="toc" aria-label="页面导航">
+    <div class="toc-title">本页结构</div>
+    <ul>
+      <li><a href="#concept">0. BLAST 常用程序一览</a></li>
+      <li><a href="#example">1. 示例序列（DNA / 蛋白）</a></li>
+      <li><a href="#ncbi">2. 在 NCBI 上运行 BLAST</a></li>
+      <li><a href="#interpret">3. 结果解读要点</a></li>
+      <li><a href="#faq">4. 常见问题（FAQ）</a></li>
+    </ul>
+  </nav>
+
+  <section id="concept">
+    <h2>0. BLAST 常用程序一览</h2>
+    <p>
+      BLAST（Basic Local Alignment Search Tool）是一套在蛋白质或 DNA 数据库中进行相似性比较的工具，
+      使用局部比对算法在查询序列和数据库序列之间寻找高得分片段。
+      常见五种程序的差异可以简单记成 “谁查谁、在什么库里查”。
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>程序名</th>
+          <th>查询序列</th>
+          <th>数据库</th>
+          <th>搜索方式</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>blastn</code></td>
+          <td>核酸</td>
+          <td>核酸</td>
+          <td>库中每条核酸序列与查询核酸逐一一对一比对。</td>
+        </tr>
+        <tr>
+          <td><code>blastp</code></td>
+          <td>蛋白质</td>
+          <td>蛋白质</td>
+          <td>库中每条蛋白序列与查询蛋白逐一一对一比对。</td>
+        </tr>
+        <tr>
+          <td><code>blastx</code></td>
+          <td>核酸</td>
+          <td>蛋白质</td>
+          <td>先将核酸序列按 6 个阅读框翻译成蛋白，再与蛋白库逐一比对。</td>
+        </tr>
+        <tr>
+          <td><code>tblastn</code></td>
+          <td>蛋白质</td>
+          <td>核酸</td>
+          <td>将数据库中的核酸翻译成蛋白，与查询蛋白逐一比对。</td>
+        </tr>
+        <tr>
+          <td><code>tblastx</code></td>
+          <td>核酸</td>
+          <td>核酸</td>
+          <td>查询和数据库核酸都翻译成 6 条可能的蛋白序列，共产生 36 组蛋白–蛋白比对。</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="example">
+    <h2>1. 示例序列（DNA / 蛋白）</h2>
+    <p>下面给出两条 DNA 序列（用于 BLASTn）和一条蛋白序列（用于 BLASTp），格式均为 FASTA。</p>
+
+    <h3>DNA 示例 · 用于 BLASTn</h3>
+    <pre><code>&gt;demo_dna_1
+ATGGTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGAAGGTC
+TTCGACTACAAAGACGATGACGACAAG
+
+&gt;demo_dna_2
+ATGGTGCTGCTGATGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGAAGGTC
+TTCGACTATGAAGACGACGACGACAAG</code></pre>
+
+    <h3>蛋白示例 · 用于 BLASTp</h3>
+    <pre><code>&gt;demo_protein_1
+MKWVTFISLLFLFSSAYSRGVFRRDAHKSEVAHRFKDLGE</code></pre>
+  </section>
+
+  <section id="ncbi">
+    <h2>2. 在 NCBI 上运行 BLAST</h2>
+
+    <h3>2.1 访问 NCBI-BLAST 网站</h3>
+    <ol>
+      <li>在浏览器访问：<code>https://blast.ncbi.nlm.nih.gov/Blast.cgi</code>。</li>
+      <li>根据查询序列类型选择程序：
+        <ul>
+          <li>核酸：选择 <strong>nucleotide BLAST</strong>（BLASTn）。</li>
+          <li>蛋白：选择 <strong>protein BLAST</strong>（BLASTp）。</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>2.2 粘贴或上传查询序列</h3>
+    <ol>
+      <li>在 “Enter Query Sequence” 文本框中，粘贴上面的 <code>demo_dna_1</code> 或 <code>demo_protein_1</code>。</li>
+      <li>保持 FASTA 头（以 <code>&gt;</code> 开头的行）一并粘贴。</li>
+      <li>如果序列较长，也可以通过上传 FASTA 文件的方式导入。</li>
+    </ol>
+
+    <h3>2.3 选择数据库并调整参数</h3>
+    <p class="inline-label">Database</p>
+    <ul class="def-list">
+      <li><span class="def-term">nt</span>：通用核酸库，数据量大、命中多。</li>
+      <li><span class="def-term">蛋白库（如 nr、SwissProt 等）</span>：适用于蛋白序列或 blastx。</li>
+      <li><span class="def-term">特定物种库</span>：例如只查人、小鼠、水稻等，可减少无关 hits。</li>
+    </ul>
+
+    <h3>2.4 运行 BLAST</h3>
+    <ol>
+      <li>确认 query、数据库、程序类型设置无误。</li>
+      <li>点击页面底部的 <strong>BLAST</strong> 按钮。</li>
+      <li>等待队列运行完成后，浏览器会自动跳转到结果页面。</li>
+    </ol>
+  </section>
+</main>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>01 · 在线 BLAST 实战（NCBI）</title>
+  <link rel="stylesheet" href="css/01-alignment.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafafa;
+      --fg: #111111;
+      --fg-muted: #555555;
+      --border: #dddddd;
+      --border-soft: #eeeeee;
+      --code-bg: #f5f5f5;
+      --max-width: 900px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+    }
+
+    main {
+      width: 100%;
+      max-width: var(--max-width);
+      padding: 40px 20px 80px;
+    }
+
+    header.page-header {
+      margin-bottom: 32px;
+    }
+
+    .kicker {
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin: 0 0 8px;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 14px;
+      color: var(--fg-muted);
+    }
+
+    nav.toc {
+      margin: 28px 0 40px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      background: #ffffff;
+      font-size: 14px;
+    }
+
+    .toc-title {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    nav.toc ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    nav.toc li {
+      margin: 2px 0;
+    }
+
+    nav.toc a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    nav.toc a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      margin: 40px 0;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin: 0 0 8px;
+    }
+
+    h3 {
+      font-size: 16px;
+      margin: 22px 0 6px;
+    }
+
+    p {
+      margin: 8px 0;
+      font-size: 14px;
+    }
+
+    ul, ol {
+      font-size: 14px;
+      margin: 6px 0 12px;
+      padding-left: 22px;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      background: var(--code-bg);
+      padding: 1px 3px;
+      border-radius: 3px;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 10px 0 14px;
+      width: 100%;
+      font-size: 13px;
+    }
+
+    th, td {
+      border: 1px solid var(--border-soft);
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    th {
+      background: #ffffff;
+    }
+
+    pre {
+      margin: 10px 0 14px;
+      padding: 10px 12px;
+      background: var(--code-bg);
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      overflow-x: auto;
+      font-size: 12px;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .note {
+      margin: 12px 0;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      background: #ffffff;
+      font-size: 13px;
+      color: var(--fg-muted);
+    }
+
+    .inline-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--fg-muted);
+    }
+
+    .def-list {
+      margin: 8px 0 4px;
+      padding-left: 0;
+      list-style: none;
+      font-size: 14px;
+    }
+
+    .def-list li {
+      margin: 4px 0;
+    }
+
+    .def-term {
+      font-weight: 600;
+    }
 
     hr {
       border: none;
