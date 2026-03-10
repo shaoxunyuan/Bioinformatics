@@ -1,0 +1,322 @@
+/* 01-alignment 页专用：目录样式、正文段落、卡片、复制按钮等 */
+
+.book-shell {
+  grid-template-columns: 340px 1fr;
+}
+
+.toc-scroll {
+  padding: 12px 18px;
+  overflow: visible;
+  max-height: none;
+}
+
+.toc__title {
+  font-weight: 700;
+  color: var(--ink);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0 10px;
+  margin: 0 0 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.toc a {
+  color: var(--ink);
+  text-decoration: none !important;
+}
+
+.toc a:hover {
+  color: var(--accent-hover);
+}
+
+.toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc .lv1 {
+  display: block;
+  padding: 6px 0 4px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.toc.book-nav > li + li {
+  margin-top: 4px;
+}
+
+.toc .lv1 .n {
+  color: var(--accent);
+  font-weight: 900;
+  min-width: 18px;
+}
+
+.toc .lv2 {
+  margin: 4px 0 12px 12px;
+  padding-left: 12px;
+  border-left: 2px solid rgba(231, 229, 228, 0.95);
+  display: grid;
+  gap: 2px;
+}
+
+.toc .lv2 a {
+  display: flex;
+  gap: 8px;
+  padding: 5px 0;
+  color: var(--ink-light);
+  font-size: 12px;
+  border-radius: 0;
+}
+
+.toc .lv2 .n {
+  color: var(--ink-muted);
+  font-weight: 800;
+  min-width: 26px;
+}
+
+.toc .lv2-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.toc .lv2-group > a {
+  display: flex;
+  gap: 8px;
+  padding: 5px 0;
+  color: var(--ink-light);
+  font-size: 12px;
+  border-radius: 0;
+}
+
+.toc .lv2-group .n {
+  color: var(--ink-muted);
+  font-weight: 800;
+  min-width: 26px;
+}
+
+.toc .lv2-group .lv3 {
+  margin: 0 0 4px 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 1px;
+  border-left: 1px solid rgba(231, 229, 228, 0.7);
+}
+
+.toc .lv2-group .lv3 a {
+  display: block;
+  padding: 2px 0;
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.toc .lv2-group .lv3 a:hover {
+  color: var(--accent-hover);
+}
+
+.toc a.is-active {
+  color: var(--accent-hover);
+  font-weight: 700;
+}
+
+.toc .lv2 a.is-active,
+.toc .lv2-group > a.is-active {
+  position: relative;
+}
+
+.toc .lv2 a.is-active::before,
+.toc .lv2-group > a.is-active::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 6px;
+  width: 2px;
+  height: calc(100% - 12px);
+  background: var(--accent);
+  border-radius: 1px;
+}
+
+/* 正文区：段落与标题留白 */
+.article {
+  padding: 0;
+}
+
+.article p {
+  margin-bottom: 1.1em;
+  line-height: 1.75;
+}
+
+.article p + ul,
+.article p + .cols {
+  margin-top: 1em;
+}
+
+.article ul + p,
+.article ul + h3,
+.article .cols + p {
+  margin-top: 1.25em;
+}
+
+.article h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.35rem;
+}
+
+.article h2:first-of-type {
+  margin-top: 0;
+}
+
+.article h3 {
+  margin-top: 1.6rem;
+  margin-bottom: 0.65rem;
+}
+
+.article h4 {
+  margin: 1.2rem 0 0.5rem;
+  font-size: 1em;
+}
+
+.article ul {
+  margin: 1em 0 1.25em;
+  padding-left: 1.4em;
+}
+
+.article ul > li {
+  margin-bottom: 1.3em;
+  line-height: 1.9;
+}
+
+.article ul > li:last-child {
+  margin-bottom: 0;
+}
+
+.article ul ul {
+  margin: 0.6em 0 0.4em;
+  padding-left: 1.2em;
+}
+
+.article ul ul li {
+  margin-bottom: 0.4em;
+}
+
+.article ul ul li:last-child {
+  margin-bottom: 0;
+}
+
+/* 卡片网格 */
+.cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 1.25em 0;
+}
+
+.card {
+  border: 1px solid rgba(231, 229, 228, 0.9);
+  background: rgba(255, 255, 255, 0.86);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.card .t {
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+.card .d {
+  color: var(--ink-light);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.card .d ul {
+  margin: 0.5em 0 0;
+  padding-left: 1.2em;
+}
+
+.card .d li {
+  margin-bottom: 0.35em;
+}
+
+.card .d li:last-child {
+  margin-bottom: 0;
+}
+
+.card .d pre {
+  margin: 8px 0 0;
+}
+
+/* 代码块复制按钮 */
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.copy-btn:hover {
+  background: #f7f7f7;
+}
+
+.copy-btn[data-state="ok"] {
+  border-color: rgba(13, 148, 136, 0.35);
+  color: var(--accent-hover);
+}
+
+.article pre {
+  margin: 1.25em 0 1.5em;
+}
+
+.article p + pre {
+  margin-top: 1em;
+}
+
+/* 语法高亮与正文一致 */
+.book-main pre code.hljs {
+  padding: 0;
+  background: transparent;
+}
+
+.book-main .hljs-keyword,
+.book-main .hljs-selector-tag,
+.book-main .hljs-addition {
+  color: var(--accent-hover);
+  font-weight: 600;
+}
+
+.book-main .hljs-string,
+.book-main .hljs-attr {
+  color: #0d6e66;
+}
+
+.book-main .hljs-comment {
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+@media (max-width: 980px) {
+  .book-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .cols {
+    grid-template-columns: 1fr;
+  }
+}
