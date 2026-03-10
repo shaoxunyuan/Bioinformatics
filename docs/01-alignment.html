@@ -7,6 +7,916 @@
   <link rel="stylesheet" href="css/01-alignment.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafafa;
+      --fg: #111111;
+      --fg-muted: #555555;
+      --border: #dddddd;
+      --border-soft: #eeeeee;
+      --code-bg: #f5f5f5;
+      --max-width: 900px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+    }
+
+    main {
+      width: 100%;
+      max-width: var(--max-width);
+      padding: 40px 20px 80px;
+    }
+
+    header.page-header {
+      margin-bottom: 32px;
+    }
+
+    .kicker {
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin: 0 0 8px;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 14px;
+      color: var(--fg-muted);
+    }
+
+    nav.toc {
+      margin: 28px 0 40px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      background: #ffffff;
+      font-size: 14px;
+    }
+
+    .toc-title {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    nav.toc ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    nav.toc li {
+      margin: 2px 0;
+    }
+
+    nav.toc a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    nav.toc a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      margin: 40px 0;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin: 0 0 8px;
+    }
+
+    h3 {
+      font-size: 16px;
+      margin: 22px 0 6px;
+    }
+
+    p {
+      margin: 8px 0;
+      font-size: 14px;
+    }
+
+    ul, ol {
+      font-size: 14px;
+      margin: 6px 0 12px;
+      padding-left: 22px;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      background: var(--code-bg);
+      padding: 1px 3px;
+      border-radius: 3px;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 10px 0 14px;
+      width: 100%;
+      font-size: 13px;
+    }
+
+    th, td {
+      border: 1px solid var(--border-soft);
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    th {
+      background: #ffffff;
+    }
+
+    pre {
+      margin: 10px 0 14px;
+      padding: 10px 12px;
+      background: var(--code-bg);
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      overflow-x: auto;
+      font-size: 12px;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .note {
+      margin: 12px 0;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      background: #ffffff;
+      font-size: 13px;
+      color: var(--fg-muted);
+    }
+
+    .inline-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--fg-muted);
+    }
+
+    .def-list {
+      margin: 8px 0 4px;
+      padding-left: 0;
+      list-style: none;
+      font-size: 14px;
+    }
+
+    .def-list li {
+      margin: 4px 0;
+    }
+
+    .def-term {
+      font-weight: 600;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+
+    @media (max-width: 600px) {
+      main { padding-inline: 16px; }
+      table { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header class="page-header">
+    <div class="kicker">生物信息学基础 · 序列比对</div>
+    <h1>01 · 在线 BLAST 实战（NCBI / CNGB）</h1>
+    <p class="subtitle">
+      本页整理几篇常见教程（例如密码子学院的
+      <a href="https://college.mimazi.net/cms/article-223.html" target="_blank" rel="noreferrer">NCBI 在线比对教程</a>
+      以及一些博客文章），合并成一份面向初学者的 BLAST 使用笔记。
+    </p>
+  </header>
+
+  <nav class="toc" aria-label="页面导航">
+    <div class="toc-title">本页结构</div>
+    <ul>
+      <li><a href="#concept">0. BLAST 常用程序一览</a></li>
+      <li><a href="#example">1. 示例序列（DNA / 蛋白）</a></li>
+      <li><a href="#ncbi">2. 在 NCBI 上运行 BLAST</a></li>
+      <li><a href="#cngb">3. 在 CNGB 上运行 BLAST</a></li>
+      <li><a href="#interpret">4. 结果解读要点</a></li>
+      <li><a href="#faq">5. 常见问题（FAQ）</a></li>
+    </ul>
+  </nav>
+
+  <section id="concept">
+    <h2>0. BLAST 常用程序一览</h2>
+    <p>
+      BLAST（Basic Local Alignment Search Tool）是一套在蛋白质或 DNA 数据库中进行相似性比较的工具，
+      使用局部比对算法在查询序列和数据库序列之间寻找高得分片段。
+      常见五种程序的差异可以简单记成 “谁查谁、在什么库里查”。
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>程序名</th>
+          <th>查询序列</th>
+          <th>数据库</th>
+          <th>搜索方式</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>blastn</code></td>
+          <td>核酸</td>
+          <td>核酸</td>
+          <td>库中每条核酸序列与查询核酸逐一一对一比对。</td>
+        </tr>
+        <tr>
+          <td><code>blastp</code></td>
+          <td>蛋白质</td>
+          <td>蛋白质</td>
+          <td>库中每条蛋白序列与查询蛋白逐一一对一比对。</td>
+        </tr>
+        <tr>
+          <td><code>blastx</code></td>
+          <td>核酸</td>
+          <td>蛋白质</td>
+          <td>先将核酸序列按 6 个阅读框翻译成蛋白，再与蛋白库逐一比对。</td>
+        </tr>
+        <tr>
+          <td><code>tblastn</code></td>
+          <td>蛋白质</td>
+          <td>核酸</td>
+          <td>将数据库中的核酸翻译成蛋白，与查询蛋白逐一比对。</td>
+        </tr>
+        <tr>
+          <td><code>tblastx</code></td>
+          <td>核酸</td>
+          <td>核酸</td>
+          <td>查询和数据库核酸都翻译成 6 条可能的蛋白序列，共产生 36 组蛋白–蛋白比对。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      在本页中，主要使用 <code>blastn</code>（DNA 序列对核酸库）和 <code>blastp</code>（蛋白序列对蛋白库）作为示例。
+      其它几种程序的界面类似，只是输入和数据库类型不同。
+    </div>
+  </section>
+
+  <section id="example">
+    <h2>1. 示例序列（DNA / 蛋白）</h2>
+    <p>下面给出两条 DNA 序列（用于 BLASTn）和一条蛋白序列（用于 BLASTp），格式均为 FASTA。</p>
+
+    <h3>DNA 示例 · 用于 BLASTn</h3>
+    <pre><code>&gt;demo_dna_1
+ATGGTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGAAGGTC
+TTCGACTACAAAGACGATGACGACAAG
+
+&gt;demo_dna_2
+ATGGTGCTGCTGATGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGAAGGTC
+TTCGACTATGAAGACGACGACGACAAG</code></pre>
+
+    <h3>蛋白示例 · 用于 BLASTp</h3>
+    <pre><code>&gt;demo_protein_1
+MKWVTFISLLFLFSSAYSRGVFRRDAHKSEVAHRFKDLGE</code></pre>
+
+    <div class="note">
+      这些示例序列长度较短，适合课堂或自学演示。在真实分析中，query 序列通常来自测序结果、组装产物，
+      或参考基因组上的特定片段。
+    </div>
+  </section>
+
+  <section id="ncbi">
+    <h2>2. 在 NCBI 上运行 BLAST</h2>
+
+    <h3>2.1 访问 NCBI-BLAST 网站</h3>
+    <ol>
+      <li>在浏览器访问：<code>https://blast.ncbi.nlm.nih.gov/Blast.cgi</code>。</li>
+      <li>根据查询序列类型选择程序：
+        <ul>
+          <li>核酸：选择 <strong>nucleotide BLAST</strong>（BLASTn）。</li>
+          <li>蛋白：选择 <strong>protein BLAST</strong>（BLASTp）。</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>2.2 粘贴或上传查询序列</h3>
+    <ol>
+      <li>在 “Enter Query Sequence” 文本框中，粘贴上面的 <code>demo_dna_1</code> 或 <code>demo_protein_1</code>。</li>
+      <li>保持 FASTA 头（以 <code>&gt;</code> 开头的行）一并粘贴。</li>
+      <li>如果序列较长，也可以通过上传 FASTA 文件的方式导入。</li>
+    </ol>
+
+    <h3>2.3 选择数据库并调整参数</h3>
+    <p class="inline-label">Database</p>
+    <ul class="def-list">
+      <li><span class="def-term">nt</span>：通用核酸库，数据量大、命中多。</li>
+      <li><span class="def-term">蛋白库（如 nr、SwissProt 等）</span>：适用于蛋白序列或 blastx。</li>
+      <li><span class="def-term">特定物种库</span>：例如只查人、小鼠、水稻等，可减少无关 hits。</li>
+    </ul>
+
+    <p class="inline-label">Program Selection（以 BLASTn 为例）</p>
+    <ul class="def-list">
+      <li><span class="def-term">megablast</span>：默认选项，适合寻找高度相似序列。</li>
+      <li><span class="def-term">discontiguous megablast</span>：更适合较远同源的检索。</li>
+    </ul>
+
+    <p class="inline-label">常用阈值</p>
+    <ul>
+      <li><strong>Expect threshold（E-value）</strong>：默认值通常足够；需要更严格时可调小。</li>
+      <li><strong>Max target sequences</strong>：限制返回 hits 数量，例如 50 或 100。</li>
+    </ul>
+
+    <h3>2.4 运行 BLAST</h3>
+    <ol>
+      <li>确认 query、数据库、程序类型设置无误。</li>
+      <li>点击页面底部的 <strong>BLAST</strong> 按钮。</li>
+      <li>等待队列运行完成后，浏览器会自动跳转到结果页面。</li>
+    </ol>
+
+    <h3>2.5 结果页面结构</h3>
+    <p>结合密码子学院教程的说明，NCBI 结果大致分为三块：</p>
+    <ul>
+      <li><strong>Graphic Summary</strong>：用条形图表示不同 hits 在 query 上的比对位置与覆盖度。</li>
+      <li><strong>Descriptions</strong>：hits 表格（也常被称为 “描述区域”）。</li>
+      <li><strong>Alignments</strong>：每条命中的详细比对结果。</li>
+    </ul>
+
+    <h3>2.6 Descriptions 表中几个关键列</h3>
+    <ul class="def-list">
+      <li><span class="def-term">Score</span>：比对得分，越大说明比对越好。</li>
+      <li><span class="def-term">E-value</span>：期望值。越小表示随机匹配的可能性越低，结果越可信。</li>
+      <li><span class="def-term">Query cover</span>：命中覆盖了 query 的多少百分比。</li>
+      <li><span class="def-term">Identities（Ident）</span>：相同碱基/氨基酸的百分比。</li>
+      <li><span class="def-term">Gaps</span>：插入/缺失的位置和数量，用 <code>-</code> 表示。</li>
+    </ul>
+
+    <div class="note">
+      如优保生物的图文教程所强调：评价一个 BLAST 结果时，通常会同时看
+      <strong>E-value、Identities、Gaps 和比对长度</strong> 四个方面，而不是只看其中一个数值。
+      （参考：<a href="http://www.youbio.cn/kb/10013" target="_blank" rel="noreferrer">NCBI 在线 Blast 的图文说明</a>）
+    </div>
+
+    <h3>2.7 Alignments 区示意</h3>
+    <p>详细比对结果中，常见的三行结构类似：</p>
+    <pre><code>Query  1   ATGGTGCTGCTGCTGCTGC---TGCTGCTGCTGCTGCTGCTG  45
+             ||||||||||||||||||   |||||||||||||||||
+Sbjct 10  ATGGTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTG  54</code></pre>
+    <ul>
+      <li><strong>Query / Sbjct</strong>：各自的起始、终止位置以及对应碱基/氨基酸。</li>
+      <li>中间一行的 <code>|</code> 标记出完全匹配的位置。</li>
+      <li><code>-</code> 为插入/缺失（Gaps）。</li>
+    </ul>
+  </section>
+
+  <section id="cngb">
+    <h2>3. 在 CNGB 上运行 BLAST</h2>
+
+    <p>CNGB（国家基因库）提供的 BLAST 工具界面和 NCBI 思路类似：选择程序 → 选择数据库 → 输入 query → 设置参数 → 运行。</p>
+
+    <h3>3.1 入口与登录</h3>
+    <ol>
+      <li>访问 CNGB 主站，根据实际账户情况登录。</li>
+      <li>在 “Tools / 工具” 或 “Sequence Analysis / 序列分析” 等模块下找到 BLAST 工具入口。</li>
+    </ol>
+
+    <h3>3.2 选择程序和数据库</h3>
+    <ul>
+      <li>按查询序列类型选择 <code>BLASTn</code>、<code>BLASTp</code> 等程序。</li>
+      <li>在数据库列表中选择与你项目相关的数据库，例如某个物种基因组、宏基因组项目或特定资源库。</li>
+    </ul>
+
+    <h3>3.3 输入序列并运行</h3>
+    <ol>
+      <li>粘贴 <code>demo_dna_1</code> 或 <code>demo_protein_1</code> 到 query 输入框，保持 FASTA 格式。</li>
+      <li>按界面提示设置 E-value、最大返回条数等参数，一般可以先用默认值。</li>
+      <li>提交任务，等待结果列表与比对详情生成。</li>
+    </ol>
+
+    <div class="note">
+      如果研究数据本身来自 CNGB 项目，或者目标序列主要集中在某个 CNGB 数据库中，
+      优先在 CNGB 上进行 BLAST 通常更有针对性；阅读结果时的指标含义与 NCBI BLAST 完全一致。
+    </div>
+  </section>
+
+  <section id="interpret">
+    <h2>4. 结果解读要点</h2>
+
+    <p>综合几篇教程的观点，可以用下面几个问题来检查一次 BLAST 结果：</p>
+
+    <ul class="def-list">
+      <li>
+        <span class="def-term">1）覆盖度是否足够？（Query cover）</span><br>
+        仅有一小段对上，很可能只是局部相似，未必能直接推断整体同源。
+      </li>
+      <li>
+        <span class="def-term">2）一致性是否合理？（Identities）</span><br>
+        对于近缘物种的同源基因，常见 identity &gt; 90%；更远的同源可以在 70–90% 左右。
+      </li>
+      <li>
+        <span class="def-term">3）E-value 是否足够小？</span><br>
+        E-value 表示随机匹配的可能性。E 越大，越可能是随机；趋近于 0 时通常认为高度可信。
+      </li>
+      <li>
+        <span class="def-term">4）Gaps 和 mismatch 分布在哪里？</span><br>
+        判断变异是否集中在某些特定区域（如可变环、低复杂度区域等），以及是否影响功能区段。
+      </li>
+    </ul>
+
+    <h3>一个简单练习</h3>
+    <ol>
+      <li>用 <code>demo_dna_1</code> 在 NCBI 上运行 BLASTn，记录 top hit 的 E-value、Identities、Query cover、Gaps。</li>
+      <li>改用 <code>demo_dna_2</code> 做同样操作，比对两次结果。</li>
+      <li>观察少量碱基差异对这些指标的影响，特别是 E-value 和 Identities 的变化。</li>
+    </ol>
+  </section>
+
+  <section id="faq">
+    <h2>5. 常见问题（FAQ）</h2>
+
+    <h3>5.1 完全没有 hits？</h3>
+    <ul>
+      <li>检查是否选错了程序或数据库（例如用蛋白程序查核酸库）。</li>
+      <li>确认 query 长度、碱基组成是否合理，是否包含大量 N 或非法字符。</li>
+      <li>适当放宽 E-value 阈值，或增加最大返回序列数。</li>
+    </ul>
+
+    <h3>5.2 hits 很多但描述看不懂？</h3>
+    <ul>
+      <li>按照 E-value 从小到大、Score 从大到小排序，先看前几条。</li>
+      <li>优先关注描述中带有具体基因/蛋白名称的条目。</li>
+      <li>如果大量条目都是 “hypothetical protein”，说明该区域功能注释有限。</li>
+    </ul>
+
+    <h3>5.3 NCBI 和 CNGB 结果不同？</h3>
+    <ul>
+      <li>两者使用的数据库不同，自然会得到不同的 hits。</li>
+      <li>同一序列在不同版本数据库中的注释也可能不完全相同。</li>
+      <li>做对比时，建议记录：网站名称、数据库名、版本（若有）、运行日期。</li>
+    </ul>
+
+    <h3>5.4 在报告或作业中如何描述 BLAST 分析？</h3>
+    <ul>
+      <li>写清楚使用的网站（NCBI / CNGB）、程序类型（blastn / blastp / …）和数据库。</li>
+      <li>列出 top hit 的 accession、物种名、identity、coverage 和 E-value。</li>
+      <li>必要时附上一段 alignment 截图或文本，并标注关键变异位点。</li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>01 · 在线 BLAST 实战（NCBI / CNGB）</title>
+  <link rel="stylesheet" href="css/01-alignment.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafafa;
+      --fg: #111111;
+      --fg-muted: #555555;
+      --border: #dddddd;
+      --border-soft: #eeeeee;
+      --code-bg: #f3f3f3;
+      --max-width: 900px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+    }
+
+    main {
+      width: 100%;
+      max-width: var(--max-width);
+      padding: 40px 20px 80px;
+    }
+
+    header.page-header {
+      margin-bottom: 32px;
+    }
+
+    .kicker {
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 0 0 8px;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 14px;
+      color: var(--fg-muted);
+    }
+
+    nav.toc {
+      margin: 28px 0 40px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border-soft);
+      background: #ffffff;
+      font-size: 14px;
+    }
+
+    nav.toc-title {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    nav.toc ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    nav.toc li {
+      margin: 2px 0;
+    }
+
+    nav.toc a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    nav.toc a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      margin: 40px 0;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin: 0 0 8px;
+    }
+
+    h3 {
+      font-size: 16px;
+      margin: 24px 0 6px;
+    }
+
+    p {
+      margin: 8px 0;
+      font-size: 14px;
+    }
+
+    ul, ol {
+      font-size: 14px;
+      margin: 6px 0 12px;
+      padding-left: 22px;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      background: var(--code-bg);
+      padding: 1px 3px;
+      border-radius: 4px;
+    }
+
+    pre {
+      margin: 10px 0 14px;
+      padding: 10px 12px;
+      background: var(--code-bg);
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      overflow-x: auto;
+      font-size: 12px;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .note {
+      margin: 12px 0;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      background: #ffffff;
+      font-size: 13px;
+      color: var(--fg-muted);
+    }
+
+    .inline-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--fg-muted);
+    }
+
+    .def-list {
+      margin: 8px 0 4px;
+      padding-left: 0;
+      list-style: none;
+      font-size: 14px;
+    }
+
+    .def-list li {
+      margin: 4px 0;
+    }
+
+    .def-term {
+      font-weight: 600;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding-inline: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header class="page-header">
+    <div class="kicker">生物信息学基础 · 序列比对</div>
+    <h1>01 · 在线 BLAST 实战（NCBI / CNGB）</h1>
+    <p class="subtitle">
+      本页记录如何用 <strong>浏览器</strong> 调用 NCBI / CNGB 提供的 BLAST 服务，从粘贴示例序列，到阅读 hits 表和比对详情。
+    </p>
+  </header>
+
+  <nav class="toc" aria-label="页面导航">
+    <div class="toc-title">本页结构</div>
+    <ul>
+      <li><a href="#example">示例序列（DNA / 蛋白）</a></li>
+      <li><a href="#ncbi">一、在 NCBI 上运行 BLAST</a></li>
+      <li><a href="#cngb">二、在 CNGB 上运行 BLAST</a></li>
+      <li><a href="#interpret">三、结果解读要点</a></li>
+      <li><a href="#faq">四、常见问题（FAQ）</a></li>
+    </ul>
+  </nav>
+
+  <section id="example">
+    <h2>示例序列（建议直接复制使用）</h2>
+    <p>下面给出两条 DNA 序列（用于 BLASTn）和一条蛋白序列（用于 BLASTp）。格式均为 FASTA。</p>
+
+    <h3>DNA 示例 · 用于 BLASTn</h3>
+    <pre><code>&gt;demo_dna_1
+ATGGTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGAAGGTC
+TTCGACTACAAAGACGATGACGACAAG
+
+&gt;demo_dna_2
+ATGGTGCTGCTGATGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGAAGGTC
+TTCGACTATGAAGACGACGACGACAAG</code></pre>
+
+    <h3>蛋白示例 · 用于 BLASTp</h3>
+    <pre><code>&gt;demo_protein_1
+MKWVTFISLLFLFSSAYSRGVFRRDAHKSEVAHRFKDLGE</code></pre>
+
+    <div class="note">
+      这些序列长度较短，便于课堂演示和截图；在真实项目中，query 通常来自测序结果、组装产物或参考基因组上的特定片段。
+    </div>
+  </section>
+
+  <section id="ncbi">
+    <h2>一、在 NCBI 上运行 BLAST</h2>
+
+    <h3>1. 打开 NCBI BLAST 页面</h3>
+    <ol>
+      <li>在浏览器地址栏输入：<code>https://blast.ncbi.nlm.nih.gov/Blast.cgi</code>。</li>
+      <li>根据序列类型选择程序：
+        <ul>
+          <li>DNA：点击 <strong>nucleotide BLAST</strong>（BLASTn）。</li>
+          <li>蛋白：点击 <strong>protein BLAST</strong>（BLASTp）。</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>2. 输入查询序列（Query）</h3>
+    <ol>
+      <li>在 “Enter Query Sequence” 文本框中，粘贴上面的 <code>demo_dna_1</code> 或 <code>demo_protein_1</code>。</li>
+      <li>保持 FASTA 头（以 <code>&gt;</code> 开头的那一行）一并粘贴。</li>
+      <li>确认序列中没有多余空格、中文符号或其它杂字符。</li>
+    </ol>
+
+    <h3>3. 选择数据库与程序选项</h3>
+    <p class="inline-label">Database</p>
+    <ul class="def-list">
+      <li><span class="def-term">nt</span>：NCBI 综合核酸数据库，命中多但速度相对慢。</li>
+      <li><span class="def-term">RefSeq Genome / 特定物种库</span>：更小、更专一，适合已知物种的精确比对。</li>
+    </ul>
+
+    <p class="inline-label">Program Selection（以 BLASTn 为例）</p>
+    <ul class="def-list">
+      <li><span class="def-term">megablast</span>：默认，适合寻找高度相似序列。</li>
+      <li><span class="def-term">discontiguous megablast</span>：可以找到更远的同源，但速度更慢。</li>
+    </ul>
+
+    <p class="inline-label">其他常用参数</p>
+    <ul>
+      <li><strong>Expect threshold（E-value 阈值）</strong>：初学可以使用默认值（例如 10），后续可视需要调小。</li>
+      <li><strong>Max target sequences</strong>：建议设置为 50–100，避免结果表过长。</li>
+    </ul>
+
+    <h3>4. 运行 BLAST 并等待结果</h3>
+    <ol>
+      <li>检查 query、数据库和程序选项是否合理。</li>
+      <li>点击页面底部的 <strong>BLAST</strong> 按钮。</li>
+      <li>根据队列情况，几秒到几分钟后会跳转到结果页面。</li>
+    </ol>
+
+    <h3>5. 结果页面的三块内容</h3>
+    <p>NCBI 结果页可以粗略分为三部分：</p>
+    <ul>
+      <li><strong>Graphic Summary</strong>：用条形图显示各个命中的覆盖位置。</li>
+      <li><strong>Descriptions</strong>：hits 表格，每一行是一个命中序列。</li>
+      <li><strong>Alignments</strong>：具体的序列比对细节。</li>
+    </ul>
+
+    <h3>6. 以 Descriptions 表为例</h3>
+    <p>常见列含义如下：</p>
+    <ul class="def-list">
+      <li><span class="def-term">Score</span>：比对得分，越高越好。</li>
+      <li><span class="def-term">E-value</span>：期望值，越小越显著，通常 <code>1e-3</code> 以下认为比较可靠。</li>
+      <li><span class="def-term">Query cover</span>：命中覆盖 query 的比例，过低时需要小心解读。</li>
+      <li><span class="def-term">Ident</span>（percent identity）：相同碱基/氨基酸的百分比。</li>
+    </ul>
+
+    <div class="note">
+      一般会选择 “高 coverage + 高 identity + 低 E-value” 的几条 hits，进入 <strong>Alignments</strong> 区查看具体比对。
+    </div>
+
+    <h3>7. Alignments 区示意</h3>
+    <p>Alignments 中典型的一段类似：</p>
+    <pre><code>Query  1   ATGGTGCTGCTGCTGCTGC---TGCTGCTGCTGCTGCTGCTG  45
+             ||||||||||||||||||   |||||||||||||||||
+Sbjct 10  ATGGTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTG  54</code></pre>
+    <ul>
+      <li>第一行 <strong>Query</strong>：查询序列片段及其在 query 中的位置。</li>
+      <li>中间一行：<code>|</code> 表示完全一致，空格或其它符号表示 mismatch。</li>
+      <li>第三行 <strong>Sbjct</strong>：数据库中命中序列的对应片段及其在 subject 中的位置。</li>
+      <li><code>-</code> 表示插入/缺失（indel）。</li>
+    </ul>
+  </section>
+
+  <section id="cngb">
+    <h2>二、在 CNGB 上运行 BLAST</h2>
+
+    <p>CNGB（国家基因库）也提供 BLAST 服务，界面风格可能随版本更新略有不同，但基本要素类似：选择程序、选择数据库、粘贴 query、设置阈值、运行。</p>
+
+    <h3>1. 进入 CNGB BLAST 工具</h3>
+    <ol>
+      <li>访问 CNGB 官网，登录个人账号（部分工具和数据库需要登录）。</li>
+      <li>在 “Tools / 工具” 或 “Sequence Analysis / 序列分析” 模块下找到 <strong>BLAST</strong> 入口。</li>
+    </ol>
+
+    <h3>2. 选择程序和本地数据库</h3>
+    <ul>
+      <li>根据 query 类型选择 <strong>BLASTn / BLASTp</strong> 等程序。</li>
+      <li>从 CNGB 提供的数据库中选择合适的数据集（例如：某个宏基因组项目、特定物种基因组等）。</li>
+    </ul>
+
+    <h3>3. 粘贴序列并设置参数</h3>
+    <ol>
+      <li>在 query 输入框中粘贴 <code>demo_dna_1</code> 或 <code>demo_protein_1</code>。</li>
+      <li>确认输入格式为 FASTA，序列中无非法字符。</li>
+      <li>根据界面提示设置 E-value 阈值、最大返回条数等参数，一般先用默认值即可。</li>
+    </ol>
+
+    <h3>4. 运行与结果阅读</h3>
+    <p>运行完成后，CNGB 通常也会给出：</p>
+    <ul>
+      <li>命中列表：包含 identity、coverage、E-value 等字段。</li>
+      <li>每条 hit 的 alignment 详情，可以下载或导出。</li>
+    </ul>
+    <p>阅读方式与 NCBI BLAST 基本一致：先看 hits 表筛选，再进入对应的比对详情。</p>
+
+    <div class="note">
+      如果你的数据本身存储在 CNGB，或者目标数据库由项目方托管在 CNGB，那么在 CNGB 上跑 BLAST 往往比 NCBI 更有针对性。
+    </div>
+  </section>
+
+  <section id="interpret">
+    <h2>三、结果解读要点</h2>
+
+    <p>不论是在 NCBI 还是 CNGB，BLAST 结果的核心解读都围绕以下几个指标：</p>
+
+    <ul class="def-list">
+      <li>
+        <span class="def-term">Query cover</span>：命中序列覆盖 query 的比例。若只有一小段被命中，说明相似性仅限于局部。
+      </li>
+      <li>
+        <span class="def-term">Percent identity</span>：碱基/氨基酸逐位相同的比例。&gt; 90% 多为高度同源，70–90% 可能是较远的同源。
+      </li>
+      <li>
+        <span class="def-term">E-value</span>：在随机数据库中得到类似得分的期望次数。越小越显著，一般 <code>1e-3</code> 以下较为可靠。
+      </li>
+      <li>
+        <span class="def-term">Gaps / mismatches</span>：告诉你序列差异集中在哪些片段，可用来定位变异位点或保守区。
+      </li>
+    </ul>
+
+    <h3>一个简单的小练习</h3>
+    <ol>
+      <li>用 <code>demo_dna_1</code> 作为 query，在 NCBI 上跑 BLASTn，记录 top hit 的 identity、coverage 和 E-value。</li>
+      <li>再用 <code>demo_dna_2</code> 作为 query，重复同样操作，对比两个结果。</li>
+      <li>观察：少量碱基变化会怎样影响 identity 和 E-value。</li>
+    </ol>
+  </section>
+
+  <section id="faq">
+    <h2>四、常见问题（FAQ）</h2>
+
+    <h3>1. 完全没有 hits？</h3>
+    <ul>
+      <li>检查是否选对了数据库（例如：不要用蛋白去查核酸库）。</li>
+      <li>确认 query 序列长度是否合理，且不全是 N 或低复杂度区域。</li>
+      <li>适当放宽 E-value 阈值，或增大最大返回序列数。</li>
+    </ul>
+
+    <h3>2. hits 很多，但描述看不懂？</h3>
+    <ul>
+      <li>优先关注描述中含有具体基因/蛋白名称的条目。</li>
+      <li>按照 E-value（从小到大）、identity（从大到小）排序，先看前几条。</li>
+      <li>如果大部分都是 “hypothetical protein”，说明该区域功能注释仍不清楚。</li>
+    </ul>
+
+    <h3>3. NCBI 和 CNGB 结果不一致？</h3>
+    <ul>
+      <li>两者使用的数据库不同：一个面向全球公开数据，一个面向特定本地项目。</li>
+      <li>同一条序列在不同库中的注释版本也可能不同。</li>
+      <li>做对比时，请记录：网站名称、数据库名、版本（若有）、运行日期。</li>
+    </ul>
+
+    <h3>4. 在报告中如何写明 BLAST 分析？</h3>
+    <ul>
+      <li>说明所用网站（例如：NCBI BLAST）、程序类型（BLASTn / BLASTp）和数据库。</li>
+      <li>给出 top hit 的 accession、物种名、identity、coverage 和 E-value。</li>
+      <li>必要时附上一段 alignment 截图或文本，并标注关键变异位点。</li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>01 · 在线 BLAST 实战（NCBI / CNGB）</title>
+  <link rel="stylesheet" href="css/01-alignment.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
