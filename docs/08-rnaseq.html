@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>转录组数据分析完整教程</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/08-rnaseq.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body>
+  <div class="book-shell">
+    <aside class="book-sidebar" aria-label="目录">
+      <div class="toc-scroll">
+        <div class="book-brand"><a href="index.html">← 返回首页</a></div>
+        <div class="toc__title">目录</div>
+        <ul class="book-nav toc">
+          <li><a class="lv1" href="#sec-0">一、转录组分析概述</a>
+            <div class="lv2">
+              <a href="#sec-0-1"><span class="n">1.1</span><span>什么是转录组测序</span></a>
+              <a href="#sec-0-2"><span class="n">1.2</span><span>分析流程概览</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-1">二、Linux环境准备</a>
+            <div class="lv2">
+              <a href="#sec-1-1"><span class="n">2.1</span><span>必要软件安装</span></a>
+              <a href="#sec-1-2"><span class="n">2.2</span><span>Conda环境配置</span></a>
+              <a href="#sec-1-3"><span class="n">2.3</span><span>安装分析工具</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-2">三、数据获取与预处理</a>
+            <div class="lv2">
+              <a href="#sec-2-1"><span class="n">3.1</span><span>从NCBI下载数据</span></a>
+              <a href="#sec-2-2"><span class="n">3.2</span><span>数据解压与质控</span></a>
+              <a href="#sec-2-3"><span class="n">3.3</span><span>FastQC质量检查</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-3">四、参考基因组准备</a>
+            <div class="lv2">
+              <a href="#sec-3-1"><span class="n">4.1</span><span>下载参考基因组</span></a>
+              <a href="#sec-3-2"><span class="n">4.2</span><span>构建HISAT2索引</span></a>
+              <a href="#sec-3-3"><span class="n">4.3</span><span>下载基因注释文件</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-4">五、序列比对</a>
+            <div class="lv2">
+              <a href="#sec-4-1"><span class="n">5.1</span><span>HISAT2比对</span></a>
+              <a href="#sec-4-2"><span class="n">5.2</span><span>STAR比对（可选）</span></a>
+              <a href="#sec-4-3"><span class="n">5.3</span><span>比对结果评估</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-5">六、比对后处理</a>
+            <div class="lv2">
+              <a href="#sec-5-1"><span class="n">6.1</span><span>SAM转BAM格式</span></a>
+              <a href="#sec-5-2"><span class="n">6.2</span><span>BAM文件排序与索引</span></a>
+              <a href="#sec-5-3"><span class="n">6.3</span><span>去除重复序列</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-6">七、表达量定量</a>
+            <div class="lv2">
+              <a href="#sec-6-1"><span class="n">7.1</span><span>FeatureCounts计数</span></a>
+              <a href="#sec-6-2"><span class="n">7.2</span><span>HTSeq计数</span></a>
+              <a href="#sec-6-3"><span class="n">7.3</span><span>表达矩阵构建</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-7">八、R语言分析流程</a>
+            <div class="lv2">
+              <a href="#sec-7-1"><span class="n">8.1</span><span>R环境配置</span></a>
+              <a href="#sec-7-2"><span class="n">8.2</span><span>数据导入与预处理</span></a>
+              <a href="#sec-7-3"><span class="n">8.3</span><span>DESeq2差异分析</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-8">九、数据可视化</a>
+            <div class="lv2">
+              <a href="#sec-8-1"><span class="n">9.1</span><span>PCA主成分分析</span></a>
+              <a href="#sec-8-2"><span class="n">9.2</span><span>火山图绘制</span></a>
+              <a href="#sec-8-3"><span class="n">9.3</span><span>热图绘制</span></a>
+              <a href="#sec-8-4"><span class="n">9.4</span><span>MA图与散点图</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-9">十、完整脚本汇总</a>
+            <div class="lv2">
+              <a href="#sec-9-1"><span class="n">10.1</span><span>Linux分析流程脚本</span></a>
+              <a href="#sec-9-2"><span class="n">10.2</span><span>R分析完整代码</span></a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="book-main">
+      <h1>转录组数据分析完整教程</h1>
+      <p class="lead">本教程详细介绍从原始测序数据到差异表达分析的完整转录组数据分析流程，包括Linux命令行工具和R语言分析。</p>
+
+      <!-- 第一章：概述 -->
+      <section id="sec-0">
+        <h2>一、转录组分析概述</h2>
+        
+        <h3 id="sec-0-1">1.1 什么是转录组测序</h3>
+        <p>转录组测序（RNA-Seq）是一种利用高通量测序技术对细胞或组织中所有转录本进行定量和定性分析的方法。通过RNA-Seq，我们可以：</p>
+        <ul>
+          <li>定量基因表达水平</li>
+          <li>发现新的转录本和可变剪接</li>
+          <li>识别差异表达基因</li>
+          <li>分析基因融合和SNP</li>
+        </ul>
+
+        <h3 id="sec-0-2">1.2 分析流程概览</h3>
+        <p>标准的RNA-Seq分析流程包括以下主要步骤：</p>
+        <div class="flow-diagram">
+          <div class="flow-step">原始数据<br>（FASTQ）</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">质控<br>（FastQC）</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">比对<br>（HISAT2/STAR）</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">定量<br>（FeatureCounts）</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">差异分析<br>（DESeq2）</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">可视化<br>（R绘图）</div>
+        </div>
+      </section>
+
+      <!-- 第二章：Linux环境准备 -->
+      <section id="sec-1">
+        <h2>二、Linux环境准备</h2>
+        
+        <h3 id="sec-1-1">2.1 必要软件安装</h3>
+        <p>在进行转录组分析前，需要确保系统已安装以下基础工具：</p>
+        
+        <h4>Ubuntu/Debian系统</h4>
+        <pre><code class="language-bash"># 更新系统
+sudo apt-get update
+sudo apt-get upgrade -y
+
+# 安装基础工具
+sudo apt-get install -y wget curl git unzip build-essential
+
+# 安装常用生物信息学依赖
+sudo apt-get install -y zlib1g-dev libncurses5-dev libncursesw5-dev
+sudo apt-get install -y libbz2-dev liblzma-dev libssl-dev
+sudo apt-get install -y libcurl4-openssl-dev libxml2-dev</code></pre>
+
+        <h4>CentOS/RHEL系统</h4>
+        <pre><code class="language-bash"># 更新系统
+sudo yum update -y
+
+# 安装基础工具
+sudo yum install -y wget curl git unzip gcc gcc-c++ make
+
+# 安装开发库
+sudo yum install -y zlib-devel ncurses-devel bzip2-devel
+sudo yum install -y xz-devel openssl-devel libcurl-devel libxml2-devel</code></pre>
+
+        <h3 id="sec-1-2">2.2 Conda环境配置</h3>
+        <p>Conda是生物信息学软件管理的最佳工具，推荐使用Miniconda。</p>
+        
+        <h4>安装Miniconda</h4>
+        <pre><code class="language-bash"># 下载Miniconda安装脚本
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+
+# 运行安装脚本
+bash Miniconda3-latest-Linux-x86_64.sh
+
+# 按照提示完成安装，然后激活conda
+source ~/.bashrc
+
+# 验证安装
+conda --version</code></pre>
+
+        <h4>配置Bioconda通道</h4>
+        <pre><code class="language-bash"># 添加必要的conda通道（按此顺序）
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+
+# 设置通道优先级
+conda config --set channel_priority strict
+
+# 创建RNA-Seq专用环境
+conda create -n rnaseq python=3.9 -y
+conda activate rnaseq</code></pre>
+
+        <h3 id="sec-1-3">2.3 安装分析工具</h3>
+        <p>使用conda安装RNA-Seq分析所需的所有工具：</p>
+        
+        <pre><code class="language-bash"># 激活环境
+conda activate rnaseq
+
+# 安装质控工具
+conda install -c bioconda fastqc multiqc -y
+
+# 安装比对工具
+conda install -c bioconda hisat2 star bwa -y
+
+# 安装SAM/BAM处理工具
+conda install -c bioconda samtools picard -y
+
+# 安装定量工具
+conda install -c bioconda subread htseq -y
+
+# 安装其他实用工具
+conda install -c bioconda sra-tools trimmomatic -y
+
+# 验证安装
+fastqc --version
+hisat2 --version
+samtools --version
+featureCounts --version</code></pre>
+
+        <div class="tip-box">
+          <strong>提示：</strong>如果conda安装较慢，可以配置国内镜像源加速下载。
+        </div>
+      </section>
+
+      <!-- 第三章：数据获取与预处理 -->
+      <section id="sec-2">
+        <h2>三、数据获取与预处理</h2>
+        
+        <h3 id="sec-2-1">3.1 从NCBI下载数据</h3>
+        <p>本教程使用NCBI SRA数据库中的公开数据进行演示。以人类RNA-Seq数据为例：</p>
+        
+        <h4>创建项目目录结构</h4>
+        <pre><code class="language-bash"># 创建项目根目录
+mkdir -p ~/rnaseq_project
+cd ~/rnaseq_project
+
+# 创建子目录
+mkdir -p {raw_data,ref_genome,aligned,counts,results,scripts,logs}
+
+# 查看目录结构
+tree</code></pre>
+
+        <h4>使用SRA Toolkit下载数据</h4>
+        <pre><code class="language-bash"># 进入原始数据目录
+cd ~/rnaseq_project/raw_data
+
+# 示例：下载SRA数据（以SRR1234567为例）
+# 批量下载多个样本
+for accession in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+    echo "Downloading ${accession}..."
+    prefetch ${accession}
+    fasterq-dump --split-files ${accession}
+done
+
+# 或者使用wget直接下载已发布的FASTQ文件
+# 下载示例数据（这里使用测试数据）
+wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR123/007/SRR1234567/SRR1234567_1.fastq.gz
+wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR123/007/SRR1234567/SRR1234567_2.fastq.gz</code></pre>
+
+        <h4>准备样本信息表</h4>
+        <pre><code class="language-bash"># 创建样本信息文件
+cat > ~/rnaseq_project/samples.txt << 'EOF'
+sample_id	group	fq1	fq2
+control_1	control	SRR1234567_1.fastq.gz	SRR1234567_2.fastq.gz
+control_2	control	SRR1234568_1.fastq.gz	SRR1234568_2.fastq.gz
+treatment_1	treatment	SRR1234569_1.fastq.gz	SRR1234569_2.fastq.gz
+treatment_2	treatment	SRR1234570_1.fastq.gz	SRR1234570_2.fastq.gz
+EOF</code></pre>
+
+        <h3 id="sec-2-2">3.2 数据解压与质控</h3>
+        
+        <h4>解压FASTQ文件</h4>
+        <pre><code class="language-bash"># 进入数据目录
+cd ~/rnaseq_project/raw_data
+
+# 解压gz文件（如果需要）
+# gunzip *.gz
+
+# 查看FASTQ文件格式
+zcat SRR1234567_1.fastq.gz | head -12
+
+# FASTQ格式说明：
+# 第1行：序列标识符（以@开头）
+# 第2行：碱基序列
+# 第3行：+（分隔符）
+# 第4行：质量分数（Phred+33编码）</code></pre>
+
+        <h4>使用Trimmomatic进行质控修剪</h4>
+        <pre><code class="language-bash"># 创建质控后数据目录
+mkdir -p ~/rnaseq_project/clean_data
+
+# 运行Trimmomatic进行质控
+cd ~/rnaseq_project/raw_data
+
+for sample in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+    echo "Processing ${sample}..."
+    trimmomatic PE -threads 4 \
+        ${sample}_1.fastq.gz ${sample}_2.fastq.gz \
+        ../clean_data/${sample}_1_paired.fq.gz ../clean_data/${sample}_1_unpaired.fq.gz \
+        ../clean_data/${sample}_2_paired.fq.gz ../clean_data/${sample}_2_unpaired.fq.gz \
+        ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \
+        LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+done</code></pre>
+
+        <p>Trimmomatic参数说明：</p>
+        <ul>
+          <li><code>PE</code>：双端测序模式</li>
+          <li><code>-threads 4</code>：使用4个线程</li>
+          <li><code>ILLUMINACLIP</code>：去除接头序列</li>
+          <li><code>LEADING:3</code>：去除开头质量值低于3的碱基</li>
+          <li><code>TRAILING:3</code>：去除末尾质量值低于3的碱基</li>
+          <li><code>SLIDINGWINDOW:4:15</code>：4碱基窗口平均质量低于15则切除</li>
+          <li><code>MINLEN:36</code>：丢弃长度小于36bp的reads</li>
+        </ul>
+
+        <h3 id="sec-2-3">3.3 FastQC质量检查</h3>
+        <p>FastQC是用于高通量测序数据质量控制的工具，可以生成详细的质控报告。</p>
+        
+        <pre><code class="language-bash"># 创建质控报告目录
+mkdir -p ~/rnaseq_project/qc_reports
+
+# 对原始数据进行质控
+cd ~/rnaseq_project/raw_data
+fastqc *.fastq.gz -t 4 -o ../qc_reports/
+
+# 对质控后的数据进行质控
+cd ~/rnaseq_project/clean_data
+fastqc *_paired.fq.gz -t 4 -o ../qc_reports/
+
+# 使用MultiQC汇总所有质控报告
+cd ~/rnaseq_project
+multiqc qc_reports/ -o qc_reports/multiqc_report</code></pre>
+
+        <h4>FastQC报告解读</h4>
+        <table>
+          <tr>
+            <th>检查项目</th>
+            <th>说明</th>
+            <th>合格标准</th>
+          </tr>
+          <tr>
+            <td>Basic Statistics</td>
+            <td>基本信息统计</td>
+            <td>Sanger / Illumina 1.9</td>
+          </tr>
+          <tr>
+            <td>Per base sequence quality</td>
+            <td>每个碱基位置的质量分布</td>
+            <td>大部分碱基质量 > Q20</td>
+          </tr>
+          <tr>
+            <td>Per sequence quality scores</td>
+            <td>reads质量分布</td>
+            <td>峰值在Q20以上</td>
+          </tr>
+          <tr>
+            <td>Per base sequence content</td>
+            <td>每个位置的碱基比例</td>
+            <td>无显著偏差</td>
+          </tr>
+          <tr>
+            <td>Sequence Length Distribution</td>
+            <td>序列长度分布</td>
+            <td>长度一致或符合预期</td>
+          </tr>
+          <tr>
+            <td>Sequence Duplication Levels</td>
+            <td>序列重复水平</td>
+            <td>重复率 < 50%</td>
+          </tr>
+          <tr>
+            <td>Overrepresented sequences</td>
+            <td>过表达序列</td>
+            <td>无显著过表达</td>
+          </tr>
+          <tr>
+            <td>Adapter Content</td>
+            <td>接头序列含量</td>
+            <td>尽可能低</td>
+          </tr>
+        </table>
+      </section>
+
+      <!-- 第四章：参考基因组准备 -->
+      <section id="sec-3">
+        <h2>四、参考基因组准备</h2>
+        
+        <h3 id="sec-3-1">4.1 下载参考基因组</h3>
+        <p>本教程以人类基因组GRCh38为例，可以从Ensembl或NCBI下载。</p>
+        
+        <pre><code class="language-bash"># 进入参考基因组目录
+cd ~/rnaseq_project/ref_genome
+
+# 从Ensembl下载人类基因组（GRCh38）
+wget -c ftp://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+
+# 解压基因组文件
+gunzip Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+
+# 查看基因组文件
+head -20 Homo_sapiens.GRCh38.dna.primary_assembly.fa
+
+# 统计染色体信息
+grep "^>" Homo_sapiens.GRCh38.dna.primary_assembly.fa | head -10</code></pre>
+
+        <h3 id="sec-3-2">4.2 构建HISAT2索引</h3>
+        <p>HISAT2是一种快速且灵敏的RNA-Seq比对工具，需要预先构建基因组索引。</p>
+        
+        <pre><code class="language-bash"># 创建索引目录
+mkdir -p ~/rnaseq_project/ref_genome/hisat2_index
+cd ~/rnaseq_project/ref_genome
+
+# 构建HISAT2索引（约需30-60分钟，需要8GB以上内存）
+# 使用8个线程加速
+hisat2-build -p 8 \
+    Homo_sapiens.GRCh38.dna.primary_assembly.fa \
+    hisat2_index/GRCh38
+
+# 验证索引文件
+ls -lh hisat2_index/</code></pre>
+
+        <p>索引构建完成后，会生成以下文件：</p>
+        <ul>
+          <li><code>GRCh38.1.ht2</code> 到 <code>GRCh38.8.ht2</code>：HISAT2索引文件</li>
+        </ul>
+
+        <h4>下载HISAT2预构建索引（可选）</h4>
+        <p>如果自行构建索引耗时太长，可以下载预构建的索引：</p>
+        <pre><code class="language-bash"># 下载预构建的人类基因组索引
+cd ~/rnaseq_project/ref_genome
+wget https://genome-idx.s3.amazonaws.com/hisat/grch38_genome.tar.gz
+tar -xzf grch38_genome.tar.gz
+
+# 重命名索引文件
+mv grch38 hisat2_index</code></pre>
+
+        <h3 id="sec-3-3">4.3 下载基因注释文件</h3>
+        <p>基因注释文件（GTF/GFF）包含基因的位置信息，是表达量定量的必需文件。</p>
+        
+        <pre><code class="language-bash"># 从Ensembl下载GTF注释文件
+cd ~/rnaseq_project/ref_genome
+
+wget -c ftp://ftp.ensembl.org/pub/release-110/gtf/homo_sapiens/Homo_sapiens.GRCh38.110.gtf.gz
+
+# 解压GTF文件
+gunzip Homo_sapiens.GRCh38.110.gtf.gz
+
+# 查看GTF文件格式
+head -20 Homo_sapiens.GRCh38.110.gtf
+
+# GTF格式说明（9列）：
+# 1. 染色体名称
+# 2. 来源
+# 3. 特征类型（gene, transcript, exon, CDS等）
+# 4. 起始位置
+# 5. 结束位置
+# 6. 得分
+# 7. 链方向
+# 8. 相位
+# 9. 属性（gene_id, transcript_id, gene_name等）</code></pre>
+
+        <h4>提取基因信息</h4>
+        <pre><code class="language-bash"># 提取所有基因信息
+grep -w "gene" Homo_sapiens.GRCh38.110.gtf | \
+    awk -F'\t' '{print $9}' | \
+    grep -o 'gene_id "[^"]*"' | \
+    sed 's/gene_id "//;s/"$//' | \
+    sort -u | wc -l
+
+# 创建基因ID到基因名的映射文件
+grep -w "gene" Homo_sapiens.GRCh38.110.gtf | \
+    awk -F'\t' '{print $9}' | \
+    grep -oP 'gene_id "\K[^"]+|gene_name "\K[^"]+' | \
+    paste - - > gene_id_to_name.txt
+
+head gene_id_to_name.txt</code></pre>
+      </section>
+
+      <!-- 第五章：序列比对 -->
+      <section id="sec-4">
+        <h2>五、序列比对</h2>
+        
+        <h3 id="sec-4-1">5.1 HISAT2比对</h3>
+        <p>HISAT2是基于图的比对工具，特别适合RNA-Seq数据的比对，能够处理剪接位点。</p>
+        
+        <pre><code class="language-bash"># 创建比对结果目录
+cd ~/rnaseq_project
+
+# 比对脚本
+for sample in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+    echo "Aligning ${sample}..."
+    
+    hisat2 -p 8 \
+        -x ref_genome/hisat2_index/GRCh38 \
+        -1 clean_data/${sample}_1_paired.fq.gz \
+        -2 clean_data/${sample}_2_paired.fq.gz \
+        --dta \
+        --dta-cufflinks \
+        --new-summary \
+        --summary-file logs/${sample}_align_summary.txt \
+        | samtools sort -@ 4 -o aligned/${sample}.sorted.bam -
+    
+    # 建立BAM索引
+    samtools index aligned/${sample}.sorted.bam
+done</code></pre>
+
+        <p>HISAT2主要参数说明：</p>
+        <ul>
+          <li><code>-p 8</code>：使用8个线程</li>
+          <li><code>-x</code>：索引文件前缀</li>
+          <code>-1/-2</code>：双端测序的FASTQ文件
+          <li><code>--dta</code>：输出适合转录组组装的结果</li>
+          <li><code>--dta-cufflinks</code>：兼容Cufflinks的比对结果</li>
+          <li><code>--new-summary</code>：输出新的汇总格式</li>
+        </ul>
+
+        <h4>查看比对统计</h4>
+        <pre><code class="language-bash"># 查看比对汇总
+cat logs/SRR1234567_align_summary.txt
+
+# 使用samtools统计比对率
+samtools flagstat aligned/SRR1234567.sorted.bam</code></pre>
+
+        <h3 id="sec-4-2">5.2 STAR比对（可选）</h3>
+        <p>STAR是另一种常用的RNA-Seq比对工具，速度更快但内存需求更高。</p>
+        
+        <h4>构建STAR索引</h4>
+        <pre><code class="language-bash"># 创建STAR索引目录
+mkdir -p ~/rnaseq_project/ref_genome/star_index
+
+# 构建STAR索引（需要约30GB内存）
+STAR --runMode genomeGenerate \
+    --genomeDir ref_genome/star_index \
+    --genomeFastaFiles ref_genome/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
+    --sjdbGTFfile ref_genome/Homo_sapiens.GRCh38.110.gtf \
+    --runThreadN 8 \
+    --genomeSAindexNbases 14</code></pre>
+
+        <h4>运行STAR比对</h4>
+        <pre><code class="language-bash"># STAR比对
+for sample in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+    echo "Aligning ${sample} with STAR..."
+    
+    STAR --runThreadN 8 \
+        --genomeDir ref_genome/star_index \
+        --readFilesIn clean_data/${sample}_1_paired.fq.gz clean_data/${sample}_2_paired.fq.gz \
+        --readFilesCommand zcat \
+        --outFilterType BySJout \
+        --outFilterMultimapNmax 20 \
+        --alignSJoverhangMin 8 \
+        --alignSJDBoverhangMin 1 \
+        --outFilterMismatchNmax 999 \
+        --outFilterMismatchNoverReadLmax 0.04 \
+        --alignIntronMin 20 \
+        --alignIntronMax 1000000 \
+        --alignMatesGapMax 1000000 \
+        --outSAMtype BAM SortedByCoordinate \
+        --outFileNamePrefix aligned/${sample}_
+    
+    # 重命名输出文件
+    mv aligned/${sample}_Aligned.sortedByCoord.out.bam aligned/${sample}.sorted.bam
+    samtools index aligned/${sample}.sorted.bam
+done</code></pre>
+
+        <h3 id="sec-4-3">5.3 比对结果评估</h3>
+        
+        <pre><code class="language-bash"># 统计每个样本的比对情况
+echo -e "Sample\tTotal\tMapped\tUnique\tMulti" > aligned/mapping_stats.txt
+
+for sample in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+    total=$(samtools view -c aligned/${sample}.sorted.bam)
+    mapped=$(samtools view -c -F 4 aligned/${sample}.sorted.bam)
+    unique=$(samtools view -c -q 30 aligned/${sample}.sorted.bam)
+    multi=$((mapped - unique))
+    
+    echo -e "${sample}\t${total}\t${mapped}\t${unique}\t${multi}" >> aligned/mapping_stats.txt
+done
+
+cat aligned/mapping_stats.txt</code></pre>
+      </section>
+
+      <!-- 第六章：比对后处理 -->
+      <section id="sec-5">
+        <h2>六、比对后处理</h2>
+        
+        <h3 id="sec-5-1">6.1 SAM转BAM格式</h3>
+        <p>SAM格式是纯文本格式，占用空间大。BAM是其二进制压缩格式，更适合存储和处理。</p>
+        
+        <pre><code class="language-bash"># SAM转BAM并排序（如果在比对时未完成）
+# samtools view: 转换格式
+# -b: 输出BAM格式
+# -S: 输入是SAM格式
+# -h: 包含header
+
+samtools view -bS aligned/sample.sam > aligned/sample.bam
+
+# 按坐标排序
+samtools sort aligned/sample.bam -o aligned/sample.sorted.bam
+
+# 建立索引（用于快速访问）
+samtools index aligned/sample.sorted.bam</code></pre>
+
+        <h3 id="sec-5-2">6.2 BAM文件排序与索引</h3>
+        
+        <pre><code class="language-bash"># 查看BAM文件头信息
+samtools view -H aligned/SRR1234567.sorted.bam
+
+# 查看特定区域的比对
+samtools view aligned/SRR1234567.sorted.bam chr1:1000000-1001000 | head
+
+# 统计覆盖度
+samtools depth aligned/SRR1234567.sorted.bam | head
+
+# 统计每个染色体的reads数
+samtools idxstats aligned/SRR1234567.sorted.bam</code></pre>
+
+        <h3 id="sec-5-3">6.3 去除重复序列</h3>
+        <p>PCR重复会影响表达量定量的准确性，需要使用Picard或samtools去除。</p>
+        
+        <pre><code class="language-bash"># 使用Picard去除重复
+for sample in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+    echo "Removing duplicates for ${sample}..."
+    
+    picard MarkDuplicates \
+        I=aligned/${sample}.sorted.bam \
+        O=aligned/${sample}.dedup.bam \
+        M=logs/${sample}_dup_metrics.txt \
+        REMOVE_DUPLICATES=true \
+        CREATE_INDEX=true
+done
+
+# 或者使用samtools标记重复（不删除，只标记）
+samtools markdup aligned/SRR1234567.sorted.bam aligned/SRR1234567.markdup.bam</code></pre>
+      </section>
+
+      <!-- 第七章：表达量定量 -->
+      <section id="sec-6">
+        <h2>七、表达量定量</h2>
+        
+        <h3 id="sec-6-1">7.1 FeatureCounts计数</h3>
+        <p>FeatureCounts是Subread包中的基因计数工具，速度快且内存效率高。</p>
+        
+        <pre><code class="language-bash"># 创建计数目录
+cd ~/rnaseq_project
+
+# 运行FeatureCounts
+featureCounts -T 8 \
+    -p \
+    -t exon \
+    -g gene_id \
+    -a ref_genome/Homo_sapiens.GRCh38.110.gtf \
+    -o counts/gene_counts.txt \
+    aligned/*.sorted.bam
+
+# 参数说明：
+# -T 8: 使用8个线程
+# -p: 双端测序模式
+# -t exon: 统计exon层面的计数
+# -g gene_id: 按gene_id汇总
+# -a: 注释文件路径
+# -o: 输出文件</code></pre>
+
+        <h4>查看计数结果</h4>
+        <pre><code class="language-bash"># 查看计数结果的前几行
+head -20 counts/gene_counts.txt
+
+# 提取基因ID和计数列，生成表达矩阵
+cut -f1,7- counts/gene_counts.txt | \
+    grep -v "^#" | \
+    sed 's/aligned\///g;s/.sorted.bam//g' > counts/count_matrix.txt
+
+head counts/count_matrix.txt</code></pre>
+
+        <h3 id="sec-6-2">7.2 HTSeq计数</h3>
+        <p>HTSeq是另一个常用的计数工具，与DESeq2兼容性良好。</p>
+        
+        <pre><code class="language-bash"># 使用HTSeq进行计数
+for sample in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+    echo "Counting ${sample}..."
+    
+    htseq-count \
+        -f bam \
+        -r pos \
+        -s no \
+        -t exon \
+        -i gene_id \
+        aligned/${sample}.sorted.bam \
+        ref_genome/Homo_sapiens.GRCh38.110.gtf \
+        > counts/${sample}_counts.txt
+done
+
+# 合并所有样本的计数结果
+paste counts/*_counts.txt | \
+    awk 'BEGIN{OFS="\t"} {printf "%s", $1; for(i=2;i<=NF;i+=2) printf "\t%s", $i; print ""}' \
+    > counts/htseq_count_matrix.txt</code></pre>
+
+        <h3 id="sec-6-3">7.3 表达矩阵构建</h3>
+        
+        <pre><code class="language-bash"># 创建样本信息表
+cat > counts/sample_info.txt << 'EOF'
+sample_id	group
+SRR1234567	control
+SRR1234568	control
+SRR1234569	treatment
+SRR1234570	treatment
+EOF
+
+# 查看最终的表达矩阵
+echo "表达矩阵维度："
+wc -l counts/count_matrix.txt
+
+echo -e "\n表达矩阵前10行："
+head counts/count_matrix.txt</code></pre>
+      </section>
+
+      <!-- 第八章：R语言分析流程 -->
+      <section id="sec-7">
+        <h2>八、R语言分析流程</h2>
+        
+        <h3 id="sec-7-1">8.1 R环境配置</h3>
+        
+        <h4>安装必要的R包</h4>
+        <pre><code class="language-r"># 安装Bioconductor
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+# 安装核心分析包
+BiocManager::install(c(
+    "DESeq2",           # 差异表达分析
+    "edgeR",            # 另一种差异分析方法
+    "limma",            # 线性模型分析
+    "tximport",         # 转录本定量导入
+    "GenomicFeatures",  # 基因组特征注释
+    "org.Hs.eg.db",     # 人类基因注释
+    "AnnotationDbi"     # 注释数据库接口
+))
+
+# 安装可视化包
+install.packages(c(
+    "ggplot2",          # 绘图
+    "pheatmap",         # 热图
+    "RColorBrewer",     # 配色方案
+    "EnhancedVolcano",  # 火山图
+    "ggrepel",          # 标签防重叠
+    "dplyr",            # 数据处理
+    "tidyr",            # 数据整理
+    "readr"             # 数据读取
+))</code></pre>
+
+        <h3 id="sec-7-2">8.2 数据导入与预处理</h3>
+        
+        <pre><code class="language-r"># 加载必要的包
+library(DESeq2)
+library(ggplot2)
+library(pheatmap)
+library(RColorBrewer)
+library(dplyr)
+library(readr)
+
+# 设置工作目录
+setwd("~/rnaseq_project")
+
+# 读取计数矩阵
+countData <- read.table("counts/count_matrix.txt", 
+                        header = TRUE, 
+                        row.names = 1, 
+                        sep = "\t")
+
+# 查看数据结构
+dim(countData)
+head(countData)
+
+# 读取样本信息
+coldata <- read.table("counts/sample_info.txt", 
+                      header = TRUE, 
+                      row.names = 1, 
+                      sep = "\t")
+
+# 确保样本顺序一致
+coldata <- coldata[match(colnames(countData), rownames(coldata)), , drop = FALSE]
+
+# 查看样本信息
+print(coldata)
+
+# 创建DESeq2对象
+dds <- DESeqDataSetFromMatrix(
+    countData = countData,
+    colData = coldata,
+    design = ~ group
+)
+
+# 查看对象
+print(dds)
+
+# 预过滤：去除低表达的基因
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
+
+# 设置参考水平（对照组）
+dds$group <- relevel(dds$group, ref = "control")
+
+# 运行DESeq2分析
+dds <- DESeq(dds)
+
+# 查看结果名称
+resultsNames(dds)</code></pre>
+
+        <h3 id="sec-7-3">8.3 DESeq2差异分析</h3>
+        
+        <pre><code class="language-r"># 获取差异分析结果
+res <- results(dds, contrast = c("group", "treatment", "control"))
+
+# 查看结果摘要
+summary(res)
+
+# 查看结果表
+head(res)
+
+# 添加基因名称注释（可选）
+library(org.Hs.eg.db)
+
+# 将ENSEMBL ID转换为基因名
+gene_ids <- rownames(res)
+gene_symbols <- mapIds(org.Hs.eg.db, 
+                       keys = gene_ids, 
+                       column = "SYMBOL", 
+                       keytype = "ENSEMBL",
+                       multiVals = "first")
+
+res$gene_symbol <- gene_symbols
+
+# 按padj排序
+res_ordered <- res[order(res$padj),]
+head(res_ordered)
+
+# 筛选显著差异表达基因
+sig_genes <- subset(res, padj < 0.05 & abs(log2FoldChange) > 1)
+print(paste("显著差异表达基因数量:", nrow(sig_genes)))
+
+# 保存结果
+write.csv(as.data.frame(res_ordered), 
+          file = "results/deseq2_results.csv", 
+          row.names = TRUE)
+
+write.csv(as.data.frame(sig_genes), 
+          file = "results/significant_genes.csv", 
+          row.names = TRUE)</code></pre>
+
+        <h4>标准化表达值</h4>
+        <pre><code class="language-r"># 获取标准化后的计数（VST或rlog转换）
+# VST（方差稳定转换）- 适合大数据集
+vsd <- vst(dds, blind = FALSE)
+
+# rlog（正则化对数转换）- 适合小数据集
+# rld <- rlog(dds, blind = FALSE)
+
+# 获取标准化表达矩阵
+norm_counts <- assay(vsd)
+write.csv(norm_counts, file = "results/normalized_counts.csv")
+
+# 计算FPKM/TPM（需要基因长度信息）
+# 这里简化处理，使用DESeq2的size factor标准化结果</code></pre>
+      </section>
+
+      <!-- 第九章：数据可视化 -->
+      <section id="sec-8">
+        <h2>九、数据可视化</h2>
+        
+        <h3 id="sec-8-1">9.1 PCA主成分分析</h3>
+        
+        <pre><code class="language-r"># PCA分析
+pcaData <- plotPCA(vsd, intgroup = "group", returnData = TRUE)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+
+# 绘制PCA图
+pca_plot <- ggplot(pcaData, aes(x = PC1, y = PC2, color = group)) +
+    geom_point(size = 3) +
+    geom_text(aes(label = name), vjust = -1, size = 3) +
+    xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+    ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+    ggtitle("PCA Plot of RNA-Seq Samples") +
+    theme_bw() +
+    theme(plot.title = element_text(hjust = 0.5))
+
+print(pca_plot)
+
+# 保存图片
+ggsave("results/pca_plot.png", pca_plot, width = 8, height = 6, dpi = 300)</code></pre>
+
+        <div class="figure-placeholder">
+          <p>PCA图示例：展示样本间的相似性，对照组和处理组应该聚类在一起</p>
+        </div>
+
+        <h3 id="sec-8-2">9.2 火山图绘制</h3>
+        
+        <pre><code class="language-r"># 安装EnhancedVolcano包（如果尚未安装）
+if (!require("EnhancedVolcano", quietly = TRUE))
+    BiocManager::install("EnhancedVolcano")
+
+library(EnhancedVolcano)
+
+# 绘制火山图
+volcano_plot <- EnhancedVolcano(
+    res,
+    lab = res$gene_symbol,
+    x = 'log2FoldChange',
+    y = 'padj',
+    title = 'Treatment vs Control',
+    pCutoff = 0.05,
+    FCcutoff = 1,
+    pointSize = 2.0,
+    labSize = 3.0,
+    colAlpha = 0.5,
+    legendPosition = 'right',
+    legendLabSize = 10,
+    legendIconSize = 3.0,
+    drawConnectors = TRUE,
+    widthConnectors = 0.5,
+    colConnectors = 'black'
+)
+
+print(volcano_plot)
+
+# 保存图片
+ggsave("results/volcano_plot.png", volcano_plot, width = 10, height = 8, dpi = 300)
+
+# 使用ggplot2自定义火山图
+res_df <- as.data.frame(res)
+res_df$significance <- "Not Significant"
+res_df$significance[res_df$padj < 0.05 & res_df$log2FoldChange > 1] <- "Up-regulated"
+res_df$significance[res_df$padj < 0.05 & res_df$log2FoldChange < -1] <- "Down-regulated"
+
+volcano_gg <- ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj), color = significance)) +
+    geom_point(alpha = 0.6, size = 1.5) +
+    scale_color_manual(values = c("Down-regulated" = "blue", 
+                                   "Not Significant" = "gray", 
+                                   "Up-regulated" = "red")) +
+    theme_bw() +
+    xlab("Log2 Fold Change") +
+    ylab("-Log10 Adjusted P-value") +
+    ggtitle("Volcano Plot: Differential Gene Expression") +
+    geom_vline(xintercept = c(-1, 1), linetype = "dashed", color = "gray") +
+    geom_hline(yintercept = -log10(0.05), linetype = "dashed", color = "gray")
+
+print(volcano_gg)
+ggsave("results/volcano_plot_custom.png", volcano_gg, width = 8, height = 6, dpi = 300)</code></pre>
+
+        <div class="figure-placeholder">
+          <p>火山图示例：红色点表示上调基因，蓝色点表示下调基因，灰色点表示无显著差异</p>
+        </div>
+
+        <h3 id="sec-8-3">9.3 热图绘制</h3>
+        
+        <pre><code class="language-r"># 选择前50个显著差异表达基因绘制热图
+top_genes <- head(order(res$padj), 50)
+mat <- assay(vsd)[top_genes, ]
+
+# 获取基因名
+row_names <- res$gene_symbol[top_genes]
+row_names[is.na(row_names)] <- rownames(mat)[is.na(row_names)]
+rownames(mat) <- row_names
+
+# 数据标准化（按行）
+mat_scaled <- t(scale(t(mat)))
+
+# 定义颜色
+annotation_col <- data.frame(
+    Group = coldata$group
+)
+rownames(annotation_col) <- colnames(mat)
+
+ann_colors <- list(
+    Group = c(control = "#1f77b4", treatment = "#ff7f0e")
+)
+
+# 绘制热图
+heatmap_plot <- pheatmap(
+    mat_scaled,
+    annotation_col = annotation_col,
+    annotation_colors = ann_colors,
+    cluster_rows = TRUE,
+    cluster_cols = TRUE,
+    show_rownames = TRUE,
+    show_colnames = TRUE,
+    fontsize_row = 6,
+    fontsize_col = 10,
+    main = "Heatmap of Top 50 Differentially Expressed Genes",
+    color = colorRampPalette(rev(brewer.pal(9, "RdBu")))(100)
+)
+
+# 保存热图
+png("results/heatmap_top50.png", width = 10, height = 12, units = "in", res = 300)
+print(heatmap_plot)
+dev.off()</code></pre>
+
+        <div class="figure-placeholder">
+          <p>热图示例：展示差异表达基因在不同样本中的表达模式，红色表示高表达，蓝色表示低表达</p>
+        </div>
+
+        <h3 id="sec-8-4">9.4 MA图与散点图</h3>
+        
+        <pre><code class="language-r"># MA图
+ma_plot <- plotMA(res, main = "MA Plot", ylim = c(-5, 5))
+
+# 使用ggplot2绘制更美观的MA图
+res_df$baseMean_log <- log2(res_df$baseMean + 1)
+
+ma_gg <- ggplot(res_df, aes(x = baseMean_log, y = log2FoldChange)) +
+    geom_point(aes(color = padj < 0.05), alpha = 0.5, size = 1) +
+    scale_color_manual(values = c("TRUE" = "red", "FALSE" = "gray")) +
+    theme_bw() +
+    xlab("Log2 Mean Expression") +
+    ylab("Log2 Fold Change") +
+    ggtitle("MA Plot") +
+    geom_hline(yintercept = 0, linetype = "dashed", color = "blue")
+
+print(ma_gg)
+ggsave("results/ma_plot.png", ma_gg, width = 8, height = 6, dpi = 300)
+
+# 样本间相关性散点图
+plot(countData[,1], countData[,2], 
+     log = "xy", 
+     xlab = colnames(countData)[1], 
+     ylab = colnames(countData)[2],
+     main = "Sample Correlation Scatter Plot",
+     pch = 20, 
+     col = rgb(0,0,0,0.3))
+
+# 样本相关性热图
+cor_matrix <- cor(countData, method = "spearman")
+pheatmap(cor_matrix, 
+         main = "Sample Correlation Heatmap",
+         display_numbers = TRUE)</code></pre>
+
+        <div class="figure-placeholder">
+          <p>MA图示例：展示基因表达量与差异倍数的关系，显著差异基因用红色标记</p>
+        </div>
+      </section>
+
+      <!-- 第十章：完整脚本汇总 -->
+      <section id="sec-9">
+        <h2>十、完整脚本汇总</h2>
+        
+        <h3 id="sec-9-1">10.1 Linux分析流程脚本</h3>
+        
+        <pre><code class="language-bash">#!/bin/bash
+# RNA-Seq分析完整流程脚本
+# 使用方法: bash rnaseq_pipeline.sh
+
+# 设置变量
+PROJECT_DIR=~/rnaseq_project
+GENOME_URL="ftp://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz"
+GTF_URL="ftp://ftp.ensembl.org/pub/release-110/gtf/homo_sapiens/Homo_sapiens.GRCh38.110.gtf.gz"
+THREADS=8
+
+# 创建目录结构
+echo "=== 创建项目目录 ==="
+mkdir -p ${PROJECT_DIR}/{raw_data,clean_data,ref_genome/{hisat2_index,star_index},aligned,counts,results,scripts,logs,qc_reports}
+
+# 下载参考基因组和注释
+echo "=== 下载参考基因组 ==="
+cd ${PROJECT_DIR}/ref_genome
+if [ ! -f "Homo_sapiens.GRCh38.dna.primary_assembly.fa" ]; then
+    wget -c ${GENOME_URL}
+    gunzip Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+fi
+
+echo "=== 下载基因注释 ==="
+if [ ! -f "Homo_sapiens.GRCh38.110.gtf" ]; then
+    wget -c ${GTF_URL}
+    gunzip Homo_sapiens.GRCh38.110.gtf.gz
+fi
+
+# 构建索引
+echo "=== 构建HISAT2索引 ==="
+if [ ! -f "hisat2_index/GRCh38.1.ht2" ]; then
+    hisat2-build -p ${THREADS} \
+        Homo_sapiens.GRCh38.dna.primary_assembly.fa \
+        hisat2_index/GRCh38
+fi
+
+# 数据质控和比对（循环处理每个样本）
+process_sample() {
+    local sample=$1
+    echo "=== 处理样本: ${sample} ==="
+    
+    # FastQC质控
+    fastqc ${PROJECT_DIR}/raw_data/${sample}_*.fastq.gz \
+        -t 2 -o ${PROJECT_DIR}/qc_reports/
+    
+    # Trimmomatic质控
+    trimmomatic PE -threads 4 \
+        ${PROJECT_DIR}/raw_data/${sample}_1.fastq.gz \
+        ${PROJECT_DIR}/raw_data/${sample}_2.fastq.gz \
+        ${PROJECT_DIR}/clean_data/${sample}_1_paired.fq.gz \
+        ${PROJECT_DIR}/clean_data/${sample}_1_unpaired.fq.gz \
+        ${PROJECT_DIR}/clean_data/${sample}_2_paired.fq.gz \
+        ${PROJECT_DIR}/clean_data/${sample}_2_unpaired.fq.gz \
+        ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \
+        LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+    
+    # HISAT2比对
+    hisat2 -p ${THREADS} \
+        -x ${PROJECT_DIR}/ref_genome/hisat2_index/GRCh38 \
+        -1 ${PROJECT_DIR}/clean_data/${sample}_1_paired.fq.gz \
+        -2 ${PROJECT_DIR}/clean_data/${sample}_2_paired.fq.gz \
+        --dta \
+        --summary-file ${PROJECT_DIR}/logs/${sample}_align_summary.txt \
+        | samtools sort -@ 4 -o ${PROJECT_DIR}/aligned/${sample}.sorted.bam -
+    
+    # 建立索引
+    samtools index ${PROJECT_DIR}/aligned/${sample}.sorted.bam
+    
+    # 去除重复
+    picard MarkDuplicates \
+        I=${PROJECT_DIR}/aligned/${sample}.sorted.bam \
+        O=${PROJECT_DIR}/aligned/${sample}.dedup.bam \
+        M=${PROJECT_DIR}/logs/${sample}_dup_metrics.txt \
+        REMOVE_DUPLICATES=true \
+        CREATE_INDEX=true
+}
+
+# 导出函数以便并行处理
+export -f process_sample
+export PROJECT_DIR THREADS
+
+# 样本列表
+SAMPLES=("SRR1234567" "SRR1234568" "SRR1234569" "SRR1234570")
+
+# 顺序处理（或使用parallel并行处理）
+for sample in "${SAMPLES[@]}"; do
+    process_sample ${sample}
+done
+
+# MultiQC汇总
+echo "=== 生成MultiQC报告 ==="
+multiqc ${PROJECT_DIR}/qc_reports/ -o ${PROJECT_DIR}/qc_reports/multiqc_report
+
+# FeatureCounts计数
+echo "=== 基因表达计数 ==="
+featureCounts -T ${THREADS} \
+    -p -t exon -g gene_id \
+    -a ${PROJECT_DIR}/ref_genome/Homo_sapiens.GRCh38.110.gtf \
+    -o ${PROJECT_DIR}/counts/gene_counts.txt \
+    ${PROJECT_DIR}/aligned/*.dedup.bam
+
+# 提取表达矩阵
+cut -f1,7- ${PROJECT_DIR}/counts/gene_counts.txt | \
+    grep -v "^#" | \
+    sed 's/.dedup.bam//g' > ${PROJECT_DIR}/counts/count_matrix.txt
+
+echo "=== 分析完成 ==="
+echo "结果文件位于: ${PROJECT_DIR}/results/"
+echo "请运行R脚本进行差异分析和可视化"</code></pre>
+
+        <h3 id="sec-9-2">10.2 R分析完整代码</h3>
+        
+        <pre><code class="language-r">#!/usr/bin/env Rscript
+# RNA-Seq差异分析完整R脚本
+# 使用方法: Rscript deseq2_analysis.R
+
+# 加载包 ----
+suppressPackageStartupMessages({
+    library(DESeq2)
+    library(ggplot2)
+    library(pheatmap)
+    library(RColorBrewer)
+    library(dplyr)
+    library(readr)
+    library(EnhancedVolcano)
+    library(org.Hs.eg.db)
+})
+
+# 设置工作目录 ----
+setwd("~/rnaseq_project")
+
+# 创建结果目录 ----
+dir.create("results/figures", recursive = TRUE, showWarnings = FALSE)
+
+# 读取数据 ----
+message("读取计数矩阵...")
+countData <- read.table("counts/count_matrix.txt", 
+                        header = TRUE, 
+                        row.names = 1, 
+                        sep = "\t")
+
+coldata <- read.table("counts/sample_info.txt", 
+                      header = TRUE, 
+                      row.names = 1, 
+                      sep = "\t")
+
+# 确保样本顺序一致 ----
+coldata <- coldata[match(colnames(countData), rownames(coldata)), , drop = FALSE]
+coldata$group <- factor(coldata$group)
+
+# 创建DESeq2对象 ----
+message("创建DESeq2对象...")
+dds <- DESeqDataSetFromMatrix(
+    countData = countData,
+    colData = coldata,
+    design = ~ group
+)
+
+# 预过滤 ----
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
+message(paste("过滤后基因数:", nrow(dds)))
+
+# 设置参考水平 ----
+dds$group <- relevel(dds$group, ref = "control")
+
+# 运行DESeq2 ----
+message("运行DESeq2分析...")
+dds <- DESeq(dds)
+
+# 获取结果 ----
+res <- results(dds, contrast = c("group", "treatment", "control"))
+res$gene_symbol <- mapIds(org.Hs.eg.db, 
+                          keys = rownames(res), 
+                          column = "SYMBOL", 
+                          keytype = "ENSEMBL",
+                          multiVals = "first")
+
+# 保存结果 ----
+write.csv(as.data.frame(res[order(res$padj),]), 
+          file = "results/deseq2_results.csv")
+
+sig_genes <- subset(res, padj < 0.05 & abs(log2FoldChange) > 1)
+write.csv(as.data.frame(sig_genes), 
+          file = "results/significant_genes.csv")
+
+message(paste("显著差异基因数:", nrow(sig_genes)))
+
+# 标准化 ----
+vsd <- vst(dds, blind = FALSE)
+write.csv(assay(vsd), file = "results/normalized_counts.csv")
+
+# 可视化 ----
+message("生成可视化图表...")
+
+# 1. PCA图
+pcaData <- plotPCA(vsd, intgroup = "group", returnData = TRUE)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+
+pca_plot <- ggplot(pcaData, aes(x = PC1, y = PC2, color = group)) +
+    geom_point(size = 3) +
+    xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+    ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+    ggtitle("PCA Plot") +
+    theme_bw()
+
+ggsave("results/figures/pca_plot.png", pca_plot, width = 8, height = 6, dpi = 300)
+
+# 2. 火山图
+volcano_plot <- EnhancedVolcano(
+    res,
+    lab = res$gene_symbol,
+    x = 'log2FoldChange',
+    y = 'padj',
+    title = 'Treatment vs Control',
+    pCutoff = 0.05,
+    FCcutoff = 1
+)
+
+ggsave("results/figures/volcano_plot.png", volcano_plot, width = 10, height = 8, dpi = 300)
+
+# 3. 热图
+top_genes <- head(order(res$padj), 50)
+mat <- assay(vsd)[top_genes, ]
+row_names <- res$gene_symbol[top_genes]
+row_names[is.na(row_names)] <- rownames(mat)[is.na(row_names)]
+rownames(mat) <- row_names
+mat_scaled <- t(scale(t(mat)))
+
+annotation_col <- data.frame(Group = coldata$group)
+rownames(annotation_col) <- colnames(mat)
+
+png("results/figures/heatmap_top50.png", width = 10, height = 12, units = "in", res = 300)
+pheatmap(mat_scaled,
+         annotation_col = annotation_col,
+         cluster_rows = TRUE,
+         cluster_cols = TRUE,
+         main = "Top 50 DEGs Heatmap",
+         color = colorRampPalette(rev(brewer.pal(9, "RdBu")))(100))
+dev.off()
+
+# 4. MA图
+png("results/figures/ma_plot.png", width = 8, height = 6, units = "in", res = 300)
+plotMA(res, main = "MA Plot", ylim = c(-5, 5))
+dev.off()
+
+message("分析完成！结果保存在 results/ 目录")</code></pre>
+
+        <div class="tip-box important">
+          <strong>注意事项：</strong>
+          <ul>
+            <li>本教程使用示例数据，实际分析时请替换为真实数据</li>
+            <li>人类基因组索引构建需要约8GB内存，确保服务器配置足够</li>
+            <li>分析前请检查FASTQ文件的编码格式（Phred+33或Phred+64）</li>
+            <li>建议先在小样本上测试流程，确认无误后再批量处理</li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="book-footer">
+        <p>本教程由南京中医药大学人工智能与信息技术学院编写</p>
+        <p>参考资料：<a href="https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html" target="_blank">DESeq2官方文档</a> | <a href="https://daehwankimlab.github.io/hisat2/" target="_blank">HISAT2文档</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
+</body>
+</html>
