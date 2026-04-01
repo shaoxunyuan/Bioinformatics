@@ -183,25 +183,28 @@ conda create -n rnaseq python=3.9 -y
 conda activate rnaseq</code></pre>
 
         <h3 id="sec-1-3">2.3 安装分析工具</h3>
-        <p>使用conda安装RNA-Seq分析所需的所有工具：</p>
+        <p>先安装 mamba 以加速包管理，然后基于 mamba 安装RNA-Seq分析所需的所有工具：</p>
         
         <pre><code class="language-bash"># 激活环境
 conda activate rnaseq
 
-# 安装质控工具
-conda install -c bioconda fastqc multiqc -y
+# 安装 mamba
+conda install -c conda-forge mamba -y
 
-# 安装比对工具
-conda install -c bioconda hisat2 star bwa -y
+# 基于 mamba 安装质控工具
+mamba install -c bioconda fastqc multiqc -y
 
-# 安装SAM/BAM处理工具
-conda install -c bioconda samtools picard -y
+# 基于 mamba 安装比对工具
+mamba install -c bioconda hisat2 star bwa -y
 
-# 安装定量工具
-conda install -c bioconda subread htseq -y
+# 基于 mamba 安装SAM/BAM处理工具
+mamba install -c bioconda samtools picard -y
 
-# 安装其他实用工具
-conda install -c bioconda sra-tools trimmomatic -y
+# 基于 mamba 安装定量工具
+mamba install -c bioconda subread htseq -y
+
+# 基于 mamba 安装其他实用工具
+mamba install -c bioconda sra-tools trimmomatic -y
 
 # 验证安装
 fastqc --version
