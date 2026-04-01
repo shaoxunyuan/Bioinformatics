@@ -216,11 +216,43 @@ mkdir -p {raw_data,ref_genome,aligned,counts,results,scripts,logs}
 tree</code></pre>
 
         <h4>使用SRA Toolkit下载数据</h4>
+        <p>以下是两种下载 PRJNA960807 数据集的方案：</p>
+        
+        <h5>方案一：直接使用 PRJNA960807 项目名称下载</h5>
         <pre><code class="language-bash"># 进入原始数据目录
 cd ~/rnaseq_project/raw_data
 
-# 示例：下载PRJNA960807项目的SRA数据
-# 批量下载多个样本（选择部分样本作为示例）
+# 使用prefetch直接下载整个项目的数据
+prefetch --option-file <(echo PRJNA960807)
+
+# 解压下载的数据
+for sra_file in *.sra; do
+    echo "Processing ${sra_file}..."
+    fasterq-dump --split-files ${sra_file}
+done</code></pre>
+
+        <h5>方案二：用户输入项目名称下载</h5>
+        <pre><code class="language-bash"># 进入原始数据目录
+cd ~/rnaseq_project/raw_data
+
+# 提示用户输入项目名称
+echo "请输入项目名称（例如：PRJNA960807）："
+read project_name
+
+# 使用prefetch下载指定项目的数据
+prefetch --option-file <(echo ${project_name})
+
+# 解压下载的数据
+for sra_file in *.sra; do
+    echo "Processing ${sra_file}..."
+    fasterq-dump --split-files ${sra_file}
+done</code></pre>
+
+        <h5>方案三：批量下载特定样本（选择部分样本作为示例）</h5>
+        <pre><code class="language-bash"># 进入原始数据目录
+cd ~/rnaseq_project/raw_data
+
+# 批量下载PRJNA960807项目的部分样本
 for accession in SRX20066670 SRX20066671 SRX20066677 SRX20066676 SRX20066680 SRX20066684; do
     echo "Downloading ${accession}..."
     prefetch ${accession}
