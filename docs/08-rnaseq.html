@@ -179,14 +179,14 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 
 # 创建RNA-Seq专用环境
-conda create -n rnaseq python=3.9 -y
-conda activate rnaseq</code></pre>
+conda create -n rnaseq_env -c conda-forge python=3.10 r-base=4.3.2 -y
+conda activate rnaseq_env</code></pre>
 
         <h3 id="sec-1-3">2.3 安装分析工具</h3>
         <p>先安装 mamba 以加速包管理，然后基于 mamba 安装RNA-Seq分析所需的所有工具：</p>
         
         <pre><code class="language-bash"># 激活环境
-conda activate rnaseq
+conda activate rnaseq_env
 
 # 安装 mamba
 conda install -c conda-forge mamba -y
@@ -204,13 +204,13 @@ mamba install -c bioconda samtools picard -y
 mamba install -c bioconda subread htseq -y
 
 # 基于 mamba 安装其他实用工具
-mamba install -c bioconda sra-tools trimmomatic -y
-
-# 安装 salmon（转录本定量工具）
-mamba install -c bioconda salmon -y
+mamba install -c bioconda trimmomatic -y
 
 # 安装 sratoolkit（数据下载工具）
-mamba install -c bioconda sratoolkit -y
+mamba install -c bioconda -c conda-forge -c defaults sratoolkit=3.1.1 -y
+
+# 安装 salmon（转录本定量工具）
+mamba install -c bioconda -c conda-forge salmon=1.10.1 -y
 
 # 验证安装
 fastqc --version
