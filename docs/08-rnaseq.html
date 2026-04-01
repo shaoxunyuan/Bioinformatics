@@ -219,27 +219,27 @@ tree</code></pre>
         <pre><code class="language-bash"># 进入原始数据目录
 cd ~/rnaseq_project/raw_data
 
-# 示例：下载SRA数据（以SRR1234567为例）
-# 批量下载多个样本
-for accession in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+# 示例：下载PRJNA960807项目的SRA数据
+# 批量下载多个样本（选择部分样本作为示例）
+for accession in SRX20066670 SRX20066671 SRX20066677 SRX20066676 SRX20066680 SRX20066684; do
     echo "Downloading ${accession}..."
     prefetch ${accession}
     fasterq-dump --split-files ${accession}
 done
 
 # 或者使用wget直接下载已发布的FASTQ文件
-# 下载示例数据（这里使用测试数据）
-wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR123/007/SRR1234567/SRR1234567_1.fastq.gz
-wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR123/007/SRR1234567/SRR1234567_2.fastq.gz</code></pre>
+# 注意：实际下载时需要根据具体的SRA编号构建正确的URL</code></pre>
 
         <h4>准备样本信息表</h4>
         <pre><code class="language-bash"># 创建样本信息文件
 cat > ~/rnaseq_project/samples.txt << 'EOF'
 sample_id	group	fq1	fq2
-control_1	control	SRR1234567_1.fastq.gz	SRR1234567_2.fastq.gz
-control_2	control	SRR1234568_1.fastq.gz	SRR1234568_2.fastq.gz
-treatment_1	treatment	SRR1234569_1.fastq.gz	SRR1234569_2.fastq.gz
-treatment_2	treatment	SRR1234570_1.fastq.gz	SRR1234570_2.fastq.gz
+normal_1	normal	SRX20066670_1.fastq.gz	SRX20066670_2.fastq.gz
+normal_2	normal	SRX20066671_1.fastq.gz	SRX20066671_2.fastq.gz
+normal_3	normal	SRX20066677_1.fastq.gz	SRX20066677_2.fastq.gz
+stress_24h_1	stress	SRX20066676_1.fastq.gz	SRX20066676_2.fastq.gz
+stress_4h_1	stress	SRX20066680_1.fastq.gz	SRX20066680_2.fastq.gz
+stress_12h_1	stress	SRX20066684_1.fastq.gz	SRX20066684_2.fastq.gz
 EOF</code></pre>
 
         <h3 id="sec-2-2">3.2 数据解压与质控</h3>
