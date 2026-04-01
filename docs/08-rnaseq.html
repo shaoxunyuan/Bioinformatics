@@ -206,11 +206,19 @@ mamba install -c bioconda subread htseq -y
 # 基于 mamba 安装其他实用工具
 mamba install -c bioconda sra-tools trimmomatic -y
 
+# 安装 salmon（转录本定量工具）
+mamba install -c bioconda salmon -y
+
+# 安装 sratoolkit（数据下载工具）
+mamba install -c bioconda sratoolkit -y
+
 # 验证安装
 fastqc --version
 hisat2 --version
 samtools --version
-featureCounts --version</code></pre>
+featureCounts --version
+salmon --version
+prefetch --version</code></pre>
 
         <div class="tip-box">
           <strong>提示：</strong>如果conda安装较慢，可以配置国内镜像源加速下载。
