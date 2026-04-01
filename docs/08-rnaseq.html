@@ -252,7 +252,7 @@ cd ~/rnaseq_project/raw_data
 # gunzip *.gz
 
 # 查看FASTQ文件格式
-zcat SRR1234567_1.fastq.gz | head -12
+zcat SRX20066670_1.fastq.gz | head -12
 
 # FASTQ格式说明：
 # 第1行：序列标识符（以@开头）
@@ -267,7 +267,7 @@ mkdir -p ~/rnaseq_project/clean_data
 # 运行Trimmomatic进行质控
 cd ~/rnaseq_project/raw_data
 
-for sample in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+for sample in SRX20066670 SRX20066671 SRX20066677 SRX20066676 SRX20066680 SRX20066684; do
     echo "Processing ${sample}..."
     trimmomatic PE -threads 4 \
         ${sample}_1.fastq.gz ${sample}_2.fastq.gz \
@@ -462,7 +462,7 @@ head gene_id_to_name.txt</code></pre>
 cd ~/rnaseq_project
 
 # 比对脚本
-for sample in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+for sample in SRX20066670 SRX20066671 SRX20066677 SRX20066676 SRX20066680 SRX20066684; do
     echo "Aligning ${sample}..."
     
     hisat2 -p 8 \
@@ -491,10 +491,10 @@ done</code></pre>
 
         <h4>查看比对统计</h4>
         <pre><code class="language-bash"># 查看比对汇总
-cat logs/SRR1234567_align_summary.txt
+cat logs/SRX20066670_align_summary.txt
 
 # 使用samtools统计比对率
-samtools flagstat aligned/SRR1234567.sorted.bam</code></pre>
+samtools flagstat aligned/SRX20066670.sorted.bam</code></pre>
 
         <h3 id="sec-4-2">5.2 STAR比对（可选）</h3>
         <p>STAR是另一种常用的RNA-Seq比对工具，速度更快但内存需求更高。</p>
@@ -513,7 +513,7 @@ STAR --runMode genomeGenerate \
 
         <h4>运行STAR比对</h4>
         <pre><code class="language-bash"># STAR比对
-for sample in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+for sample in SRX20066670 SRX20066671 SRX20066677 SRX20066676 SRX20066680 SRX20066684; do
     echo "Aligning ${sample} with STAR..."
     
     STAR --runThreadN 8 \
@@ -542,7 +542,7 @@ done</code></pre>
         <pre><code class="language-bash"># 统计每个样本的比对情况
 echo -e "Sample\tTotal\tMapped\tUnique\tMulti" > aligned/mapping_stats.txt
 
-for sample in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+for sample in SRX20066670 SRX20066671 SRX20066677 SRX20066676 SRX20066680 SRX20066684; do
     total=$(samtools view -c aligned/${sample}.sorted.bam)
     mapped=$(samtools view -c -F 4 aligned/${sample}.sorted.bam)
     unique=$(samtools view -c -q 30 aligned/${sample}.sorted.bam)
@@ -578,22 +578,22 @@ samtools index aligned/sample.sorted.bam</code></pre>
         <h3 id="sec-5-2">6.2 BAM文件排序与索引</h3>
         
         <pre><code class="language-bash"># 查看BAM文件头信息
-samtools view -H aligned/SRR1234567.sorted.bam
+samtools view -H aligned/SRX20066670.sorted.bam
 
 # 查看特定区域的比对
-samtools view aligned/SRR1234567.sorted.bam chr1:1000000-1001000 | head
+samtools view aligned/SRX20066670.sorted.bam chr1:1000000-1001000 | head
 
 # 统计覆盖度
-samtools depth aligned/SRR1234567.sorted.bam | head
+samtools depth aligned/SRX20066670.sorted.bam | head
 
 # 统计每个染色体的reads数
-samtools idxstats aligned/SRR1234567.sorted.bam</code></pre>
+samtools idxstats aligned/SRX20066670.sorted.bam</code></pre>
 
         <h3 id="sec-5-3">6.3 去除重复序列</h3>
         <p>PCR重复会影响表达量定量的准确性，需要使用Picard或samtools去除。</p>
         
         <pre><code class="language-bash"># 使用Picard去除重复
-for sample in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+for sample in SRX20066670 SRX20066671 SRX20066677 SRX20066676 SRX20066680 SRX20066684; do
     echo "Removing duplicates for ${sample}..."
     
     picard MarkDuplicates \
@@ -605,7 +605,7 @@ for sample in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
 done
 
 # 或者使用samtools标记重复（不删除，只标记）
-samtools markdup aligned/SRR1234567.sorted.bam aligned/SRR1234567.markdup.bam</code></pre>
+samtools markdup aligned/SRX20066670.sorted.bam aligned/SRX20066670.markdup.bam</code></pre>
       </section>
 
       <!-- 第七章：表达量定量 -->
@@ -650,7 +650,7 @@ head counts/count_matrix.txt</code></pre>
         <p>HTSeq是另一个常用的计数工具，与DESeq2兼容性良好。</p>
         
         <pre><code class="language-bash"># 使用HTSeq进行计数
-for sample in SRR1234567 SRR1234568 SRR1234569 SRR1234570; do
+for sample in SRX20066670 SRX20066671 SRX20066677 SRX20066676 SRX20066680 SRX20066684; do
     echo "Counting ${sample}..."
     
     htseq-count \
@@ -674,10 +674,12 @@ paste counts/*_counts.txt | \
         <pre><code class="language-bash"># 创建样本信息表
 cat > counts/sample_info.txt << 'EOF'
 sample_id	group
-SRR1234567	control
-SRR1234568	control
-SRR1234569	treatment
-SRR1234570	treatment
+SRX20066670	normal
+SRX20066671	normal
+SRX20066677	normal
+SRX20066676	stress
+SRX20066680	stress
+SRX20066684	stress
 EOF
 
 # 查看最终的表达矩阵
@@ -1100,7 +1102,7 @@ export -f process_sample
 export PROJECT_DIR THREADS
 
 # 样本列表
-SAMPLES=("SRR1234567" "SRR1234568" "SRR1234569" "SRR1234570")
+SAMPLES=("SRX20066670" "SRX20066671" "SRX20066677" "SRX20066676" "SRX20066680" "SRX20066684")
 
 # 顺序处理（或使用parallel并行处理）
 for sample in "${SAMPLES[@]}"; do
