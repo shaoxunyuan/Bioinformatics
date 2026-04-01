@@ -23,7 +23,6 @@
           </li>
           <li><a class="lv1" href="#sec-1">二、Linux环境准备</a>
             <div class="lv2">
-              <a href="#sec-1-1"><span class="n">2.1</span><span>必要软件安装</span></a>
               <a href="#sec-1-2"><span class="n">2.2</span><span>Conda环境配置</span></a>
               <a href="#sec-1-3"><span class="n">2.3</span><span>安装分析工具</span></a>
             </div>
@@ -126,33 +125,6 @@
       <section id="sec-1">
         <h2>二、Linux环境准备</h2>
         
-        <h3 id="sec-1-1">2.1 必要软件安装</h3>
-        <p>在进行转录组分析前，需要确保系统已安装以下基础工具：</p>
-        
-        <h4>Ubuntu/Debian系统</h4>
-        <pre><code class="language-bash"># 更新系统
-sudo apt-get update
-sudo apt-get upgrade -y
-
-# 安装基础工具
-sudo apt-get install -y wget curl git unzip build-essential
-
-# 安装常用生物信息学依赖
-sudo apt-get install -y zlib1g-dev libncurses5-dev libncursesw5-dev
-sudo apt-get install -y libbz2-dev liblzma-dev libssl-dev
-sudo apt-get install -y libcurl4-openssl-dev libxml2-dev</code></pre>
-
-        <h4>CentOS/RHEL系统</h4>
-        <pre><code class="language-bash"># 更新系统
-sudo yum update -y
-
-# 安装基础工具
-sudo yum install -y wget curl git unzip gcc gcc-c++ make
-
-# 安装开发库
-sudo yum install -y zlib-devel ncurses-devel bzip2-devel
-sudo yum install -y xz-devel openssl-devel libcurl-devel libxml2-devel</code></pre>
-
         <h3 id="sec-1-2">2.2 Conda环境配置</h3>
         <p>Conda是生物信息学软件管理的最佳工具，推荐使用Miniconda。</p>
         
