@@ -4,23 +4,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Practice · 生物信息学基础教程</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,500;0,9..40,700;1,9..40,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="practice.css">
 </head>
-<body>
-  <div class="book-shell">
-    <aside class="book-sidebar" aria-label="练习目录">
-      <div class="practice-index-brand"><a href="../index.html">生物信息学基础教程</a></div>
-      <ul class="practice-index-nav">
-        <li><a href="01-online-sequence-alignment.html">在线序列比对（NCBI 与 CNGB）</a></li>
-      </ul>
+<body class="practice-index-body">
+  <div class="book-shell practice-index-shell">
+    <aside class="book-sidebar practice-index-sidebar" aria-label="练习目录">
+      <div class="practice-index-brand-block">
+        <a class="practice-index-brand" href="../index.html">生物信息学基础教程</a>
+        <p class="practice-index-side-kicker">练习目录</p>
+      </div>
+      <nav class="practice-index-nav-wrap" aria-label="练习条目">
+        <ul class="practice-index-nav">
+          <li>
+            <a class="practice-index-nav-link" href="01-online-sequence-alignment.html">
+              <span class="pin-num">01</span>
+              <span class="pin-text">在线序列比对（NCBI 与 CNGB）</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </aside>
     <main class="book-main practice-index-main">
-      <h1>Practice</h1>
+      <header class="practice-index-hero">
+        <p class="practice-index-eyebrow">动手练习</p>
+        <h1 class="practice-index-title">Practice</h1>
+        <div class="practice-index-title-rule" aria-hidden="true"></div>
+      </header>
       <div class="practice-modules">
         <a class="practice-module-card" href="01-online-sequence-alignment.html">
-          <div class="pm-tit">在线序列比对（NCBI 与 CNGB）</div>
-          <p class="pm-desc">NCBI BLAST 与 CNGBdb 网页 BLASTN 流程与结果记录。</p>
+          <div class="pm-accent" aria-hidden="true"></div>
+          <div class="pm-inner">
+            <span class="pm-badge">01</span>
+            <div class="pm-copy">
+              <h2 class="pm-tit">在线序列比对（NCBI 与 CNGB）</h2>
+              <p class="pm-desc">NCBI BLAST 与 CNGBdb 网页 BLASTN 流程与结果记录。</p>
+            </div>
+            <span class="pm-arrow" aria-hidden="true">→</span>
+          </div>
         </a>
       </div>
     </main>

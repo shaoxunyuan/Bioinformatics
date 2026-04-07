@@ -1,22 +1,58 @@
 /* 练习子站：与 docs 讲义共用 style.css 变量 */
 
-/* ---- 练习首页：左栏目录 + 右栏模块 ---- */
+/* ---- 练习首页：左栏目录 + 右栏模块（美化版） ---- */
+.practice-index-body {
+  min-height: 100vh;
+}
+
+.practice-index-shell .book-sidebar {
+  background: linear-gradient(180deg, #f0f3f5 0%, #e8ecef 100%);
+  border-right: 0;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.06);
+  padding: 0;
+}
+
+.practice-index-shell .book-main {
+  background:
+    radial-gradient(ellipse 80% 50% at 100% 0%, rgba(13, 148, 136, 0.07), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(26, 26, 46, 0.04), transparent 50%),
+    var(--paper);
+  padding: 36px 40px 48px;
+}
+
+.practice-index-brand-block {
+  padding: 22px 20px 18px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(8px);
+}
+
 .practice-index-brand {
-  padding: 14px 18px 12px;
-  font-size: 14px;
+  display: block;
+  font-size: 15px;
   font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--accent);
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 8px;
-}
-
-.practice-index-brand a {
-  color: inherit;
   text-decoration: none !important;
+  line-height: 1.35;
+  transition: color 0.2s ease;
 }
 
-.practice-index-brand a:hover {
+.practice-index-brand:hover {
   color: var(--accent-hover);
+}
+
+.practice-index-side-kicker {
+  margin: 10px 0 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.practice-index-nav-wrap {
+  padding: 16px 12px 24px;
 }
 
 .practice-index-nav {
@@ -25,53 +61,200 @@
   padding: 0;
 }
 
-.practice-index-nav a {
-  display: block;
-  padding: 10px 18px;
+.practice-index-nav-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  margin: 4px 0;
+  border-radius: 12px;
   font-size: 13px;
+  line-height: 1.5;
   color: var(--ink-light);
   text-decoration: none !important;
+  border: 1px solid transparent;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
 }
 
-.practice-index-nav a:hover {
+.practice-index-nav-link:hover {
   color: var(--ink);
-  background: rgba(13, 148, 136, 0.06);
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(13, 148, 136, 0.2);
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.08);
+}
+
+.practice-index-nav-link .pin-num {
+  flex-shrink: 0;
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(145deg, var(--accent) 0%, #0a7c73 100%);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(13, 148, 136, 0.35);
+}
+
+.practice-index-nav-link .pin-text {
+  padding-top: 3px;
+  font-weight: 500;
+}
+
+/* 右侧主区 */
+.practice-index-hero {
+  margin-bottom: 28px;
+}
+
+.practice-index-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 8px;
+  opacity: 0.9;
+}
+
+.practice-index-title {
+  font-family: "DM Sans", var(--font-sans);
+  font-size: clamp(2.25rem, 4vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.practice-index-title-rule {
+  width: 48px;
+  height: 4px;
+  margin-top: 16px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), rgba(13, 148, 136, 0.25));
 }
 
 .practice-index-main .practice-modules {
   display: grid;
-  gap: 14px;
-  max-width: 36rem;
-  margin-top: 10px;
+  gap: 18px;
+  max-width: 38rem;
 }
 
 .practice-module-card {
+  position: relative;
   display: block;
-  padding: 16px 18px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--paper-elevated);
+  border-radius: 16px;
   text-decoration: none !important;
   color: inherit;
-  transition: border-color 0.15s;
+  overflow: hidden;
+  border: 1px solid rgba(231, 229, 228, 0.95);
+  background: var(--paper-elevated);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 12px 40px rgba(26, 26, 46, 0.06);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
 .practice-module-card:hover {
-  border-color: var(--accent);
+  transform: translateY(-3px);
+  border-color: rgba(13, 148, 136, 0.35);
+  box-shadow:
+    0 4px 12px rgba(13, 148, 136, 0.12),
+    0 24px 48px rgba(26, 26, 46, 0.1);
+}
+
+.practice-module-card .pm-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--accent) 0%, #0a7c73 100%);
+  border-radius: 16px 0 0 16px;
+}
+
+.practice-module-card .pm-inner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 24px 22px 26px;
+}
+
+.practice-module-card .pm-badge {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "DM Sans", var(--font-sans);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(13, 148, 136, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(13, 148, 136, 0.18);
+}
+
+.practice-module-card .pm-copy {
+  flex: 1;
+  min-width: 0;
 }
 
 .practice-module-card .pm-tit {
+  font-size: 16px;
   font-weight: 700;
-  font-size: 15px;
+  letter-spacing: -0.02em;
   color: var(--ink);
-  margin-bottom: 8px;
+  margin: 0 0 8px;
+  line-height: 1.35;
 }
 
 .practice-module-card .pm-desc {
   font-size: 13px;
   color: var(--ink-light);
-  line-height: 1.55;
+  line-height: 1.6;
   margin: 0;
+}
+
+.practice-module-card .pm-arrow {
+  flex-shrink: 0;
+  font-size: 18px;
+  color: var(--ink-muted);
+  opacity: 0.5;
+  transition: transform 0.25s ease, opacity 0.25s ease, color 0.25s ease;
+}
+
+.practice-module-card:hover .pm-arrow {
+  transform: translateX(4px);
+  opacity: 1;
+  color: var(--accent);
+}
+
+@media (max-width: 980px) {
+  .practice-index-shell .book-main {
+    padding: 24px 18px 36px;
+  }
+
+  .practice-module-card .pm-inner {
+    flex-wrap: wrap;
+    padding: 18px 18px 18px 22px;
+  }
+
+  .practice-module-card .pm-arrow {
+    width: 100%;
+    text-align: right;
+    margin-top: -8px;
+  }
 }
 
 /* 单篇练习页 */
