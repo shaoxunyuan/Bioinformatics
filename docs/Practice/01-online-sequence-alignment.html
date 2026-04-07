@@ -20,18 +20,23 @@
         <div class="toc__title">目录</div>
         <ul class="book-nav toc">
           <li><a class="lv1" href="#sec-intro">一、练习说明</a></li>
-          <li><a class="lv1" href="#sec-prep">二、实验准备</a></li>
+          <li><a class="lv1" href="#sec-prep">二、实验准备</a>
+            <div class="lv2">
+              <a href="#sec-prep-nt"><span class="n">2.1</span><span>核酸 LC656365.1</span></a>
+              <a href="#sec-prep-aa"><span class="n">2.2</span><span>蛋白 BAB40370.1</span></a>
+            </div>
+          </li>
           <li><a class="lv1" href="#sec-ncbi">三、任务 A：NCBI 在线 BLAST</a>
             <div class="lv2">
-              <a href="#sec-ncbi-1"><span class="n">A.1</span><span>入口与程序选择</span></a>
-              <a href="#sec-ncbi-2"><span class="n">A.2</span><span>提交与记录要点</span></a>
+              <a href="#sec-ncbi-blastn"><span class="n">A.1</span><span>BLASTN</span></a>
+              <a href="#sec-ncbi-blastp"><span class="n">A.2</span><span>BLASTP</span></a>
             </div>
           </li>
           <li><a class="lv1" href="#sec-cngb">四、任务 B：CNGBdb 在线 BLAST</a>
             <div class="lv2">
-              <a href="#sec-cngb-1"><span class="n">B.1</span><span>入口与界面</span></a>
-              <a href="#sec-cngb-2"><span class="n">B.2</span><span>参数与数据库</span></a>
-              <a href="#sec-cngb-3"><span class="n">B.3</span><span>提交与结果</span></a>
+              <a href="#sec-cngb-1"><span class="n">B.1</span><span>入口与程序</span></a>
+              <a href="#sec-cngb-2"><span class="n">B.2</span><span>核酸 BLASTN</span></a>
+              <a href="#sec-cngb-3"><span class="n">B.3</span><span>蛋白 BLASTP</span></a>
             </div>
           </li>
           <li><a class="lv1" href="#sec-compare">五、两个平台对比</a></li>
@@ -47,19 +52,38 @@
         </nav>
 
         <h1>练习：使用 NCBI 与 CNGB 网站做在线序列比对</h1>
-        <p>本页为<strong>动手练习</strong>指南，帮助你在浏览器中完成核酸序列的在线比对，并分别体验 <strong>NCBI BLAST</strong> 与 <strong>CNGBdb（国家基因库数据门户）BLAST</strong> 的流程与差异。更系统的 NCBI BLAST 图文说明见教程正文 <a href="../01-alignment.html">《使用 NCBI 在线 BLAST 进行序列比对》</a>。</p>
+        <p>本页为<strong>动手练习</strong>指南：在浏览器中分别对<strong>核酸</strong>与<strong>蛋白</strong>做一次在线 BLAST，并比较 <strong>NCBI BLAST</strong> 与 <strong>CNGBdb BLAST</strong> 的流程与结果。示例序列来自 CNGBdb 数据资源（与 GenBank 同源），可在源页面核对元数据。更系统的 NCBI BLAST 说明见教程正文 <a href="../01-alignment.html">《使用 NCBI 在线 BLAST 进行序列比对》</a>。</p>
 
         <h2 id="sec-intro">一、练习说明</h2>
         <ul>
-          <li><strong>目标</strong>：独立完成一次 BLASTN（核酸对核酸库）检索；在同一条查询序列上，分别使用 NCBI 与 CNGBdb 提交任务，并保存关键结果信息。</li>
-          <li><strong>环境</strong>：现代浏览器即可；部分站点访问速度因网络环境而异，若长时间无响应可更换网络或错峰重试。</li>
-          <li><strong>安全提示</strong>：勿在公开平台提交尚未发表、涉密或含个人信息的未脱敏序列；教学练习请使用本页提供的示例或公开序列。</li>
+          <li><strong>目标</strong>：① 使用 <strong>BLASTN</strong> 检索核酸记录 <strong>LC656365.1</strong>（人源 ACE2 基因部分 CDS，129 bp）；② 使用 <strong>BLASTP</strong> 检索蛋白记录 <strong>BAB40370.1</strong>（ACE2［<em>Homo sapiens</em>］，805 aa）。两条查询均在 NCBI 与 CNGBdb 各运行一次，并记录关键结果。</li>
+          <li><strong>环境</strong>：现代浏览器即可；若站点响应慢可更换网络或错峰重试。</li>
+          <li><strong>安全提示</strong>：勿在公开平台提交未发表或涉密序列；本练习仅使用页面提供的公开序列。</li>
         </ul>
 
         <h2 id="sec-prep">二、实验准备</h2>
-        <p>下面是一条可用于 <strong>BLASTN</strong> 的示例查询（可整段复制）。你也可以改用课程指定序列或自己准备的短读段（建议先去掉接头、质量过低的碱基）。</p>
-        <pre><code class="language-text">&gt;demo_query_hbb_fragment
-ATGGTGCACCTGACTCCTGAGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTGAACGTGGATGAAGTTGGTGGTGAGGCCCTGGGCAGGCTGCTGGTGGTCTACCCTTGGACCCAGAGGTTCTTTGAGTCCTTTGGGGATCTGTCCACTCCTGATGCTGTTATGGGCAACCCTAAGGTGAAGGCTCATGGCAAGAAAGTGCTCGGTGCCTT</code></pre>
+
+        <h3 id="sec-prep-nt">2.1 核酸序列（BLASTN）</h3>
+        <p>记录 <strong>LC656365.1</strong>：<a href="https://db.cngb.org/data_resources/sequence/LC656365.1" target="_blank" rel="noopener noreferrer">CNGBdb 序列页</a>（<em>Homo sapiens ACE2 gene … partial cds</em>，DNA，129 bp）。下面为可复制的 FASTA（与 NCBI/GenBank 一致）：</p>
+        <pre><code class="language-text">&gt;LC656365.1 Homo sapiens ACE2 gene for angiotensin converting enzyme 2, partial cds
+ATGAGCACCATCTACAGTACTGGAAAAGTTTGTAACCCAGATAATCCACAAGAATGCTTATTACTTGAAC
+CAGGTAGGCTACTAATTTTTAGTAGTGATTATGAAATTTACTTTTCTCTCAGATTTTAA</code></pre>
+
+        <h3 id="sec-prep-aa">2.2 蛋白序列（BLASTP）</h3>
+        <p>记录 <strong>BAB40370.1</strong>：<a href="https://db.cngb.org/data_resources/sequence/BAB40370.1" target="_blank" rel="noopener noreferrer">CNGBdb 序列页</a>（ACE2［<em>Homo sapiens</em>］，蛋白质，805 aa）。下面为可复制的 FASTA：</p>
+        <pre><code class="language-text">&gt;BAB40370.1 ACE2 [Homo sapiens]
+MSSSSWLLLSLVAVTAAQSTIEEQAKTFLDKFNHEAEDLFYQSSLASWNYNTNITEENVQNMNNAGDKWS
+AFLKEQSTLAQMYPLQEIQNLTVKLQLQALQQNGSSVLSEDKSKRLNTILNTMSTIYSTGKVCNPDNPQE
+CLLLEPGLNEIMANSLDYNERLWAWESWRSEVGKQLRPLYEEYVVLKNEMARANHYEDYGDYWRGDYEVN
+GVDGYDYSRGQLIEDVEHTFEEIKPLYEHLHAYVRAKLMNAYPSYISPIGCLPAHLLGDMWGRFWTNLYS
+LTVPFGQKPNIDVTDAMVDQAWDAQRIFKEAEKFFVSVGLPNMTQGFWENSMLTDPGNVQKAVCHPTAWD
+LGKGDFRILMCTKVTMDDFLTAHHEMGHIQYDMAYAAQPFLLRNGANEGFHEAVGEIMSLSAATPKHLKS
+IGLLSPDFQEDNETEINFLLKQALTIVGTLPFTYMLEKWRWMVFKGEIPKDQWMKKWWEMKREIVGVVEP
+VPHDETYCDPASLFHVSNDYSFIRYYTRTLYQFQFQEALCQAAKHEGPLHKCDISNSTEAGQKLFNMLRL
+GKSEPWTLALENVVGAKNMNVRPLLNYFEPLFTWLKDQNKNSFVGWSTDWSPYADQSIKVRISLKSALGD
+RAYEWNDNEMYLFRSSVAYAMRQYFLKVKNQMILFGEEDVRVANLKPRISFNFFVTAPKNVSDIIPRTEV
+EKAIRMSRSRINDAFRLNDNSLEFLGIQPTLGPPNQPPVSIWLIVFGVVMGVIVVGIVILIFTGIRDRKK
+KNKARSGENPYASIDISKGENNPGFQNTDDVQTSF</code></pre>
 
         <div class="cols">
           <div class="card">
@@ -74,48 +98,47 @@ ATGGTGCACCTGACTCCTGAGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTGAACGTGGATGAAGTTGGTGGTGA
           <div class="card">
             <div class="t">练习记录（自备纸笔或文档）</div>
             <div class="d">
-              建议记录：提交时间、所选程序（如 BLASTN）、数据库名称、最优匹配的 <strong>Accession</strong>、<strong>Identity / Query cover</strong>、<strong>E-value</strong>，以及 NCBI 与 CNGBdb 各前 3 条标题是否一致（简要说明可能原因）。
+              对每条查询分别记录：程序（BLASTN / BLASTP）、数据库名、最优命中 <strong>Accession</strong>、<strong>Identity</strong>、<strong>Query cover</strong>、<strong>E-value</strong>；并简要对比 NCBI 与 CNGBdb 第一条命中是否一致及可能原因。
             </div>
           </div>
         </div>
 
         <h2 id="sec-ncbi">三、任务 A：NCBI 在线 BLAST</h2>
 
-        <h3 id="sec-ncbi-1">A.1 入口与程序选择</h3>
+        <h3 id="sec-ncbi-blastn">A.1 核酸：BLASTN</h3>
         <ol>
-          <li>打开 <a href="https://blast.ncbi.nlm.nih.gov/" target="_blank" rel="noopener noreferrer">NCBI BLAST 首页</a>，在 <strong>Nucleotide BLAST</strong> 区域进入核酸比对（即 BLASTN 任务页）。</li>
-          <li>将示例序列粘贴进 <strong>Query sequence</strong> 文本框（保留或删除 FASTA 头行均可，按页面提示操作）。</li>
-          <li>在 <strong>Choose Search Set</strong> 中先使用默认的核酸库（如 <code>nr</code> 或页面推荐的 “Standard databases”），以熟悉结果界面；若课程要求指定库（如 RefSeq 某子集），按教师要求修改。</li>
+          <li>在 NCBI BLAST 首页进入 <strong>Nucleotide BLAST</strong>（BLASTN）。</li>
+          <li>将 <strong>LC656365.1</strong> 的 FASTA 粘贴到查询框。</li>
+          <li>数据库可先保持默认（如 <code>nr</code> 或页面推荐集合），运行并记录最优命中是否指向 ACE2 / 同源基因及统计量。</li>
         </ol>
 
-        <h3 id="sec-ncbi-2">A.2 提交与记录要点</h3>
+        <h3 id="sec-ncbi-blastp">A.2 蛋白：BLASTP</h3>
         <ol>
-          <li>展开 <strong>Algorithm parameters</strong>（如有），可先保持默认；关注 <strong>Expect threshold（E-value）</strong> 的默认值，思考其含义（见教程正文）。</li>
-          <li>点击 <strong>BLAST</strong> 运行，等待结果页加载完成后，在 <strong>Descriptions</strong> 中查看排序靠前的命中，在 <strong>Alignments</strong> 中查看具体比对行。</li>
-          <li>将最优命中与关键统计量记入你的练习记录。</li>
+          <li>在 NCBI BLAST 首页进入 <strong>Protein BLAST</strong>（BLASTP）。</li>
+          <li>将 <strong>BAB40370.1</strong> 的 FASTA 粘贴到查询框。</li>
+          <li>使用默认蛋白库运行，记录最优命中与关键参数；勿与 BLASTN 页面混淆。</li>
         </ol>
 
         <h2 id="sec-cngb">四、任务 B：CNGBdb 在线 BLAST</h2>
-        <p>CNGBdb 的 BLAST 服务由国家基因库数据门户提供，界面与数据库选项与 NCBI 不尽相同，适合检索与其收录项目、库内数据相关的序列。官方说明与入口见 <a href="https://db.cngb.org/blast" target="_blank" rel="noopener noreferrer">BLAST service of CNGBdb</a>。</p>
+        <p>入口：<a href="https://db.cngb.org/blast" target="_blank" rel="noopener noreferrer">CNGBdb BLAST</a>。程序命名与 NCBI 习惯一致：核酸用 <strong>BLASTN</strong>，蛋白用 <strong>BLASTP</strong>。</p>
 
-        <h3 id="sec-cngb-1">B.1 入口与界面</h3>
+        <h3 id="sec-cngb-1">B.1 入口与程序选择</h3>
         <ol>
-          <li>在浏览器打开 <a href="https://db.cngb.org/blast" target="_blank" rel="noopener noreferrer">https://db.cngb.org/blast</a>。</li>
-          <li>在页面中选择与核酸查询对应的程序，例如 <strong>BLASTN</strong>（核酸序列搜索核酸数据库）。其他程序（BLASTP、BLASTX、TBLASTN、TBLASTX）与 NCBI 命名习惯一致，可按查询类型切换。</li>
-          <li>将同一条示例序列粘贴到查询框中。</li>
+          <li>打开上述 BLAST 页面。</li>
+          <li>先选择 <strong>BLASTN</strong>，完成核酸任务后再切换到 <strong>BLASTP</strong> 做蛋白任务。</li>
         </ol>
 
-        <h3 id="sec-cngb-2">B.2 参数与数据库</h3>
+        <h3 id="sec-cngb-2">B.2 核酸：BLASTN（LC656365.1）</h3>
         <ol>
-          <li>在数据库（或目标库）列表中选择一项适合教学或题目要求的库。不同库覆盖的数据来源不同：若列表中有 “综合 / 非冗余 / 默认” 类选项，可先选默认完成第一次运行，再与 NCBI 结果对照。</li>
-          <li>查看页面是否提供 E-value、word size、罚分矩阵等高级参数；首次运行建议用默认，第二次可尝试收紧 E-value 观察命中数量变化。</li>
+          <li>粘贴 2.1 节核酸 FASTA，选择合适核酸数据库（按页面选项或课程要求）。</li>
+          <li>提交运行，将结果与 NCBI BLASTN 对照（基因/Accession、排序差异等）。</li>
         </ol>
 
-        <h3 id="sec-cngb-3">B.3 提交与结果</h3>
+        <h3 id="sec-cngb-3">B.3 蛋白：BLASTP（BAB40370.1）</h3>
         <ol>
-          <li>提交任务后等待队列与计算完成（高峰期可能略慢）。</li>
-          <li>在结果列表中同样记录最优命中的标识符、相似度、覆盖度与 E-value；与 NCBI 结果对比：物种/基因是否一致、排序差异主要来自数据库范围还是参数。</li>
-          <li>若结果为空或极少，检查是否选错程序（BLASTN vs BLASTP）、序列是否含大量模糊碱基（N）、或数据库是否过窄。</li>
+          <li>切换到 <strong>BLASTP</strong>，粘贴 2.2 节蛋白 FASTA。</li>
+          <li>提交运行，同样记录并与 NCBI BLASTP 结果对照。</li>
+          <li>若几乎无命中，检查是否误用 BLASTN、序列是否截断或含非法字符。</li>
         </ol>
 
         <h2 id="sec-compare">五、两个平台对比（小结）</h2>
@@ -130,27 +153,27 @@ ATGGTGCACCTGACTCCTGAGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTGAACGTGGATGAAGTTGGTGGTGA
           <tbody>
             <tr style="border-bottom:1px solid var(--border);">
               <td style="padding:8px 10px; color:var(--ink); font-weight:600;">典型用途</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">全球最常用的通用检索入口，库种类多、文档丰富</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">便于对接国家基因库收录数据与相关项目库</td>
+              <td style="padding:8px 10px; color:var(--ink-light);">通用检索入口，核酸/蛋白程序齐全，文档丰富</td>
+              <td style="padding:8px 10px; color:var(--ink-light);">对接国家基因库整合数据与项目库</td>
             </tr>
             <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:8px 10px; color:var(--ink); font-weight:600;">数据库</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">nr、RefSeq、nt 等，可选范围大</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">以 CNGBdb 整合库为主，选项与 NCBI 不完全相同</td>
+              <td style="padding:8px 10px; color:var(--ink); font-weight:600;">本练习</td>
+              <td style="padding:8px 10px; color:var(--ink-light);">BLASTN + BLASTP 各一次</td>
+              <td style="padding:8px 10px; color:var(--ink-light);">同左，注意程序与序列类型匹配</td>
             </tr>
             <tr style="border-bottom:1px solid var(--border);">
               <td style="padding:8px 10px; color:var(--ink); font-weight:600;">结果解读</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">Graphic summary、Descriptions、Alignments 等模块与教程一致</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">关注列表字段含义，可与 NCBI 同名指标对照理解</td>
+              <td style="padding:8px 10px; color:var(--ink-light);">Graphic summary、Descriptions、Alignments 等</td>
+              <td style="padding:8px 10px; color:var(--ink-light);">字段与 NCBI 类似，注意同一指标名称是否一致</td>
             </tr>
           </tbody>
         </table>
 
         <h2 id="sec-hw">六、作业与拓展</h2>
         <ul>
-          <li><strong>必做</strong>：在同一查询下，分别截取 NCBI 与 CNGBdb 的<strong>第一条命中</strong>的标题行与 E-value，说明两条记录是否指向同一基因/同一参考序列（若不一致，简述可能原因）。</li>
-          <li><strong>选做</strong>：将查询改为一条课代表定的未知短序列（或自行从 RefSeq 截取 80–120 bp），重复双平台比对，比较前 5 条命中物种分布。</li>
-          <li><strong>拓展阅读</strong>：教程章节 <a href="../01-alignment.html">序列比对（NCBI 详解）</a>；思考何时应使用本地 BLAST 或命令行流程处理批量数据。</li>
+          <li><strong>必做</strong>：对 <strong>LC656365.1</strong> 与 <strong>BAB40370.1</strong> 各写一行小结：在 NCBI 与 CNGBdb 上<strong>第一条命中</strong>的标题（或 Accession）与 E-value 是否一致，若不一致简述可能原因（库范围、版本、注释差异等）。</li>
+          <li><strong>选做</strong>：在 CNGBdb 源序列页查看两条记录的谱系（Lineage）与分子类型，对照 BLAST 结果中的物种信息。</li>
+          <li><strong>拓展阅读</strong>：<a href="../01-alignment.html">教程 · 序列比对（NCBI 详解）</a>。</li>
         </ul>
 
         <p class="practice-footer-note">
