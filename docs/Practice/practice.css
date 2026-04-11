@@ -363,7 +363,7 @@
 .mermaid-figure .mermaid {
   display: flex;
   justify-content: center;
-  min-height: 280px;
+  min-height: 420px;
 }
 
 .mermaid-figure svg {
@@ -379,6 +379,12 @@
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+.practice-figure--half img {
+  max-width: 50%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .practice-figure figcaption {

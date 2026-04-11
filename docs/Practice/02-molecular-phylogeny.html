@@ -51,7 +51,7 @@
           <li><a class="lv1" href="#sec-5">五、使用 R 语言构建进化树</a>
             <div class="lv2">
               <a href="#sec-5-1"><span class="n">5.1</span><span>R 脚本下载</span></a>
-              <a href="#sec-5-2"><span class="n">5.2</span><span>流程概览</span></a>
+              <a href="#sec-5-2"><span class="n">5.2</span><span>顺序流程图</span></a>
               <a href="#sec-5-3"><span class="n">5.3</span><span>步骤说明与结果图</span></a>
             </div>
           </li>
@@ -203,25 +203,18 @@
         </ul>
         <p>脚本默认与 <code>INS_cds.fasta</code> 位于同一目录时可直接运行；若路径不同，请修改脚本中的 <code>input_fasta</code>。</p>
 
-        <h3 id="sec-5-2">5.2 流程概览（思维导图式）</h3>
-        <p>以下按脚本执行顺序概括主要环节（中心为「INS CDS 进化树」）：</p>
-        <figure class="mermaid-figure" aria-label="R 建树流程思维导图">
-          <div class="mermaid">mindmap
-  root((INS CDS 进化树))
-    安装并加载 R 包
-      Biostrings muscle ape ggtree ggplot2
-    读入 FASTA
-      readDNAStringSet
-    多序列比对
-      muscle 转 DNAbin
-    遗传距离与建树
-      TN93 与 fastme.bal
-    定根
-      最远 tip 作外群 root
-    标签与分类群
-      物种名与 Taxonomic Group 配色
-    绘图与导出
-      ggtree 与 ggsave PNG</div>
+        <h3 id="sec-5-2">5.2 流程概览（顺序流程图）</h3>
+        <p>下图自上而下为脚本执行顺序；箭头表示步骤先后关系。</p>
+        <figure class="mermaid-figure" aria-label="R 建树顺序流程图">
+          <div class="mermaid">flowchart TD
+  A(["① 安装并加载 R 包（Biostrings、muscle、ape、ggtree、ggplot2 等）"])
+  B(["② 读入 FASTA（readDNAStringSet · INS_cds.fasta）"])
+  C(["③ 多序列比对（muscle → DNAbin）"])
+  D(["④ 遗传距离与建树（dist.dna TN93 → fastme.bal）"])
+  E(["⑤ 定根（最远 tip 作外群 · root）"])
+  F(["⑥ 标签与分类群（物种名 · Taxonomic Group 配色）"])
+  G(["⑦ 绘图与导出（ggtree → ggsave PNG）"])
+  A --> B --> C --> D --> E --> F --> G</div>
         </figure>
         <ol class="r-tree-steps">
           <li><strong>安装并加载 R 包</strong>：<code>Biostrings</code>、<code>muscle</code>、<code>ape</code>、<code>ggtree</code>、<code>ggplot2</code>、<code>grid</code> 等；首次使用需在 R 中按各包说明完成安装。</li>
@@ -235,7 +228,7 @@
 
         <h3 id="sec-5-3">5.3 步骤说明与结果图</h3>
         <p>按上表顺序在 R 或 RStudio 中运行脚本后，应得到与下图类似的系统发育树（横轴为遗传距离，叶节点按分类群着色）。</p>
-        <figure class="practice-figure">
+        <figure class="practice-figure practice-figure--half">
           <img src="../images/phylogenetic/INS_tree.png" alt="INS 基因 CDS 系统发育树（带分支长度与分类群着色）" loading="lazy" decoding="async">
           <figcaption>图：基于 <code>INS_cds.fasta</code> 的 INS 基因 CDS 系统发育树（R 脚本输出示例）。</figcaption>
         </figure>
