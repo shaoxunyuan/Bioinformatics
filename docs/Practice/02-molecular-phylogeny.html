@@ -205,20 +205,23 @@
 
         <h3 id="sec-5-2">5.2 流程概览（思维导图式）</h3>
         <p>以下按脚本执行顺序概括主要环节（中心为「INS CDS 进化树」）：</p>
-        <figure class="r-tree-flow" aria-label="R 建树流程思维导图">
-          <pre class="r-tree-mindmap">                    ┌─ ① 安装并加载包（Biostrings / muscle / ape / ggtree / ggplot2 等）
-                    │
-INS CDS 进化树 ─────┼─ ② 读入 FASTA（readDNAStringSet）
-   （R 脚本）        │
-                    ├─ ③ 多序列比对（muscle → DNAbin）
-                    │
-                    ├─ ④ 遗传距离 + 建树（dist.dna TN93 → fastme.bal）
-                    │
-                    ├─ ⑤ 定根（以最远 tip 为外群 root）
-                    │
-                    ├─ ⑥ 标签与分类群（物种名、Taxonomic Group 配色）
-                    │
-                    └─ ⑦ 绘图与导出（ggtree → ggsave 为 PNG）</pre>
+        <figure class="mermaid-figure" aria-label="R 建树流程思维导图">
+          <div class="mermaid">mindmap
+  root((INS CDS 进化树))
+    安装并加载 R 包
+      Biostrings muscle ape ggtree ggplot2
+    读入 FASTA
+      readDNAStringSet
+    多序列比对
+      muscle 转 DNAbin
+    遗传距离与建树
+      TN93 与 fastme.bal
+    定根
+      最远 tip 作外群 root
+    标签与分类群
+      物种名与 Taxonomic Group 配色
+    绘图与导出
+      ggtree 与 ggsave PNG</div>
         </figure>
         <ol class="r-tree-steps">
           <li><strong>安装并加载 R 包</strong>：<code>Biostrings</code>、<code>muscle</code>、<code>ape</code>、<code>ggtree</code>、<code>ggplot2</code>、<code>grid</code> 等；首次使用需在 R 中按各包说明完成安装。</li>
@@ -245,5 +248,12 @@ INS CDS 进化树 ─────┼─ ② 读入 FASTA（readDNAStringSet）
       </article>
     </main>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'neutral'
+    });
+  </script>
 </body>
 </html>

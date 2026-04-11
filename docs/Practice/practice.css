@@ -350,17 +350,25 @@
   line-height: 1.6;
 }
 
-/* 分子进化练习页：R 流程思维导图 + 树图 */
-.r-tree-mindmap {
-  font-family: ui-monospace, "Cascadia Code", "Consolas", monospace;
-  font-size: 12px;
-  line-height: 1.5;
+/* 分子进化练习页：Mermaid 思维导图 + 树图 */
+.mermaid-figure {
+  margin: 1rem 0;
+  padding: 12px 8px;
   overflow-x: auto;
-  margin: 0;
-  padding: 14px 16px;
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(0, 0, 0, 0.02);
   border-radius: 10px;
   border: 1px solid var(--border);
+}
+
+.mermaid-figure .mermaid {
+  display: flex;
+  justify-content: center;
+  min-height: 280px;
+}
+
+.mermaid-figure svg {
+  max-width: 100%;
+  height: auto;
 }
 
 .practice-figure {
