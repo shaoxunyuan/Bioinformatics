@@ -48,6 +48,13 @@
               <a href="#sec-4-5"><span class="n">4.5</span><span>导出与展示</span></a>
             </div>
           </li>
+          <li><a class="lv1" href="#sec-5">五、使用 R 语言构建进化树</a>
+            <div class="lv2">
+              <a href="#sec-5-1"><span class="n">5.1</span><span>R 脚本下载</span></a>
+              <a href="#sec-5-2"><span class="n">5.2</span><span>流程概览</span></a>
+              <a href="#sec-5-3"><span class="n">5.3</span><span>步骤说明与结果图</span></a>
+            </div>
+          </li>
         </ul>
       </div>
     </aside>
@@ -106,7 +113,7 @@
           <li>在正式下载前，按页面要求填写必要信息：例如在 <strong>Country</strong>（国家/地区）中选择所在地（如 China），并填写机构名称与身份等字段（以页面实际选项为准）。</li>
           <li>填写完毕后，单击页面上的下载按钮，将适用于本机的安装包保存到磁盘（Windows 一般为 <code>.exe</code>）。</li>
         </ol>
-        <p>若国际网络访问较慢，可在遵守许可的前提下使用课程提供的离线安装包或单位镜像，注意与教学要求的版本一致。</p>
+        <p>若国际网络访问较慢，可在遵守许可的前提下使用课程提供的离线安装包或单位镜像。</p>
 
         <h3 id="sec-2-4">2.4 运行安装程序与安装向导（Windows）</h3>
         <ol>
@@ -132,11 +139,10 @@
         <p>本教程后续将以 <strong>多个哺乳动物（含部分非哺乳类对照）胰岛素基因（INS）CDS</strong> 的 FASTA 文件为例，演示在 <strong>MEGA 12</strong> 中完成：导入序列 → 多序列比对 → 构建系统发育树 → 导出结果。</p>
         <ul>
           <li><strong>数据文件</strong>：<code>data/INS_cds.fasta</code></li>
-          <li><strong>提示</strong>：该文件中同一物种可能包含多个转录本（如 <code>human_tx1</code>、<code>human_tx2</code> 等）。在建树前可按课程需要决定是否保留所有转录本，或每个物种只保留 1 条代表序列。</li>
+          <li>同一物种可能包含多个转录本（如 <code>human_tx1</code>、<code>human_tx2</code> 等）。</li>
         </ul>
 
         <h3 id="sec-3-2">3.2 下载示例文件</h3>
-        <p>为避免页面篇幅过长，本页不直接展示完整 FASTA。请通过下方链接下载示例数据文件，并在 MEGA 12 中导入使用：</p>
         <ul>
           <li><strong>下载</strong>：<a href="../../data/INS_cds.fasta" download>INS_cds.fasta</a></li>
           <li><strong>仓库路径</strong>：<code>data/INS_cds.fasta</code></li>
@@ -163,14 +169,18 @@
         <h3 id="sec-4-3">4.3 修剪与质量检查</h3>
         <ol>
           <li>若序列两端存在明显的低一致性区域或长度不齐，可在比对窗口中对两端进行适度修剪，使大多数序列覆盖到相同的比对区段。</li>
-          <li>若同一物种包含多个转录本且差异极小，可根据教学目标选择保留全部或仅保留 1 条代表序列，以避免同物种序列在树上聚成一簇影响展示。</li>
           <li>确认最终用于建树的数据为“已比对”的序列集合，而不是原始未比对 FASTA。</li>
         </ol>
 
         <h3 id="sec-4-4">4.4 选择建树方法与参数</h3>
         <ol>
           <li>在 MEGA 主界面选择 <strong>Phylogeny</strong>（系统发育）相关入口，基于已对齐的数据进行建树。</li>
-          <li><strong>常用方法</strong>：\n            <ul>\n              <li><strong>Neighbor-Joining（NJ）</strong>：速度快，适合课堂演示整体流程。</li>\n              <li><strong>Maximum Likelihood（ML）</strong>：更常用于正式分析，计算时间更长。</li>\n            </ul>\n          </li>
+          <li><strong>常用方法</strong>：
+            <ul>
+              <li><strong>Neighbor-Joining（NJ）</strong>：速度快，适合课堂演示整体流程。</li>
+              <li><strong>Maximum Likelihood（ML）</strong>：更常用于正式分析，计算时间更长。</li>
+            </ul>
+          </li>
           <li><strong>模型与缺口处理</strong>：对于核酸 CDS，通常选择核酸替换模型（以课程要求为准）；缺口（gap）与缺失位点常见处理为 <strong>Complete Deletion</strong> 或 <strong>Partial Deletion</strong>（设置阈值保留尽可能多的位点）。</li>
           <li><strong>置信度评估</strong>：勾选 <strong>Bootstrap</strong>（自助法）并设置重复次数（课堂演示可 100；更稳定的分析常用 500–1000）。</li>
           <li>运行建树，得到系统发育树窗口（Tree Explorer）。</li>
@@ -182,6 +192,50 @@
           <li>导出树文件与图片：常见格式包括 <strong>Newick</strong>（<code>.nwk</code>）用于后续软件复用，以及 <strong>PNG/SVG</strong> 用于报告与课件。</li>
           <li>建议保存当前工程（比对文件 + 树文件），以便下一次修改参数后对比不同方法（NJ vs ML）、不同缺口处理策略的影响。</li>
         </ol>
+
+        <h2 id="sec-5">五、使用 R 语言构建进化树</h2>
+        <p>除 MEGA 外，也可用 R 读取同一套 <strong>INS CDS</strong> FASTA，完成比对、距离计算、建树与可视化。下面给出配套脚本下载、流程概览与示例输出图。</p>
+
+        <h3 id="sec-5-1">5.1 R 脚本下载</h3>
+        <ul>
+          <li><strong>下载</strong>：<a href="../../data/phylogenetic_tree.R" download>phylogenetic_tree.R</a></li>
+          <li><strong>仓库路径</strong>：<code>data/phylogenetic_tree.R</code></li>
+        </ul>
+        <p>脚本默认与 <code>INS_cds.fasta</code> 位于同一目录时可直接运行；若路径不同，请修改脚本中的 <code>input_fasta</code>。</p>
+
+        <h3 id="sec-5-2">5.2 流程概览（思维导图式）</h3>
+        <p>以下按脚本执行顺序概括主要环节（中心为「INS CDS 进化树」）：</p>
+        <figure class="r-tree-flow" aria-label="R 建树流程思维导图">
+          <pre class="r-tree-mindmap">                    ┌─ ① 安装并加载包（Biostrings / muscle / ape / ggtree / ggplot2 等）
+                    │
+INS CDS 进化树 ─────┼─ ② 读入 FASTA（readDNAStringSet）
+   （R 脚本）        │
+                    ├─ ③ 多序列比对（muscle → DNAbin）
+                    │
+                    ├─ ④ 遗传距离 + 建树（dist.dna TN93 → fastme.bal）
+                    │
+                    ├─ ⑤ 定根（以最远 tip 为外群 root）
+                    │
+                    ├─ ⑥ 标签与分类群（物种名、Taxonomic Group 配色）
+                    │
+                    └─ ⑦ 绘图与导出（ggtree → ggsave 为 PNG）</pre>
+        </figure>
+        <ol class="r-tree-steps">
+          <li><strong>安装并加载 R 包</strong>：<code>Biostrings</code>、<code>muscle</code>、<code>ape</code>、<code>ggtree</code>、<code>ggplot2</code>、<code>grid</code> 等；首次使用需在 R 中按各包说明完成安装。</li>
+          <li><strong>读取序列</strong>：用 <code>readDNAStringSet()</code> 读入 <code>INS_cds.fasta</code>。</li>
+          <li><strong>多序列比对</strong>：<code>muscle::muscle()</code> 比对后转为 <code>DNAbin</code>，供距离计算使用。</li>
+          <li><strong>距离与建树</strong>：<code>ape::dist.dna()</code> 采用 TN93 模型、<code>pairwise.deletion = TRUE</code>；再用 <code>ape::fastme.bal()</code> 得到带分支长度的树。</li>
+          <li><strong>定根</strong>：用共表型距离找出最远的一对 tip，取其一作为外群，<code>ape::root(..., resolve.root = TRUE)</code>。</li>
+          <li><strong>标签与分组着色</strong>：将 tip 名映射为拉丁学名与中文注释，并按灵长类、啮齿类等分类群赋色。</li>
+          <li><strong>出图与保存</strong>：<code>ggtree</code> 绘制分支长度标尺与图例，<code>ggsave()</code> 输出高分辨率 <code>INS_tree.png</code>。</li>
+        </ol>
+
+        <h3 id="sec-5-3">5.3 步骤说明与结果图</h3>
+        <p>按上表顺序在 R 或 RStudio 中运行脚本后，应得到与下图类似的系统发育树（横轴为遗传距离，叶节点按分类群着色）。</p>
+        <figure class="practice-figure">
+          <img src="../images/phylogenetic/INS_tree.png" alt="INS 基因 CDS 系统发育树（带分支长度与分类群着色）" loading="lazy" decoding="async">
+          <figcaption>图：基于 <code>INS_cds.fasta</code> 的 INS 基因 CDS 系统发育树（R 脚本输出示例）。</figcaption>
+        </figure>
 
         <p class="practice-footer-note">
           <a href="index.html">← 返回练习目录</a>

@@ -350,6 +350,40 @@
   line-height: 1.6;
 }
 
+/* 分子进化练习页：R 流程思维导图 + 树图 */
+.r-tree-mindmap {
+  font-family: ui-monospace, "Cascadia Code", "Consolas", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-x: auto;
+  margin: 0;
+  padding: 14px 16px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.practice-figure {
+  margin: 1rem 0;
+}
+
+.practice-figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.practice-figure figcaption {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--ink-muted);
+  line-height: 1.5;
+}
+
+.r-tree-steps {
+  margin-top: 1rem;
+}
+
 @media (max-width: 980px) {
   .book-shell.practice-page {
     grid-template-columns: 1fr;
