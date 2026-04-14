@@ -55,6 +55,7 @@
               <a href="#sec-5-3"><span class="n">5.3</span><span>步骤说明与结果图</span></a>
             </div>
           </li>
+          <li><a class="lv1" href="#sec-hw">六、作业与拓展</a></li>
         </ul>
       </div>
     </aside>
@@ -150,6 +151,7 @@
 
         <h2 id="sec-4">四、MEGA 12 构建分子进化树（操作步骤）</h2>
         <p>本节以第 3 章的 <strong>INS CDS</strong> 为例，给出 MEGA 12 的常用操作路径。不同版本的菜单名称可能略有差异，但整体流程一致：<strong>导入 → 比对 → 选择方法 → 建树 → 导出</strong>。</p>
+        <p><strong>视频教程</strong>：<a href="../videos/分子进化2-Mega使用.mp4">MEGA 12 构建分子进化树（MP4）</a></p>
 
         <h3 id="sec-4-1">4.1 导入序列</h3>
         <ol>
@@ -173,7 +175,7 @@
         </ol>
 
         <h3 id="sec-4-4">4.4 选择建树方法与参数</h3>
-        <ol>
+        <ul>
           <li>在 MEGA 主界面选择 <strong>Phylogeny</strong>（系统发育）相关入口，基于已对齐的数据进行建树。</li>
           <li><strong>常用方法</strong>：
             <ul>
@@ -184,7 +186,7 @@
           <li><strong>模型与缺口处理</strong>：对于核酸 CDS，通常选择核酸替换模型（以课程要求为准）；缺口（gap）与缺失位点常见处理为 <strong>Complete Deletion</strong> 或 <strong>Partial Deletion</strong>（设置阈值保留尽可能多的位点）。</li>
           <li><strong>置信度评估</strong>：勾选 <strong>Bootstrap</strong>（自助法）并设置重复次数（课堂演示可 100；更稳定的分析常用 500–1000）。</li>
           <li>运行建树，得到系统发育树窗口（Tree Explorer）。</li>
-        </ol>
+        </ul>
 
         <h3 id="sec-4-5">4.5 导出与展示</h3>
         <ol>
@@ -232,6 +234,17 @@
           <img src="../images/phylogenetic/INS_tree.png" alt="INS 基因 CDS 系统发育树（带分支长度与分类群着色）" loading="lazy" decoding="async">
           <figcaption>图：基于 <code>INS_cds.fasta</code> 的 INS 基因 CDS 系统发育树（R 脚本输出示例）。</figcaption>
         </figure>
+
+        <h2 id="sec-hw">六、作业与拓展</h2>
+        <ul>
+          <li><strong>必做（MEGA 建树流程复现 · 简版）</strong>：使用本页示例数据（或课堂指定数据）在 <strong>MEGA 12</strong> 中完成一次建树，并提交：<br>
+            ① 一张导出的树图（PNG/SVG 均可）；<br>
+            ② 你选择的建树方法（NJ 或 ML）；<br>
+            ③ Bootstrap 次数（如未做 bootstrap 也请注明“未做”）；<br>
+            ④ 用 1–2 句话写出你从树上观察到的一个现象（例如：哪些物种聚成一支、某个节点支持率高/低等）。</li>
+          <li><strong>选做（方法对比）</strong>：在同一套已对齐序列上，分别使用 <strong>Maximum Likelihood（最大似然法）</strong>、<strong>Neighbor-Joining（邻接法）</strong>、<strong>Minimum Evolution（最小进化法）</strong> 构建三棵进化树，并比较：三棵树的主要分支拓扑是否一致？哪些节点的支持率（如 bootstrap）差异最明显？</li>
+          <li><strong>拓展</strong>：导出 Newick（<code>.nwk</code>）并导入任意树可视化软件（如 iTOL、FigTree 等），尝试对某一类群着色并保存一张排版后的成图。</li>
+        </ul>
 
         <p class="practice-footer-note">
           <a href="index.html">← 返回练习目录</a>
