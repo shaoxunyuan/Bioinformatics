@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>03 · 转录组与基因表达数据分析（入门）</title>
+  <title>03 · 转录组与基因表达数据分析</title>
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="practice.css">
 </head>
@@ -32,7 +32,7 @@
               <a href="#sec-3-3"><span class="n">3.3</span><span>说明：counts/TPM/FPKM 怎么用</span></a>
             </div>
           </li>
-          <li><a class="lv1" href="#sec-4">四、基于表达矩阵的可视化（只做 3 个图）</a>
+          <li><a class="lv1" href="#sec-4">四、基于表达矩阵的可视化</a>
             <div class="lv2">
               <a href="#sec-4-1"><span class="n">4.1</span><span>方式 A：R 语言（直接给代码）</span></a>
               <a href="#sec-4-2"><span class="n">4.2</span><span>方式 B：在线网站（如微生信）</span></a>
@@ -49,8 +49,8 @@
           <a href="index.html">Practice</a><span class="sep">/</span><span>03 转录组与基因表达数据分析</span>
         </nav>
 
-        <h1>练习：转录组与基因表达数据分析（入门）</h1>
-        <p>本练习按“<strong>从转录组测序得到表达矩阵</strong> → <strong>基于表达矩阵做可视化</strong>”来组织。为了把重心放在<strong>表达矩阵与可视化</strong>上，本页只做 3 个图：<strong>火山图</strong>、<strong>热图（heatmap）</strong>、<strong>箱线图（boxplot）</strong>。</p>
+        <h1>练习：转录组与基因表达数据分析</h1>
+        <p>本练习按“<strong>从转录组测序得到表达矩阵</strong> → <strong>基于表达矩阵开展可视化分析</strong>”来组织，涵盖：<strong>火山图</strong>、<strong>热图（heatmap）</strong>、<strong>箱线图（boxplot）</strong>。</p>
 
         <h2 id="sec-1">一、练习说明</h2>
         <ul>
@@ -61,7 +61,7 @@
 
         <h2 id="sec-2">二、从转录组测序到基因表达矩阵（概览）</h2>
 
-        <p>这一部分参考教程页 <a href="../08-rnaseq.html"><code>08-rnaseq.html</code></a>（无需在本练习展开细节）。你只需要记住：<strong>表达矩阵的本质</strong>是“每个基因在每个样本里被测到多少”。</p>
+        <p>完整流程可参考教程页 <a href="../08-rnaseq.html"><code>08-rnaseq.html</code></a>。表达矩阵可理解为“基因 × 样本”的定量表格，记录每个基因在每个样本中的表达量。</p>
 
         <h3 id="sec-2-1">2.1 一张“思维导图式”流程</h3>
         <pre class="code-block"><code>RNA-seq (FASTQ)
@@ -83,7 +83,7 @@
 
         <h2 id="sec-3">三、数据与准备（表达矩阵作为起点）</h2>
 
-        <p>本练习<strong>不要求你从 FASTQ 自己跑出矩阵</strong>；我们直接从表达矩阵开始做可视化。</p>
+        <p>本练习从表达矩阵出发，完成可视化分析与结果解读。</p>
 
         <h3 id="sec-3-1">3.1 示例数据（表达矩阵）</h3>
         <ul>
@@ -104,10 +104,10 @@
           <li><strong>本练习约定</strong>：热图与箱线图使用“对数化后的表达量”（例如 <code>log2(TPM + 1)</code> 或 <code>log2(normalized_counts + 1)</code>）；火山图使用差异分析得到的 <code>log2FoldChange</code> 与 <code>padj</code>（或 p 值）。</li>
         </ul>
 
-        <h2 id="sec-4">四、基于表达矩阵的可视化（只做 3 个图）</h2>
+        <h2 id="sec-4">四、基于表达矩阵的可视化</h2>
 
-        <h3 id="sec-4-1">4.1 方式 A：R 语言（直接给代码）</h3>
-        <p>R 的学习与环境建议参考仓库 <a href="https://github.com/shaoxunyuan/MedDataAnalysisMining"><code>shaoxunyuan/MedDataAnalysisMining</code></a>（本练习不展开）。下面给出 3 个图的最小可运行示例代码：你只需要把<strong>输入文件路径</strong>和<strong>列名</strong>对上即可。</p>
+        <h3 id="sec-4-1">4.1 方式 A：R 语言</h3>
+        <p>R 的学习与环境可参考仓库 <a href="https://github.com/shaoxunyuan/MedDataAnalysisMining"><code>shaoxunyuan/MedDataAnalysisMining</code></a>。下面给出火山图、热图、箱线图的示例代码（按需调整<strong>输入文件路径</strong>与<strong>列名</strong>）。</p>
 
         <p><strong>你需要准备两类输入：</strong></p>
         <ul>
@@ -116,7 +116,7 @@
         </ul>
 
         <h4>（1）火山图（Volcano）</h4>
-        <p>火山图需要“差异分析结果表”（至少包含 <code>log2FoldChange</code> 与 <code>padj</code> 或 <code>pvalue</code>）。如果你已经用 DESeq2/edgeR 得到了结果表，把它保存为 TSV 后直接读入即可。</p>
+        <p>火山图使用差异分析结果表（至少包含 <code>log2FoldChange</code> 与 <code>padj</code> 或 <code>pvalue</code>）。</p>
         <pre class="code-block"><code># Volcano plot (needs DE result table)
 library(ggplot2)
 
@@ -139,7 +139,7 @@ p &lt;- ggplot(res, aes(x = log2FoldChange, y = -log10(padj), color = label)) +
 ggsave("03_volcano.png", p, width = 6.5, height = 5, dpi = 300)</code></pre>
 
         <h4>（2）热图（Heatmap）</h4>
-        <p>热图常用“对数化的表达量”，并挑一些基因（如差异基因 TopN，或方差最大的 TopN）。下面示例用“方差 Top 30 基因”。</p>
+        <p>热图通常使用对数化表达量，并选择一部分基因展示（如差异基因 TopN，或方差最大的 TopN）。下面示例使用“方差 Top 30 基因”。</p>
         <pre class="code-block"><code># Heatmap (log2 normalized counts)
 library(pheatmap)
 
@@ -169,7 +169,7 @@ pheatmap(mat[top, ],
          width = 7.5, height = 6)</code></pre>
 
         <h4>（3）箱线图（Boxplot）</h4>
-        <p>箱线图更偏向“样本层面的分布检查”（比如看不同样本是否分布一致、是否有明显异常样本）。</p>
+        <p>箱线图用于展示样本层面的表达分布，常用于质量检查与样本间分布对比。</p>
         <pre class="code-block"><code># Boxplot (sample-wise expression distribution)
 library(ggplot2)
 
