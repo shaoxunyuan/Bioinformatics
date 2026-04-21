@@ -22,19 +22,19 @@
           <li><a class="lv1" href="#sec-2">二、从转录组测序到基因表达矩阵（概览）</a>
             <div class="lv2">
               <a href="#sec-2-1"><span class="n">2.1</span><span>一张“思维导图式”流程</span></a>
-              <a href="#sec-2-2"><span class="n">2.2</span><span>你需要的 Linux 知识点</span></a>
+              <a href="#sec-2-2"><span class="n">2.2</span><span>Linux 命令行基础</span></a>
             </div>
           </li>
           <li><a class="lv1" href="#sec-3">三、数据与准备（表达矩阵作为起点）</a>
             <div class="lv2">
               <a href="#sec-3-1"><span class="n">3.1</span><span>示例数据（表达矩阵）</span></a>
               <a href="#sec-3-2"><span class="n">3.2</span><span>样本分组（metadata）</span></a>
-              <a href="#sec-3-3"><span class="n">3.3</span><span>说明：counts/TPM/FPKM 怎么用</span></a>
+              <a href="#sec-3-3"><span class="n">3.3</span><span>counts、TPM 与 FPKM</span></a>
             </div>
           </li>
           <li><a class="lv1" href="#sec-4">四、基于表达矩阵的可视化</a>
             <div class="lv2">
-              <a href="#sec-4-1"><span class="n">4.1</span><span>方式 A：R 语言（直接给代码）</span></a>
+              <a href="#sec-4-1"><span class="n">4.1</span><span>方式 A：R 语言示例</span></a>
               <a href="#sec-4-2"><span class="n">4.2</span><span>方式 B：在线网站（如微生信）</span></a>
             </div>
           </li>
@@ -54,7 +54,7 @@
 
         <h2 id="sec-1">一、练习说明</h2>
         <ul>
-          <li><strong>目标</strong>：理解“表达矩阵从哪来、怎么用”，并基于表达矩阵完成 3 类常见可视化。</li>
+          <li><strong>目标</strong>：理解表达矩阵的来源与在分析中的作用，并完成火山图、热图、箱线图三类常见可视化。</li>
           <li><strong>输入</strong>：基因 × 样本的表达矩阵（counts 或 TPM 等）与样本分组表（metadata）。</li>
           <li><strong>输出</strong>：火山图、热图、箱线图各 1 张（或同等可视化产物）。</li>
         </ul>
@@ -75,10 +75,10 @@
         ├─ 样本/基因整体模式 → 热图、PCA/聚类
         └─ 表达分布与质量检查 → boxplot、密度图</code></pre>
 
-        <h3 id="sec-2-2">2.2 你需要的 Linux 知识点</h3>
+        <h3 id="sec-2-2">2.2 Linux 命令行基础</h3>
         <ul>
-          <li><strong>为什么需要</strong>：从 FASTQ 到表达矩阵的主流程通常在 Linux/服务器跑（数据大、软件多）。</li>
-          <li><strong>最低要求</strong>：会使用命令行进入目录（<code>cd</code>）、查看文件（<code>ls</code>）、解压（<code>tar</code>/<code>gzip</code>）、简单文本查看（<code>head</code>/<code>less</code>）、了解相对/绝对路径、会写一个能复现的命令记录（脚本或命令日志）。</li>
+          <li><strong>应用场景</strong>：从 FASTQ 到表达矩阵的上游流程多在 Linux 或服务器环境执行（数据量大、工具链以命令行为主）。</li>
+          <li><strong>建议掌握</strong>：目录切换（<code>cd</code>）、文件列表（<code>ls</code>）、解压（<code>tar</code>/<code>gzip</code>）、文本浏览（<code>head</code>/<code>less</code>）、相对路径与绝对路径；将可复现的命令写入脚本或实验记录。</li>
         </ul>
 
         <h2 id="sec-3">三、数据与准备（表达矩阵作为起点）</h2>
@@ -97,7 +97,7 @@
           <li><strong>说明</strong>：两组条件：<strong>Control</strong>（Sample_1–3）与 <strong>Treatment</strong>（Sample_4–6）。</li>
         </ul>
 
-        <h3 id="sec-3-3">3.3 说明：counts/TPM/FPKM 怎么用</h3>
+        <h3 id="sec-3-3">3.3 counts、TPM 与 FPKM</h3>
         <ul>
           <li><strong>counts</strong>：差异表达（如 DESeq2/edgeR）通常使用 raw counts 作为输入，再由工具做归一化与建模。</li>
           <li><strong>TPM/FPKM</strong>：更常用于“表达量展示/可视化/跨基因比较”的直观呈现（但做差异分析时要谨慎）。</li>
@@ -106,10 +106,10 @@
 
         <h2 id="sec-4">四、基于表达矩阵的可视化</h2>
 
-        <h3 id="sec-4-1">4.1 方式 A：R 语言</h3>
-        <p>R 的学习与环境可参考仓库 <a href="https://github.com/shaoxunyuan/MedDataAnalysisMining"><code>shaoxunyuan/MedDataAnalysisMining</code></a>。下面给出火山图、热图、箱线图的示例代码（按需调整<strong>输入文件路径</strong>与<strong>列名</strong>）。</p>
+        <h3 id="sec-4-1">4.1 方式 A：R 语言示例</h3>
+        <p>R 的学习与环境可参考仓库 <a href="https://github.com/shaoxunyuan/MedDataAnalysisMining"><code>shaoxunyuan/MedDataAnalysisMining</code></a>。以下为火山图、热图、箱线图的示例代码；实际运行时请按数据路径与列名修改参数。</p>
 
-        <p><strong>你需要准备两类输入：</strong></p>
+        <p><strong>输入数据：</strong></p>
         <ul>
           <li><strong>表达矩阵</strong>：<code>data/sample_rnaseq_counts.txt</code>（基因 × 样本）</li>
           <li><strong>分组表</strong>：<code>data/sample_rnaseq_metadata.tsv</code>（每个样本属于哪一组）</li>
@@ -196,9 +196,9 @@ ggsave("03_boxplot.png", p, width = 7.5, height = 4.8, dpi = 300)</code></pre>
 
         <h3 id="sec-4-2">4.2 方式 B：在线网站（如微生信）</h3>
         <ul>
-          <li><strong>适合场景</strong>：不想写代码、需要快速出图、或用于课堂演示。</li>
-          <li><strong>常见平台</strong>：微生信（WeiShengXin）等提供火山图/热图/箱线图的在线绘制。</li>
-          <li><strong>输入格式建议</strong>：提前把表达矩阵整理成“第一列基因 ID，第一行为样本名，单元格为表达量”，并准备一个分组文件（样本名 + 组别）。不同网站对分隔符（逗号/制表符）、是否允许缺失值、是否允许重复基因名的要求不同，上传前先做一次清洗。</li>
+          <li><strong>适用情形</strong>：无本地 R 环境、需快速出图或课堂演示时可选用在线工具。</li>
+          <li><strong>常见平台</strong>：微生信（WeiShengXin）等提供火山图、热图、箱线图的在线绘制。</li>
+          <li><strong>数据格式</strong>：表达矩阵宜整理为“第一列为基因 ID、首行为样本名、单元格为表达量”；另备分组表（样本名与组别）。各平台对分隔符（逗号/制表符）、缺失值、重复基因名的要求不一，上传前宜做格式校验与清洗。</li>
         </ul>
 
         <h2 id="sec-hw">五、作业与拓展</h2>
@@ -208,10 +208,10 @@ ggsave("03_boxplot.png", p, width = 7.5, height = 4.8, dpi = 300)</code></pre>
             ② 热图（<code>03_heatmap.png</code>）；<br>
             ③ 箱线图（<code>03_boxplot.png</code>）。</li>
           <li><strong>必答（100–200 字）</strong>：<br>
-            ① 火山图里你采用的显著性阈值与倍数变化阈值分别是什么？为什么这样设？<br>
-            ② 从火山图中各选 1 个上调、1 个下调基因，说明你选择它们的依据（结合 <code>log2FoldChange</code> 与 <code>padj</code>）。</li>
-          <li><strong>选做</strong>：把热图的基因选择策略改成“差异基因 Top 30”（按 <code>padj</code> 或 \(|\mathrm{log2FC}|\) 排序），并对比它与“方差 Top 30”的差异（1–2 句话）。</li>
-          <li><strong>拓展</strong>：尝试复现“从 FASTQ 得到表达矩阵”的任一环节（例如只做质控，或只跑定量），并在报告中用 5–10 行文字描述你跑通的命令与产物。参考：<a href="../08-rnaseq.html"><code>08-rnaseq.html</code></a>。</li>
+            ① 说明火山图所采用的显著性阈值与倍数变化阈值，并简述设定理由。<br>
+            ② 从火山图中各选 1 个上调基因与 1 个下调基因，依据 <code>log2FoldChange</code> 与 <code>padj</code> 说明选取理由。</li>
+          <li><strong>选做</strong>：将热图的基因选择改为“差异基因 Top 30”（按 <code>padj</code> 或 \(|\mathrm{log2FC}|\) 排序），并与“方差 Top 30”作简要对比（1–2 句）。</li>
+          <li><strong>拓展</strong>：任选“从 FASTQ 到表达矩阵”流程中的一步（如质控或定量）完成操作，在报告中用 5–10 行文字记录所用命令与产出文件。参考：<a href="../08-rnaseq.html"><code>08-rnaseq.html</code></a>。</li>
         </ul>
 
         <p class="practice-footer-note">
