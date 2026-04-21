@@ -105,13 +105,6 @@
           <li><strong>结构</strong>：含 <code>mean_Cancer</code>、<code>mean_Health</code>、<code>log2FoldChange</code>、<code>padj</code>、<code>significance</code> 等列，与常见差异分析结果表格式一致，供火山图等直接使用。</li>
         </ul>
 
-        <h3 id="sec-3-4">3.4 counts、TPM 与 FPKM</h3>
-        <ul>
-          <li><strong>counts</strong>：差异表达（如 DESeq2/edgeR）通常使用 raw counts 作为输入，再由工具做归一化与建模。</li>
-          <li><strong>TPM/FPKM</strong>：更常用于“表达量展示/可视化/跨基因比较”的直观呈现（但做差异分析时要谨慎）。</li>
-          <li><strong>本练习约定</strong>：热图与箱线图使用“对数化后的表达量”（例如 <code>log2(TPM + 1)</code> 或 <code>log2(normalized_counts + 1)</code>）；火山图使用差异分析得到的 <code>log2FoldChange</code> 与 <code>padj</code>（或 p 值）。</li>
-        </ul>
-
         <h2 id="sec-4">四、基于表达矩阵的可视化</h2>
 
         <h3 id="sec-4-1">4.1 方式 A：R 语言示例</h3>
@@ -201,7 +194,7 @@ ggsave("03_boxplot.png", p, width = 7.5, height = 4.8, dpi = 300)</code></pre>
         <h3 id="sec-4-2">4.2 方式 B：在线网站（如微生信）</h3>
         <ul>
           <li><strong>适用情形</strong>：无本地 R 环境、需快速出图或课堂演示时可选用在线工具。</li>
-          <li><strong>常见平台</strong>：微生信（WeiShengXin）等提供火山图、热图、箱线图的在线绘制。</li>
+          <li><strong>常见平台</strong>：微生信（https://www.bioinformatics.com.cn/）等提供火山图、热图、箱线图的在线绘制。</li>
           <li><strong>数据格式</strong>：表达矩阵宜整理为“第一列为基因 ID、首行为样本名、单元格为表达量”；另备分组表（样本名与组别）。各平台对分隔符（逗号/制表符）、缺失值、重复基因名的要求不一，上传前宜做格式校验与清洗。</li>
         </ul>
 
