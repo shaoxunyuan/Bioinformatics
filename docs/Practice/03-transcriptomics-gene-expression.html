@@ -51,8 +51,7 @@
         </nav>
 
         <h1>练习：转录组与基因表达数据分析</h1>
-        <p>本练习按“<strong>从转录组测序得到表达矩阵</strong> → <strong>基于表达矩阵开展可视化分析</strong>”来组织，涵盖：<strong>火山图</strong>、<strong>热图（heatmap）</strong>、<strong>箱线图（boxplot）</strong>。</p>
-
+     
         <h2 id="sec-1">一、练习说明</h2>
         <ul>
           <li><strong>目标</strong>：理解表达矩阵的来源与在分析中的作用，并完成火山图、热图、箱线图三类常见可视化。</li>
@@ -60,11 +59,11 @@
           <li><strong>输出</strong>：火山图、热图、箱线图各 1 张（或同等可视化产物）。</li>
         </ul>
 
-        <h2 id="sec-2">二、从转录组测序到基因表达矩阵（概览）</h2>
+        <h2 id="sec-2">二、从转录组测序到基因表达矩阵</h2>
 
-        <p>完整流程可参考教程页 <a href="../08-rnaseq.html"><code>08-rnaseq.html</code></a>。表达矩阵可理解为“基因 × 样本”的定量表格，记录每个基因在每个样本中的表达量。</p>
+        <p>完整流程可参考教程页 <a href="../08-rnaseq.html"><code>转录组数据分析流程</code></a>。表达矩阵可理解为“基因 × 样本”的定量表格，记录每个基因在每个样本中的表达量。</p>
 
-        <h3 id="sec-2-1">2.1 一张“思维导图式”流程</h3>
+        <h3 id="sec-2-1">2.1 转录组以及差异表达分析流程</h3>
         <pre class="code-block"><code>RNA-seq (FASTQ)
   ├─ 质控 QC（fastp / fastqc）
   ├─ 比对到参考基因组或转录本（STAR / HISAT2）或准比对（Salmon / Kallisto）
@@ -80,49 +79,49 @@
         <ul>
           <li><strong>应用场景</strong>：从 FASTQ 到表达矩阵的上游流程多在 Linux 或服务器环境执行（数据量大、工具链以命令行为主）。</li>
           <li><strong>建议掌握</strong>：目录切换（<code>cd</code>）、文件列表（<code>ls</code>）、解压（<code>tar</code>/<code>gzip</code>）、文本浏览（<code>head</code>/<code>less</code>）、相对路径与绝对路径；将可复现的命令写入脚本或实验记录。</li>
+          <li>Linux教程可参考 <a href="https://www.linuxcool.com/"> Linux命令大全(手册) </a>。</li>
         </ul>
 
         <h2 id="sec-3">三、数据与准备（表达矩阵作为起点）</h2>
 
         <p>本练习从表达矩阵出发，完成可视化分析与结果解读。</p>
 
-        <h3 id="sec-3-1">3.1 表达矩阵</h3>
+        <h3 id="sec-3-1">3.1 表达矩阵（右键点击链接"另存为"）</h3>
         <ul>
           <li><strong>下载</strong>：<a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/practice03_expression_matrix.csv" download>practice03_expression_matrix.csv</a></li>
           <li><strong>结构</strong>：第一列为基因 ID（<code>Gene_ID</code>：<code>GeneA</code>…<code>GeneE</code>），其余列为 <code>Sample1</code>…<code>Sample8</code> 的归一化计数（示例为演示用数值，单位与真实项目中的 raw counts 可能不同）。</li>
           <li><strong>生成脚本下载</strong>：<a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/generate_practice03_demo_data.R" download>generate_practice03_demo_data.R</a></li>
+          <div align="center">
+            <img src="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/docs/images/expression/%E5%9F%BA%E5%9B%A0%E8%A1%A8%E8%BE%BE-%E7%9F%A9%E9%98%B5%E8%A1%A8.png" width="600" alt="微生信在线绘图示例">
+        </div>
         </ul>
 
-        <h3 id="sec-3-2">3.2 样本 metadata</h3>
+        <h3 id="sec-3-2">3.2 样本 metadata（右键点击链接"另存为"）</h3>
         <ul>
           <li><strong>下载</strong>：<a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/practice03_metadata.tsv" download>practice03_metadata.tsv</a></li>
           <li><strong>结构</strong>：两列——<code>Sample</code>（与表达矩阵列名一致）、<code>Condition</code>。<code>Sample1</code>–<code>Sample4</code> 为 <strong>Cancer</strong>，<code>Sample5</code>–<code>Sample8</code> 为 <strong>Health</strong>。</li>
         </ul>
 
-        <h3 id="sec-3-3">3.3 差异表达结果</h3>
+        <h3 id="sec-3-3">3.3 差异表达结果（右键点击链接"另存为"）</h3>
         <ul>
           <li><strong>下载</strong>：<a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/practice03_de_results.csv" download>practice03_de_results.csv</a></li>
           <li><strong>结构</strong>：含 <code>mean_Cancer</code>、<code>mean_Health</code>、<code>log2FoldChange</code>、<code>padj</code>、<code>significance</code> 等列，与常见差异分析结果表格式一致，供火山图等直接使用。</li>
+          <div align="center">
+            <img src="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/docs/images/expression/%E5%9F%BA%E5%9B%A0%E8%A1%A8%E8%BE%BE-%E5%B7%AE%E5%BC%82%E8%A1%A8.png" width="600" alt="微生信在线绘图示例">
+        </div>
         </ul>
 
         <h2 id="sec-4">四、基于表达矩阵的可视化</h2>
 
         <h3 id="sec-4-1">4.1 方式 A：R 语言示例</h3>
-        <p>R 的学习与环境可参考 <a href="https://github.com/shaoxunyuan/MedDataAnalysisMining"><code>shaoxunyuan/MedDataAnalysisMining</code></a>。以下为火山图、热图、箱线图的示例代码；实际运行时请按数据路径与列名修改参数。</p>
-
-        <p><strong>输入数据：</strong></p>
-        <ul>
-          <li><strong>表达矩阵</strong>：<code>practice03_expression_matrix.csv</code></li>
-          <li><strong>样本 metadata</strong>：<code>practice03_metadata.tsv</code></li>
-          <li><strong>差异表达结果</strong>：<code>practice03_de_results.csv</code></li>
-        </ul>
+        <p>R 的学习与环境可参考 <a href="https://github.com/shaoxunyuan/MedDataAnalysisMining">R语言数据分析与数据挖掘</a>。以下为火山图、热图、箱线图的示例代码；实际运行时请按数据路径与列名修改参数。</p>
 
         <h4>（1）火山图（Volcano）</h4>
         <p>火山图使用差异分析结果表（至少包含 <code>log2FoldChange</code> 与 <code>padj</code> 或 <code>pvalue</code>）。下列示例按结果表中的 <code>significance</code> 列着色（与汇总表一致）。</p>
         <pre class="code-block"><code># Volcano plot (DE result table)
 library(ggplot2)
 
-res &lt;- read.csv("data/practice03_de_results.csv", stringsAsFactors = FALSE)
+res &lt;- read.csv("practice03_de_results.csv", stringsAsFactors = FALSE) # 需要注意路径为存放文件的路径
 res$padj[is.na(res$padj)] &lt;- 1
 
 res$label &lt;- "NS"
@@ -144,11 +143,11 @@ ggsave("03_volcano.png", p, width = 6.5, height = 5, dpi = 300)</code></pre>
         <pre class="code-block"><code># Heatmap (log2 CPM for visualization)
 library(pheatmap)
 
-counts &lt;- read.csv("data/practice03_expression_matrix.csv", check.names = FALSE)
+counts &lt;- read.csv("practice03_expression_matrix.csv", check.names = FALSE) # 需要注意路径为存放文件的路径
 rownames(counts) &lt;- counts$Gene_ID
 counts$Gene_ID &lt;- NULL
-
-meta &lt;- read.table("data/practice03_metadata.tsv", header = TRUE, sep = "\t", quote = "", comment.char = "")
+ 
+meta &lt;- read.table("practice03_metadata.tsv", header = TRUE, sep = "\t", quote = "", comment.char = "") # 需要注意路径为存放文件的路径
 rownames(meta) &lt;- meta$Sample
 
 lib &lt;- colSums(counts)
@@ -191,24 +190,30 @@ p &lt;- ggplot(df, aes(x = Sample, y = Expr)) +
 
 ggsave("03_boxplot.png", p, width = 7.5, height = 4.8, dpi = 300)</code></pre>
 
-        <h3 id="sec-4-2">4.2 方式 B：在线网站（如微生信）</h3>
+        <h3 id="sec-4-2">4.2 方式 B：在线网站</h3>
         <ul>
           <li><strong>适用情形</strong>：无本地 R 环境、需快速出图或课堂演示时可选用在线工具。</li>
-          <li><strong>常见平台</strong>：微生信（https://www.bioinformatics.com.cn/）等提供火山图、热图、箱线图的在线绘制。</li>
+          <li><strong>常见平台</strong>：微生信（<a href="https://www.bioinformatics.com.cn/" target="_blank">https://www.bioinformatics.com.cn/</a>）等提供火山图、热图、箱线图的在线绘制。</li>
           <li><strong>数据格式</strong>：表达矩阵宜整理为“第一列为基因 ID、首行为样本名、单元格为表达量”；另备分组表（样本名与组别）。各平台对分隔符（逗号/制表符）、缺失值、重复基因名的要求不一，上传前宜做格式校验与清洗。</li>
+          <div align="center">
+            <img src="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/docs/images/expression/%E5%BE%AE%E7%94%9F%E4%BF%A1-%E4%B8%89%E5%9B%BE%E5%90%88%E5%B9%B6.png" width="1200" alt="微生信在线绘图示例">
+        </div>
+      </li>
         </ul>
 
         <h2 id="sec-hw">五、作业与拓展</h2>
         <ul>
-          <li><strong>必做（可二选一：R 或在线工具）</strong>：提交 3 张图：<br>
-            ① 火山图（<code>03_volcano.png</code>）；<br>
-            ② 热图（<code>03_heatmap.png</code>）；<br>
-            ③ 箱线图（<code>03_boxplot.png</code>）。</li>
-          <li><strong>必答（100–200 字）</strong>：<br>
-            ① 说明火山图所采用的显著性阈值与倍数变化阈值，并简述设定理由。<br>
-            ② 从火山图中各选 1 个上调基因与 1 个下调基因，依据 <code>log2FoldChange</code> 与 <code>padj</code> 说明选取理由。</li>
-          <li><strong>选做</strong>：在差异基因较多时，将热图的基因子集改为按 <code>padj</code> 或 \(|\mathrm{log2FC}|\) 排序的 Top 30，并与“按方差取 Top 30”的策略作简要对比（1–2 句）。</li>
-          <li><strong>拓展</strong>：任选“从 FASTQ 到表达矩阵”流程中的一步（如质控或定量）完成操作，在报告中用 5–10 行文字记录所用命令与产出文件。参考：<a href="../08-rnaseq.html"><code>08-rnaseq.html</code></a>。</li>
+          <li><strong>使用R语言或在线工具</strong><br>
+            <li><strong>下载数据文件（右键另存为）</strong>：<br>
+              配套数据文件：<strong><a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/practice03_expression_matrix.csv" download>
+                practice03_expression_matrix.csv</a></strong>、<strong><a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/practice03_metadata.tsv" download>
+                  practice03_metadata.tsv</a></strong>、<strong><a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/practice03_de_results.csv" download>
+                    practice03_de_results.csv</a></strong>
+              ，并描述这三个文件的组织形式。
+          <li><strong>结果描述</strong>：<br>
+            ① 说明火山图所采用的显著性阈值与倍数变化阈值，并简述可能的设定理由。<br>
+            ② 从火山图中各选 1 个显著上调基因与 1 个显著下调基因，依据 <code>log2FoldChange</code> 与 <code>padj</code> 说明选取理由。</li>
+            ③ 说明差异基因热图的表达聚类规律，结合样本分组简述基因表达模式差异与生物学意义。</li>
         </ul>
 
         <p class="practice-footer-note">
