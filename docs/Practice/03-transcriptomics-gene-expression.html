@@ -54,13 +54,17 @@
         <h2 id="sec-1">一、练习说明</h2>
         <ul>
           <li><strong>目标</strong>：理解表达矩阵的来源与在分析中的作用，并完成火山图、热图、箱线图三类常见可视化。</li>
-          <li><strong>输入</strong>：基因 × 样本的表达矩阵（counts 或 TPM 等）与样本分组表（metadata）。</li>
-          <li><strong>输出</strong>：火山图、热图、箱线图各 1 张（或同等可视化产物）。</li>
+          <li><strong>输入</strong>：基因 × 样本的表达矩阵与样本分组表。</li>
+          <li><strong>输出</strong>：火山图、热图、箱线图。</li>
         </ul>
 
         <h2 id="sec-2">二、从转录组测序到基因表达矩阵</h2>
 
         <p>完整流程可参考教程页 <a href="../08-rnaseq.html"><code>转录组数据分析流程</code></a>。表达矩阵可理解为“基因 × 样本”的定量表格，记录每个基因在每个样本中的表达量。</p>
+
+        <div align="center">
+          <img src="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/docs/images/expression/%E8%BD%AC%E5%BD%95%E7%BB%84%E6%B5%8B%E5%BA%8F%E6%B5%81%E7%A8%8B.png" width="600" alt="微生信在线绘图示例">
+        </div>
 
         <h3 id="sec-2-1">2.1 转录组以及差异表达分析流程</h3>
         <pre class="code-block"><code>RNA-seq (FASTQ)
