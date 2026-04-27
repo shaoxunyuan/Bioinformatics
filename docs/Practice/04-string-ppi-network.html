@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04 · 蛋白质相互作用网络（STRING PPI）</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+  <div class="book-shell practice-page">
+    <aside class="book-sidebar" aria-label="目录">
+      <div class="toc-scroll">
+        <div class="book-brand">
+          <a href="index.html">← 练习目录</a>
+          ·
+          <a href="../index.html">教程首页</a>
+        </div>
+        <div class="toc__title">目录</div>
+        <ul class="book-nav toc">
+          <li><a class="lv1" href="#sec-1">一、蛋白质相互作用网络（PPI）介绍</a>
+            <div class="lv2">
+              <a href="#sec-1-1"><span class="n">1.1</span><span>什么是 PPI 网络</span></a>
+              <a href="#sec-1-2"><span class="n">1.2</span><span>如何读一张网络图</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-2">二、STRING PPI：介绍与使用</a>
+            <div class="lv2">
+              <a href="#sec-2-1"><span class="n">2.1</span><span>STRING 是什么</span></a>
+              <a href="#sec-2-2"><span class="n">2.2</span><span>用基因/蛋白列表构建网络</span></a>
+              <a href="#sec-2-3"><span class="n">2.3</span><span>关键参数：物种、阈值、证据通道</span></a>
+              <a href="#sec-2-4"><span class="n">2.4</span><span>常用结果：聚类、富集、导出</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-hw">三、作业与拓展</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="book-main">
+      <article class="article">
+        <nav class="practice-breadcrumb" aria-label="面包屑">
+          <a href="index.html">Practice</a><span class="sep">/</span><span>04 STRING PPI 网络分析</span>
+        </nav>
+
+        <h1>练习：蛋白质相互作用网络分析（STRING PPI）</h1>
+
+        <h2 id="sec-1">一、蛋白质相互作用网络（PPI）介绍</h2>
+
+        <h3 id="sec-1-1">1.1 什么是 PPI 网络</h3>
+        <p>
+          蛋白质相互作用网络（Protein–Protein Interaction, <strong>PPI</strong>）用“网络”的方式表达生物分子之间的关系：
+          <strong>节点</strong>代表蛋白（或基因产物），<strong>边</strong>代表两者之间存在相互作用或功能关联。
+          在实际分析中，PPI 网络常用于：
+        </p>
+        <ul>
+          <li><strong>功能解释</strong>：差异基因/候选基因是否聚集在同一通路或复合体中？</li>
+          <li><strong>关键节点识别</strong>：寻找连接度高的枢纽（hub）或连接不同模块的桥接节点（bottleneck）。</li>
+          <li><strong>模块发现</strong>：把网络拆成若干子模块（cluster），对应不同生物过程或功能单元。</li>
+        </ul>
+
+        <figure class="practice-figure practice-figure--half">
+          <img src="../images/ppi/ppi-schematic.svg" alt="PPI 网络示意图（节点、边、模块与枢纽）">
+          <figcaption>图 1. PPI 网络示意图：不同颜色代表不同功能模块，边的强度可理解为置信度（在 STRING 中可查看证据来源）。</figcaption>
+        </figure>
+
+        <h3 id="sec-1-2">1.2 如何读一张网络图</h3>
+        <ul>
+          <li><strong>看节点</strong>：节点越大不一定越重要（STRING 可按不同指标缩放）；重要性需要结合网络指标与生物学证据。</li>
+          <li><strong>看边与证据</strong>：相互作用可以来自实验、数据库、共表达、基因邻近、文本挖掘等；不同证据强度含义不同。</li>
+          <li><strong>看模块</strong>：模块通常对应同一功能（例如“核糖体”“细胞周期”“免疫相关”），模块之间连接较少。</li>
+          <li><strong>避免过度解读</strong>：网络“相关”不等于“直接物理结合”；尤其是文本挖掘/共表达证据需要谨慎。</li>
+        </ul>
+
+        <h2 id="sec-2">二、STRING PPI：介绍与使用</h2>
+
+        <h3 id="sec-2-1">2.1 STRING 是什么</h3>
+        <p>
+          <a href="https://string-db.org/" target="_blank" rel="noopener noreferrer"><strong>STRING</strong></a>
+          是一个整合多源证据的蛋白质相互作用/功能关联数据库与可视化平台，覆盖大量物种。
+          它的网络边通常是“功能关联（functional association）”的综合评分（combined score），并提供证据通道分解查看。
+        </p>
+        <ul>
+          <li><strong>适用输入</strong>：基因名/蛋白名列表、UniProt ID、STRING ID，或单基因查询。</li>
+          <li><strong>常见输出</strong>：交互网络图、聚类模块、功能/通路富集（GO/KEGG/Reactome 等）、可下载的网络边表。</li>
+        </ul>
+
+        <h3 id="sec-2-2">2.2 用基因/蛋白列表构建网络（推荐流程）</h3>
+        <p>以下流程适合把“候选基因列表（如差异基因 TopN）”快速转成可解释的网络结果。</p>
+        <ol>
+          <li><strong>准备基因列表</strong>：建议先统一命名体系（人/小鼠尽量用官方 gene symbol），去重，避免混入不同物种。</li>
+          <li><strong>进入 STRING</strong>：打开 STRING 首页 → 选择 “Multiple proteins”。</li>
+          <li><strong>粘贴列表</strong>：把基因/蛋白名逐行粘贴；在下拉框中选择物种（Organism）。</li>
+          <li><strong>确认映射</strong>：STRING 会给出名称映射结果，检查是否出现大量 “unmapped”。必要时替换 ID 或修正拼写。</li>
+          <li><strong>进入网络</strong>：在网络页面查看整体连接情况，并根据目的调整阈值与证据通道。</li>
+        </ol>
+
+        <h3 id="sec-2-3">2.3 关键参数：物种、阈值、证据通道</h3>
+        <ul>
+          <li><strong>物种（Organism）</strong>：最关键。物种选错会导致映射失败或网络解释错误。</li>
+          <li><strong>置信度阈值（Confidence）</strong>：
+            <ul>
+              <li><strong>低阈值</strong>：边多、网络更“连”，但可能混入噪声。</li>
+              <li><strong>高阈值</strong>：边少、结果更保守，适合报告展示与后续候选筛选。</li>
+            </ul>
+          </li>
+          <li><strong>证据通道（Evidence）</strong>：
+            <ul>
+              <li><strong>实验/数据库</strong>：更接近“可靠相互作用”的证据。</li>
+              <li><strong>共表达/文本挖掘</strong>：可帮助发现关联，但更需要结合上下文判断。</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3 id="sec-2-4">2.4 常用结果：聚类、富集、导出</h3>
+        <ul>
+          <li><strong>聚类（Clustering）</strong>：STRING 支持对网络进行聚类（常用于拆分模块），并可对每个模块分别解释。</li>
+          <li><strong>功能富集（Enrichment）</strong>：查看 GO BP/MF/CC、KEGG/Reactome 等富集条目，优先关注显著且与研究问题一致的结果。</li>
+          <li><strong>导出（Export/Download）</strong>：
+            <ul>
+              <li><strong>网络图</strong>：导出 PNG/SVG 用于报告与作业展示。</li>
+              <li><strong>边表（TSV）</strong>：导出 interactions/edges，便于在 Cytoscape/R 中继续分析。</li>
+              <li><strong>富集表</strong>：下载富集结果表，便于整理成表格与文字解读。</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2 id="sec-hw">三、作业与拓展</h2>
+        <ul>
+          <li><strong>作业 1：从候选基因到网络图</strong><br>
+            自选一个基因列表（建议 20–100 个，来源可为差异表达 Top genes、某条通路相关基因、或你感兴趣的疾病基因集合），在 STRING 构建网络，并提交：
+            <ul>
+              <li>网络截图/导出图 1 张（建议导出 SVG 或高清 PNG）。</li>
+              <li>说明你选择的物种、阈值（confidence）与是否开启/关闭某些证据通道。</li>
+            </ul>
+          </li>
+          <li><strong>作业 2：模块与富集解释</strong><br>
+            对网络做聚类（模块划分），选取 1 个你认为最重要的模块，提交：
+            <ul>
+              <li>该模块包含的关键基因（列出 5–10 个代表性基因）。</li>
+              <li>富集结果中最相关的 3 个条目（写出条目名与简要解释）。</li>
+            </ul>
+          </li>
+          <li><strong>作业 3：关键节点（候选基因）筛选</strong><br>
+            在网络中选择 1–2 个你认为可能关键的节点（hub 或桥接节点均可），并回答：
+            <ul>
+              <li>你选择它的依据是什么（连接度、所在模块、与研究问题的关联、证据通道等）？</li>
+              <li>如果要做实验或进一步分析，你打算如何验证（文献、表达验证、功能实验、更多队列等）？</li>
+            </ul>
+          </li>
+          <li><strong>拓展（可选）</strong><br>
+            把 STRING 导出的边表导入 Cytoscape（或用 R/Python 计算网络指标），补充 1 个网络指标（degree、betweenness、closeness 等）并解释其意义。</li>
+        </ul>
+
+        <p class="practice-footer-note">
+          <a href="index.html">← 返回练习目录</a>
+        </p>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
+
