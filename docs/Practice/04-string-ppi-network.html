@@ -44,23 +44,11 @@
         </nav>
 
         <h1>练习：蛋白质相互作用网络分析</h1>
-
-        <section class="practice-kv" aria-label="练习概览">
-          <ul class="kv-grid">
-            <li class="kv-item">
-              <div class="k">目标</div>
-              <div class="v">理解 PPI 网络的含义与读图方法，并能使用 STRING 构建网络、做聚类与富集解读。</div>
-            </li>
-            <li class="kv-item">
-              <div class="k">输入</div>
-              <div class="v">基因/蛋白列表（建议 20–100 个）、正确的物种信息（Human/Mouse 等）。</div>
-            </li>
-            <li class="kv-item">
-              <div class="k">输出</div>
-              <div class="v">PPI 网络图（PNG/SVG）、模块划分与富集结果摘要、关键候选节点说明。</div>
-            </li>
-          </ul>
-        </section>
+        <ul>
+          <li><strong>目标</strong>：理解 PPI 网络的含义与读图方法，并能使用 STRING 构建网络、做聚类与富集解读。</li>
+          <li><strong>输入</strong>：基因/蛋白列表（建议 20–100 个）与正确的物种信息（Human/Mouse 等）。</li>
+          <li><strong>输出</strong>：PPI 网络图（PNG/SVG）、模块划分与富集结果摘要、关键候选节点说明。</li>
+        </ul>
 
         <h2 id="sec-1">一、蛋白质相互作用网络（PPI）介绍</h2>
 
@@ -76,10 +64,9 @@
           <li><strong>模块发现</strong>：把网络拆成若干子模块（cluster），对应不同生物过程或功能单元。</li>
         </ul>
 
-        <figure class="practice-figure practice-figure--half">
-          <img src="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/docs/images/ppi/ppi-schematic.svg" alt="PPI 网络示意图（节点、边、模块与枢纽）">
-          <figcaption>图 1. PPI 网络示意图：不同颜色代表不同功能模块，边的强度可理解为置信度（在 STRING 中可查看证据来源）。</figcaption>
-        </figure>
+        <div align="center">
+          <img src="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/docs/images/ppi/ppi-schematic.svg" width="900" alt="PPI 网络示意图（节点、边、模块与枢纽）">
+        </div>
 
         <h3 id="sec-1-2">1.2 如何读一张网络图</h3>
         <ul>
@@ -104,33 +91,13 @@
 
         <h3 id="sec-2-2">2.2 用基因/蛋白列表构建网络（推荐流程）</h3>
         <p>以下流程适合把“候选基因列表（如差异基因 TopN）”快速转成可解释的网络结果。</p>
-        <ul class="practice-steps">
-          <li>
-            <div class="step-num">1</div>
-            <div><strong>准备列表</strong>：统一命名体系（人/小鼠尽量用官方 gene symbol），去重，避免混入不同物种。</div>
-          </li>
-          <li>
-            <div class="step-num">2</div>
-            <div><strong>进入 STRING</strong>：打开 STRING 首页 → 选择 “Multiple proteins”。</div>
-          </li>
-          <li>
-            <div class="step-num">3</div>
-            <div><strong>粘贴并选物种</strong>：逐行粘贴基因/蛋白名；选择物种（Organism）。</div>
-          </li>
-          <li>
-            <div class="step-num">4</div>
-            <div><strong>检查映射</strong>：关注 “unmapped” 是否过多；必要时换 ID（如 UniProt）或修正拼写。</div>
-          </li>
-          <li>
-            <div class="step-num">5</div>
-            <div><strong>调整网络</strong>：在网络页按目的调整阈值与证据通道，并导出网络图与边表。</div>
-          </li>
-        </ul>
-
-        <div class="practice-callout" role="note" aria-label="提示">
-          <div class="callout-title">提示：先保守再放开</div>
-          建议先用较高置信度阈值快速获得“更干净”的网络用于解释；若网络过于稀疏，再逐步降低阈值或开启更多证据通道。
-        </div>
+        <ol>
+          <li><strong>准备基因列表</strong>：建议先统一命名体系（人/小鼠尽量用官方 gene symbol），去重，避免混入不同物种。</li>
+          <li><strong>进入 STRING</strong>：打开 STRING 首页 → 选择 “Multiple proteins”。</li>
+          <li><strong>粘贴列表</strong>：把基因/蛋白名逐行粘贴；在下拉框中选择物种（Organism）。</li>
+          <li><strong>确认映射</strong>：STRING 会给出名称映射结果，检查是否出现大量 “unmapped”。必要时替换 ID 或修正拼写。</li>
+          <li><strong>进入网络</strong>：在网络页面查看整体连接情况，并根据目的调整阈值与证据通道。</li>
+        </ol>
 
         <h3 id="sec-2-3">2.3 关键参数：物种、阈值、证据通道</h3>
         <ul>
@@ -163,51 +130,31 @@
         </ul>
 
         <h2 id="sec-hw">三、作业与拓展</h2>
-        <div class="practice-hw" role="list" aria-label="作业列表">
-          <section class="hw-card" role="listitem">
-            <div class="hw-head">
-              <h3 class="hw-title">作业 1：从候选基因到网络图</h3>
-              <span class="hw-tag">必做</span>
-            </div>
+        <ul>
+          <li><strong>作业 1：从候选基因到网络图</strong><br>
             自选一个基因列表（建议 20–100 个，来源可为差异表达 Top genes、某条通路相关基因、或你感兴趣的疾病基因集合），在 STRING 构建网络，并提交：
             <ul>
               <li>网络截图/导出图 1 张（建议导出 SVG 或高清 PNG）。</li>
               <li>说明你选择的物种、阈值（confidence）与是否开启/关闭某些证据通道。</li>
             </ul>
-          </section>
-
-          <section class="hw-card" role="listitem">
-            <div class="hw-head">
-              <h3 class="hw-title">作业 2：模块与富集解释</h3>
-              <span class="hw-tag">必做</span>
-            </div>
+          </li>
+          <li><strong>作业 2：模块与富集解释</strong><br>
             对网络做聚类（模块划分），选取 1 个你认为最重要的模块，提交：
             <ul>
               <li>该模块包含的关键基因（列出 5–10 个代表性基因）。</li>
               <li>富集结果中最相关的 3 个条目（写出条目名与简要解释）。</li>
             </ul>
-          </section>
-
-          <section class="hw-card" role="listitem">
-            <div class="hw-head">
-              <h3 class="hw-title">作业 3：关键节点（候选基因）筛选</h3>
-              <span class="hw-tag">必做</span>
-            </div>
+          </li>
+          <li><strong>作业 3：关键节点（候选基因）筛选</strong><br>
             在网络中选择 1–2 个你认为可能关键的节点（hub 或桥接节点均可），并回答：
             <ul>
               <li>你选择它的依据是什么（连接度、所在模块、与研究问题的关联、证据通道等）？</li>
               <li>如果要做实验或进一步分析，你打算如何验证（文献、表达验证、功能实验、更多队列等）？</li>
             </ul>
-          </section>
-
-          <section class="hw-card" role="listitem">
-            <div class="hw-head">
-              <h3 class="hw-title">拓展：导入 Cytoscape 或计算网络指标</h3>
-              <span class="hw-tag">可选</span>
-            </div>
-            把 STRING 导出的边表导入 Cytoscape（或用 R/Python 计算网络指标），补充 1 个网络指标（degree、betweenness、closeness 等）并解释其意义。
-          </section>
-        </div>
+          </li>
+          <li><strong>拓展（可选）</strong><br>
+            把 STRING 导出的边表导入 Cytoscape（或用 R/Python 计算网络指标），补充 1 个网络指标（degree、betweenness、closeness 等）并解释其意义。</li>
+        </ul>
 
         <p class="practice-footer-note">
           <a href="index.html">← 返回练习目录</a>
