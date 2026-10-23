@@ -403,3 +403,31 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* 实验作业：填空与简答排版 */
+.practice-page .hw-fill {
+  margin: 0.5rem 0 1.25rem;
+  padding-left: 1.4rem;
+}
+
+.practice-page .hw-fill > li {
+  margin: 0 0 1rem;
+  line-height: 1.75;
+  word-break: break-word;
+}
+
+.practice-page .hw-blank {
+  display: inline-block;
+  min-width: 4.5em;
+  border-bottom: 1px solid var(--ink);
+  vertical-align: baseline;
+  margin: 0 0.15em;
+}
+
+.practice-page .hw-qa {
+  margin: 0 0 1.35rem;
+}
+
+.practice-page .hw-qa > p {
+  margin: 0.35rem 0;
+}

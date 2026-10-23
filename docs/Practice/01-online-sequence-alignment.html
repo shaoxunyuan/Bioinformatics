@@ -38,10 +38,19 @@
               <a href="#sec-cngb-1"><span class="n">B.1</span><span>入口与程序</span></a>
               <a href="#sec-cngb-2"><span class="n">B.2</span><span>核酸 BLASTN</span></a>
               <a href="#sec-cngb-3"><span class="n">B.3</span><span>蛋白 BLASTP</span></a>
+              <a href="#sec-cngb-4"><span class="n">B.4</span><span>如何查看比对结果</span></a>
+              <a href="#sec-cngb-5"><span class="n">B.5</span><span>如何阅读 AI 报告</span></a>
             </div>
           </li>
           <li><a class="lv1" href="#sec-compare">五、两个平台对比</a></li>
-          <li><a class="lv1" href="#sec-hw">六、作业与拓展</a></li>
+          <li><a class="lv1" href="#sec-hw">六、实验作业</a>
+            <div class="lv2">
+              <a href="#sec-hw-fill"><span class="n">6.1</span><span>填空题</span></a>
+              <a href="#sec-hw-short"><span class="n">6.2</span><span>简答题</span></a>
+              <a href="#sec-hw-open"><span class="n">6.3</span><span>开放思考题</span></a>
+              <a href="#sec-hw-submit"><span class="n">6.4</span><span>作业提交</span></a>
+            </div>
+          </li>
         </ul>
       </div>
     </aside>
@@ -148,6 +157,66 @@ EKAIRMSRSRINDAFRLNDNSLEFLGIQPTLGPPNQPPVSIWLIVFGVVMGVIVVGIVILIFTGIRDRKKKNKARSGENP
           <li>若几乎无命中，检查是否误用 BLASTN、序列是否截断或含非法字符。</li>
         </ol>
 
+        <h3 id="sec-cngb-4">B.4 如何查看 BLAST 比对结果</h3>
+        <p>学生完成 BLASTN 或 BLASTP 比对后，可以在结果页面中查看本次任务的基本信息和序列比对结果。</p>
+
+        <p><strong>1. 任务基本信息</strong></p>
+        <p>首先查看结果页面顶部的基本信息，包括：</p>
+        <ul>
+          <li><strong>Program</strong>：本次使用的比对程序。</li>
+          <li><strong>Database</strong>：使用的序列数据库。</li>
+          <li><strong>Query Length</strong>：查询序列的长度。</li>
+          <li><strong>Molecule Type</strong>：查询序列的分子类型。</li>
+        </ul>
+
+        <p><strong>2. 表格描述（Descriptions）</strong></p>
+        <p>表格中列出了与查询序列匹配的数据库记录。</p>
+        <p>重点观察以下信息：</p>
+        <ul>
+          <li><strong>Description</strong>：匹配序列的名称或描述。</li>
+          <li><strong>Scientific Name</strong>：匹配序列所属的物种。</li>
+          <li><strong>Query Cover</strong>：查询序列中有多少比例参与了比对。</li>
+          <li><strong>Per. Ident</strong>：比对区域中相同位置所占的百分比。</li>
+          <li><strong>E-value</strong>：用于评价比对结果统计显著性的指标。</li>
+        </ul>
+        <p>一般来说，E-value 越小，表示在当前搜索条件下随机获得相同或更高得分匹配的预期次数越少。</p>
+        <p>需要注意，序列一致性、查询覆盖度和 E-value 应结合起来判断，不能仅凭一个指标确定序列的生物学功能。</p>
+
+        <p><strong>3. 图形概览（Graphic Summary）</strong></p>
+        <p>图形概览可以直观展示查询序列与数据库序列之间的匹配位置和范围。</p>
+        <p>观察不同命中序列是否覆盖查询序列的主要区域。</p>
+
+        <p><strong>4. 比对详情（Alignments）</strong></p>
+        <p>比对详情展示查询序列与数据库序列的具体匹配情况。</p>
+        <p>可以观察哪些位置相同，哪些位置存在差异。</p>
+
+        <p><strong>5. 物种分类（Taxonomy）</strong></p>
+        <p>Taxonomy 展示比对结果涉及的物种及其分类信息。</p>
+        <p>观察核酸序列和蛋白质序列的命中物种是否相同。</p>
+        <p>注意：命中物种的范围会受到数据库、序列长度、检索参数等因素影响，不能仅根据 Taxonomy 判断物种亲缘关系。</p>
+
+        <h3 id="sec-cngb-5">B.5 如何阅读 AI 分析报告</h3>
+        <p>部分 CNCB-BLAST 任务的结果页面提供 AI 自动生成的分析报告。</p>
+        <p>报告可能包含以下内容：</p>
+        <ol>
+          <li>结论</li>
+          <li>比对质量评估</li>
+          <li>物种分析</li>
+          <li>功能预测</li>
+          <li>生物学意义</li>
+          <li>后续建议</li>
+        </ol>
+        <p>AI 报告可以帮助我们快速了解比对结果，但其中的解释并不一定全部正确。</p>
+        <p>阅读报告时，可以先关注三个问题：</p>
+        <ul>
+          <li>AI 判断这条序列是什么？</li>
+          <li>BLAST 比对结果是否支持这一判断？</li>
+          <li>AI 是否提出了无法直接从比对结果中得到的结论？</li>
+        </ul>
+        <p>例如，如果报告指出查询序列与某条已知 ACE2 序列具有很高的一致性，可以通过比对表格中的 Description、Identity 和 Query Cover 核对。</p>
+        <p>如果报告进一步推测某种疾病风险、蛋白质功能或进化过程，则需要其他研究证据支持，不能仅根据 BLAST 结果确定。</p>
+        <p>本次实验只要求初步认识 AI 分析报告，并尝试结合实际比对结果判断其中的结论。</p>
+
         <h2 id="sec-compare">五、两个平台对比</h2>
         <p><strong>核心结论</strong>：两平台在线 BLAST 均基于 NCBI <strong>BLAST+</strong> 算法体系，局部比对模型、打分与显著性统计（如 E-value、比特分）及主要参数释义一致，<strong>比对结果的解读口径可通用</strong>。<br><br>系统性差异主要体现在：<strong>序列数据库的收录范围、更新策略与地域/项目侧重</strong>，以及 <strong>Web 检索界面、物种过滤与配套数据服务（API、批量与图形化展示等）</strong>——即计算内核同源，数据资源与服务平台不同构。</p>
 
@@ -220,11 +289,62 @@ EKAIRMSRSRINDAFRLNDNSLEFLGIQPTLGPPNQPPVSIWLIVFGVVMGVIVVGIVILIFTGIRDRKKKNKARSGENP
 
         <p><strong>六、一句话总结。</strong>算法同源、指标通用；<strong>NCBI</strong> 侧重全球最全与权威通用；<strong>CNGBdb</strong> 侧重中国数据、本土项目与国内访问体验。</p>
 
-        <h2 id="sec-hw">六、作业与拓展</h2>
+        <h2 id="sec-hw">六、实验作业</h2>
+        <p>完成 NCBI 和 CNCB-BLAST 的核酸、蛋白质序列比对后，根据自己的实验结果完成以下练习。</p>
+        <p>可以返回实验结果页面查找相关信息，不要求记忆具体数值。</p>
+
+        <h3 id="sec-hw-fill">6.1 填空题</h3>
+        <ol class="hw-fill">
+          <li>本次实验中，核酸序列比对使用的程序是 <span class="hw-blank"></span>，蛋白质序列比对使用的程序是 <span class="hw-blank"></span>。</li>
+          <li>本次实验使用的核酸序列 LC656365.1 长度为 <span class="hw-blank"></span> bp，蛋白质序列 BAB40370.1 长度为 <span class="hw-blank"></span> aa。</li>
+          <li>在 CNCB-BLAST 中，我选择的核酸比对数据库是 <span class="hw-blank"></span>，蛋白质比对数据库是 <span class="hw-blank"></span>。</li>
+          <li>BLAST 结果中的 E-value 是评价比对结果的重要指标。通常情况下，E-value 越 <span class="hw-blank"></span>，说明在当前检索条件下随机获得相同或更高得分匹配的预期次数越少。</li>
+          <li>查看 BAB40370.1 的 BLASTP 比对结果，排名第一的匹配蛋白质名称是 <span class="hw-blank"></span>，所属物种是 <span class="hw-blank"></span>。</li>
+          <li>在 BLAST 结果的 Taxonomy 页面中，可以查看匹配序列所属的 <span class="hw-blank"></span> 信息。</li>
+        </ol>
+
+        <h3 id="sec-hw-short">6.2 简答题</h3>
+        <div class="hw-qa">
+          <p><strong>1. 如何判断序列比对结果？</strong></p>
+          <p>在 BLAST 的结果表格中，我们可以看到 Identity、Query Cover 和 E-value 等指标。</p>
+          <p>请结合本次实验，简单说明这三个指标分别表示什么。观察第一条匹配结果，判断它与查询序列的匹配情况如何。</p>
+        </div>
+        <div class="hw-qa">
+          <p><strong>2. 核酸和蛋白质的比对结果有什么不同？</strong></p>
+          <p>分别查看 LC656365.1 的 BLASTN 结果和 BAB40370.1 的 BLASTP 结果。</p>
+          <p>进入 Taxonomy 页面，观察两个结果中出现的物种。</p>
+          <p>请回答：</p>
+          <p>（1）两个比对结果中出现的物种是否相同？</p>
+          <p>（2）你认为造成这些差异的原因可能有哪些？</p>
+          <p>可以结合本次使用的序列、数据库和比对方法进行简单说明。</p>
+        </div>
+
+        <h3 id="sec-hw-open">6.3 开放思考题</h3>
+        <div class="hw-qa">
+          <p><strong>AI 生成的 BLAST 分析报告一定正确吗？</strong></p>
+          <p>完成 CNCB-BLAST 比对后，阅读结果页面中的 AI 分析报告。</p>
+          <p>从报告中选择一条你感兴趣的结论，并结合实际比对结果回答：</p>
+          <p>（1）AI 给出了什么结论？</p>
+          <p>（2）你能否在 BLAST 的表格描述、图形概览或比对详情中找到支持这一结论的信息？</p>
+          <p>（3）你认为 AI 分析报告对理解 BLAST 结果有什么帮助？使用时需要注意什么？</p>
+          <p>请根据自己的观察和理解回答，不要求对 AI 报告中的全部结论进行验证。</p>
+        </div>
+
+        <h3 id="sec-hw-submit">6.4 作业提交</h3>
+        <p>请将本次实验的结果整理成一份实验报告，包含以下内容：</p>
+        <ol>
+          <li>实验名称：在线序列比对（NCBI 与 CNCB-BLAST）。</li>
+          <li>实验结果：提供核酸和蛋白质序列比对成功后的结果截图。</li>
+          <li>填空题：完成 6 道填空题。</li>
+          <li>简答题：完成 2 道简答题。</li>
+          <li>开放思考题：完成 1 道开放题。</li>
+        </ol>
+        <p>截图中应尽量保留比对程序、数据库或主要匹配结果等信息，能够看出本次实验已成功完成。</p>
+        <p>文字回答应简洁、清楚，能够说明自己的观察即可。</p>
+
+        <h3 id="sec-hw-extra">拓展阅读</h3>
         <ul>
-          <li><strong>必做</strong>：对 <strong>LC656365.1</strong> 与 <strong>BAB40370.1</strong> 各写一行小结：在 NCBI 与 CNGBdb 上<strong>第一条命中</strong>的标题（或 Accession）与 E-value 是否一致，若不一致简述可能原因（库范围、版本、注释差异等）。</li>
-          <li><strong>选做</strong>：在 CNGBdb 源序列页查看两条记录的谱系（Lineage）与分子类型，对照 BLAST 结果中的物种信息。</li>
-          <li><strong>拓展阅读</strong>：<a href="../01-alignment.html">教程 · 序列比对（NCBI 详解）</a>。</li>
+          <li><a href="../01-alignment.html">教程 · 序列比对（NCBI 详解）</a></li>
         </ul>
 
         <p class="practice-footer-note">
