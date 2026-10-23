@@ -1,0 +1,623 @@
+/* Practice 01 · 在线序列比对 — 页面级视觉（不改文案） */
+
+.practice-01 {
+  --p01-accent-soft: rgba(13, 148, 136, 0.1);
+  --p01-accent-line: rgba(13, 148, 136, 0.28);
+  --p01-shadow: 0 1px 2px rgba(26, 26, 46, 0.04), 0 10px 28px rgba(26, 26, 46, 0.05);
+  --p01-radius: 12px;
+}
+
+/* ---- 布局壳 ---- */
+.book-shell.practice-page.practice-01 {
+  grid-template-columns: 288px 1fr;
+}
+
+.practice-01 .book-sidebar {
+  background: linear-gradient(180deg, #f3f5f6 0%, #eceff1 100%);
+  border-right: 0;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.06);
+}
+
+.practice-01 .toc-scroll {
+  padding: 0 0 28px;
+}
+
+.practice-01 .book-brand {
+  margin: 0 0 4px;
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.practice-01 .toc__title {
+  margin: 14px 18px 8px;
+  padding: 0 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.practice-01 .toc.book-nav {
+  padding: 0 10px 8px;
+}
+
+.practice-01 .toc.book-nav > li {
+  margin: 2px 0;
+}
+
+.practice-01 .toc .lv1 {
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.practice-01 .toc .lv1:hover {
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--accent-hover);
+}
+
+.practice-01 .toc .lv2 {
+  margin: 2px 0 10px 14px;
+  padding-left: 10px;
+  border-left: 2px solid rgba(13, 148, 136, 0.18);
+  gap: 1px;
+}
+
+.practice-01 .toc .lv2 a {
+  padding: 5px 8px;
+  border-radius: 6px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.practice-01 .toc .lv2 a:hover {
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--ink);
+}
+
+.practice-01 .toc .lv2 a.is-active,
+.practice-01 .toc .lv1.is-active {
+  color: var(--accent-hover);
+  background: rgba(13, 148, 136, 0.08);
+}
+
+.practice-01 .toc .lv2 a.is-active .n {
+  color: var(--accent);
+}
+
+/* ---- 主文 ---- */
+.practice-01 .book-main {
+  background:
+    radial-gradient(ellipse 70% 42% at 100% 0%, rgba(13, 148, 136, 0.055), transparent 55%),
+    radial-gradient(ellipse 50% 35% at 0% 100%, rgba(26, 26, 46, 0.03), transparent 50%),
+    var(--paper);
+  padding: 32px 40px 56px;
+}
+
+.practice-01 .article {
+  max-width: 46rem;
+}
+
+.practice-01 .practice-breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 18px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink-muted);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(231, 229, 228, 0.9);
+  border-radius: 999px;
+}
+
+.practice-01 .practice-breadcrumb .sep {
+  margin: 0 7px;
+  opacity: 0.7;
+}
+
+.practice-01 .article > h1 {
+  font-size: clamp(1.55rem, 2.4vw, 1.9rem);
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+
+.practice-01 .article > h1::after {
+  content: "";
+  display: block;
+  width: 44px;
+  height: 3px;
+  margin-top: 14px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), rgba(13, 148, 136, 0.2));
+}
+
+.practice-01 .lead {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--ink-light);
+  margin-bottom: 1.6rem;
+}
+
+.practice-01 .article > h2 {
+  position: relative;
+  margin: 2.4rem 0 1rem;
+  padding: 0 0 0.55rem 0.85rem;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+  border-bottom: 1px solid rgba(231, 229, 228, 0.95);
+  scroll-margin-top: 1.25rem;
+}
+
+.practice-01 .article > h2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  bottom: 0.55rem;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent), #0a7c73);
+}
+
+.practice-01 .article > h2:first-of-type {
+  margin-top: 0.35rem;
+}
+
+.practice-01 .article > h3 {
+  margin: 1.75rem 0 0.7rem;
+  font-size: 0.98rem;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  scroll-margin-top: 1.25rem;
+}
+
+.practice-01 .article p {
+  margin-bottom: 0.95em;
+  line-height: 1.78;
+}
+
+.practice-01 .article ul,
+.practice-01 .article ol {
+  margin: 0.85em 0 1.15em;
+  padding-left: 1.35em;
+}
+
+.practice-01 .article ul > li,
+.practice-01 .article ol > li {
+  margin-bottom: 0.55em;
+  line-height: 1.75;
+}
+
+.practice-01 .article ul > li:last-child,
+.practice-01 .article ol > li:last-child {
+  margin-bottom: 0;
+}
+
+/* 练习说明列表：更紧凑清晰 */
+.practice-01 .intro-list > li {
+  margin-bottom: 0.9em;
+  padding: 12px 14px 12px 16px;
+  list-style: none;
+  margin-left: -1.35em;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(231, 229, 228, 0.95);
+  border-radius: var(--p01-radius);
+  box-shadow: var(--p01-shadow);
+}
+
+.practice-01 .intro-list {
+  padding-left: 0;
+}
+
+/* 步骤列表 */
+.practice-01 .step-list {
+  list-style: none;
+  padding-left: 0;
+  counter-reset: p01-step;
+}
+
+.practice-01 .step-list > li {
+  position: relative;
+  counter-increment: p01-step;
+  margin-bottom: 0.7em;
+  padding: 10px 14px 10px 44px;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(231, 229, 228, 0.9);
+  border-radius: 10px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.practice-01 .step-list > li:hover {
+  border-color: var(--p01-accent-line);
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.06);
+}
+
+.practice-01 .step-list > li::before {
+  content: counter(p01-step);
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(145deg, var(--accent), #0a7c73);
+  border-radius: 7px;
+  box-shadow: 0 2px 5px rgba(13, 148, 136, 0.3);
+}
+
+/* FASTA / 代码块 */
+.practice-01 .seq-wrap {
+  position: relative;
+  margin: 1em 0 1.35em;
+}
+
+.practice-01 .seq-wrap pre {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--p01-radius);
+  border: 1px solid rgba(231, 229, 228, 0.95);
+  background: #fff;
+  box-shadow: var(--p01-shadow);
+  font-size: 12.5px;
+  line-height: 1.65;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.practice-01 .seq-wrap pre code {
+  font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", Consolas, monospace;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.practice-01 .copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  border: 1px solid #e5e5e5;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--ink-muted);
+  border-radius: 7px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.practice-01 .copy-btn:hover {
+  color: var(--accent-hover);
+  border-color: var(--p01-accent-line);
+  background: #fff;
+}
+
+.practice-01 .copy-btn[data-state="ok"] {
+  color: var(--accent-hover);
+  border-color: rgba(13, 148, 136, 0.4);
+}
+
+/* 卡片区 */
+.practice-01 .cols {
+  gap: 16px;
+  margin: 1.4em 0 1.6em;
+}
+
+.practice-01 .card {
+  border-radius: var(--p01-radius);
+  padding: 16px 18px;
+  border: 1px solid rgba(231, 229, 228, 0.95);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--p01-shadow);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.practice-01 .card:hover {
+  border-color: var(--p01-accent-line);
+  box-shadow: 0 4px 18px rgba(13, 148, 136, 0.08);
+  transform: translateY(-1px);
+}
+
+.practice-01 .card .t {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 13.5px;
+  letter-spacing: -0.01em;
+}
+
+.practice-01 .card .t::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--p01-accent-soft);
+  flex-shrink: 0;
+}
+
+/* 结果解读导读块 */
+.practice-01 .guide-block {
+  margin: 1rem 0 1.2rem;
+  padding: 14px 16px 14px 18px;
+  border: 1px solid rgba(231, 229, 228, 0.95);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--p01-radius) var(--p01-radius) 0;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: var(--p01-shadow);
+}
+
+.practice-01 .guide-block > p:first-child {
+  margin-bottom: 0.55em;
+  color: var(--ink);
+}
+
+.practice-01 .guide-block ul,
+.practice-01 .guide-block ol {
+  margin-bottom: 0.4em;
+}
+
+.practice-01 .guide-block > p:last-child {
+  margin-bottom: 0;
+}
+
+.practice-01 .ai-questions {
+  margin: 0.75em 0 1.1em;
+  padding: 12px 14px 12px 16px;
+  list-style: none;
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.06), rgba(255, 255, 255, 0.85));
+  border: 1px solid var(--p01-accent-line);
+  border-radius: var(--p01-radius);
+}
+
+.practice-01 .ai-questions > li {
+  position: relative;
+  margin: 0 0 0.55em;
+  padding-left: 1.15em;
+}
+
+.practice-01 .ai-questions > li:last-child {
+  margin-bottom: 0;
+}
+
+.practice-01 .ai-questions > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* 对比表 */
+.practice-01 .table-wrap {
+  margin: 1.1em 0 1.4em;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(231, 229, 228, 0.95);
+  border-radius: var(--p01-radius);
+  background: #fff;
+  box-shadow: var(--p01-shadow);
+}
+
+.practice-01 .practice-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  margin: 0;
+}
+
+.practice-01 .practice-table thead th {
+  padding: 11px 14px;
+  text-align: left;
+  font-weight: 700;
+  color: var(--ink);
+  background: linear-gradient(180deg, #f7f8f8, #f1f3f3);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.practice-01 .practice-table tbody td {
+  padding: 10px 14px;
+  color: var(--ink-light);
+  border-bottom: 1px solid rgba(231, 229, 228, 0.85);
+  vertical-align: top;
+  line-height: 1.55;
+}
+
+.practice-01 .practice-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.practice-01 .practice-table tbody tr:nth-child(even) td {
+  background: rgba(247, 248, 248, 0.65);
+}
+
+.practice-01 .practice-table tbody tr:hover td {
+  background: rgba(13, 148, 136, 0.05);
+}
+
+.practice-01 .practice-table td:first-child {
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  width: 6.5em;
+}
+
+/* 作业区 */
+.practice-01 .hw-section {
+  margin: 1.1rem 0 1.5rem;
+}
+
+.practice-01 .hw-fill {
+  margin: 0.4rem 0 0;
+  padding: 4px 4px 4px 1.5rem;
+  list-style: decimal;
+}
+
+.practice-01 .hw-fill > li {
+  margin: 0 0 0.85rem;
+  padding: 12px 14px;
+  line-height: 1.8;
+  word-break: break-word;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(231, 229, 228, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.practice-01 .hw-blank {
+  display: inline-block;
+  min-width: 5em;
+  height: 1.15em;
+  border-bottom: 1.5px solid rgba(26, 26, 46, 0.45);
+  vertical-align: baseline;
+  margin: 0 0.2em;
+}
+
+.practice-01 .hw-qa {
+  margin: 0 0 1rem;
+  padding: 14px 16px 12px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(231, 229, 228, 0.95);
+  border-radius: var(--p01-radius);
+  box-shadow: var(--p01-shadow);
+}
+
+.practice-01 .hw-qa > p {
+  margin: 0.4rem 0;
+}
+
+.practice-01 .hw-qa > p:first-child {
+  margin-top: 0;
+  margin-bottom: 0.65rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid rgba(231, 229, 228, 0.9);
+  color: var(--ink);
+}
+
+.practice-01 .hw-qa > p:last-child {
+  margin-bottom: 0;
+}
+
+.practice-01 .submit-list {
+  margin: 0.7em 0 1em;
+  padding: 12px 14px 12px 2em;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(231, 229, 228, 0.95);
+  border-radius: var(--p01-radius);
+  box-shadow: var(--p01-shadow);
+}
+
+.practice-01 .submit-list > li {
+  margin-bottom: 0.45em;
+}
+
+.practice-01 .extra-read {
+  margin-top: 0.5rem;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.07), rgba(255, 255, 255, 0.9));
+  border: 1px solid var(--p01-accent-line);
+  border-radius: var(--p01-radius);
+}
+
+.practice-01 .extra-read ul {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.practice-01 .practice-footer-note {
+  margin-top: 2.25rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(231, 229, 228, 0.95);
+  font-size: 12.5px;
+}
+
+.practice-01 .practice-footer-note a {
+  font-weight: 600;
+}
+
+/* 视频链接强调 */
+.practice-01 a[href$=".mp4"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  font-weight: 600;
+  padding: 2px 0;
+  border-bottom: 1px dashed rgba(13, 148, 136, 0.35);
+}
+
+.practice-01 a[href$=".mp4"]::before {
+  content: "▶";
+  font-size: 0.7em;
+  color: var(--accent);
+}
+
+/* ---- 响应式 ---- */
+@media (max-width: 980px) {
+  .book-shell.practice-page.practice-01 {
+    grid-template-columns: 1fr;
+  }
+
+  .practice-01 .book-main {
+    padding: 22px 16px 40px;
+  }
+
+  .practice-01 .article {
+    max-width: none;
+  }
+
+  .practice-01 .cols {
+    grid-template-columns: 1fr;
+  }
+
+  .practice-01 .step-list > li {
+    padding-left: 42px;
+  }
+
+  .practice-01 .intro-list > li {
+    margin-left: 0;
+  }
+
+  .practice-01 .toc-scroll {
+    max-height: 36vh;
+    overflow: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .practice-01 .card,
+  .practice-01 .step-list > li,
+  .practice-01 .toc .lv1,
+  .practice-01 .toc .lv2 a {
+    transition: none;
+  }
+
+  .practice-01 .card:hover {
+    transform: none;
+  }
+}

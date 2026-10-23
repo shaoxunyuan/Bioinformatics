@@ -7,9 +7,10 @@
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../css/01.css">
   <link rel="stylesheet" href="practice.css">
+  <link rel="stylesheet" href="01-online-sequence-alignment.css">
 </head>
 <body>
-  <div class="book-shell practice-page">
+  <div class="book-shell practice-page practice-01">
     <aside class="book-sidebar" aria-label="目录">
       <div class="toc-scroll">
         <div class="book-brand">
@@ -18,7 +19,7 @@
           <a href="../index.html">教程首页</a>
         </div>
         <div class="toc__title">目录</div>
-        <ul class="book-nav toc">
+        <ul class="book-nav toc" id="page-toc">
           <li><a class="lv1" href="#sec-intro">一、练习说明</a></li>
           <li><a class="lv1" href="#sec-prep">二、实验准备</a>
             <div class="lv2">
@@ -62,10 +63,10 @@
         </nav>
 
         <h1>练习：使用 NCBI 与 CNGB 网站做在线序列比对</h1>
-        <p>本页为<strong>动手练习</strong>指南：在浏览器中分别对<strong>核酸</strong>与<strong>蛋白</strong>做一次在线 BLAST，并比较 <strong>NCBI BLAST</strong> 与 <strong>CNGBdb BLAST</strong> 的流程与结果。示例序列来自 CNGBdb 数据资源（与 GenBank 同源），可在源页面核对元数据。</p>
+        <p class="lead">本页为<strong>动手练习</strong>指南：在浏览器中分别对<strong>核酸</strong>与<strong>蛋白</strong>做一次在线 BLAST，并比较 <strong>NCBI BLAST</strong> 与 <strong>CNGBdb BLAST</strong> 的流程与结果。示例序列来自 CNGBdb 数据资源（与 GenBank 同源），可在源页面核对元数据。</p>
 
         <h2 id="sec-intro">一、练习说明</h2>
-        <ul>
+        <ul class="intro-list">
           <li><strong>目标</strong>：<br>
             ① 使用 <strong>BLASTN</strong> 检索核酸记录 <strong>LC656365.1</strong>（人源 ACE2 基因部分 CDS，129 bp）；<br>
             ② 使用 <strong>BLASTP</strong> 检索蛋白记录 <strong>BAB40370.1</strong>（ACE2［<em>Homo sapiens</em>］，805 aa）。<br>
@@ -78,19 +79,25 @@
 
         <h3 id="sec-prep-nt">2.1 核酸序列（BLASTN）</h3>
         <p>记录 <strong>LC656365.1</strong>：<a href="https://db.cngb.org/data_resources/sequence/LC656365.1" target="_blank" rel="noopener noreferrer">CNGBdb 序列页</a>（<em>Homo sapiens ACE2 gene … partial cds</em>，DNA，129 bp）。下面为可复制的 FASTA（与 NCBI/GenBank 一致）：</p>
-        <pre><code class="language-text">&gt;LC656365.1 Homo sapiens ACE2 gene for angiotensin converting enzyme 2, partial cds
+        <div class="seq-wrap">
+          <button type="button" class="copy-btn" data-copy-target="seq-nt">复制</button>
+          <pre id="seq-nt"><code class="language-text">&gt;LC656365.1 Homo sapiens ACE2 gene for angiotensin converting enzyme 2, partial cds
 ATGAGCACCATCTACAGTACTGGAAAAGTTTGTAACCCAGATAATCCACAAGAATGCTTATTACTTGAAC
 CAGGTAGGCTACTAATTTTTAGTAGTGATTATGAAATTTACTTTTCTCTCAGATTTTAA</code></pre>
+        </div>
 
         <h3 id="sec-prep-aa">2.2 蛋白序列（BLASTP）</h3>
         <p>记录 <strong>BAB40370.1</strong>：<a href="https://db.cngb.org/data_resources/sequence/BAB40370.1" target="_blank" rel="noopener noreferrer">CNGBdb 序列页</a>（ACE2［<em>Homo sapiens</em>］，蛋白质，805 aa）。下面为可复制的 FASTA：</p>
-        <pre><code class="language-text">&gt;BAB40370.1 ACE2 [Homo sapiens]
+        <div class="seq-wrap">
+          <button type="button" class="copy-btn" data-copy-target="seq-aa">复制</button>
+          <pre id="seq-aa"><code class="language-text">&gt;BAB40370.1 ACE2 [Homo sapiens]
 MSSSSWLLLSLVAVTAAQSTIEEQAKTFLDKFNHEAEDLFYQSSLASWNYNTNITEENVQNMNNAGDKWSAFLKEQSTLAQMYPLQEIQNLTVKLQLQALQQNGSSVLSEDKSKRLNTILNTMSTIYSTGKVCNPDNPQE
 CLLLEPGLNEIMANSLDYNERLWAWESWRSEVGKQLRPLYEEYVVLKNEMARANHYEDYGDYWRGDYEVNGVDGYDYSRGQLIEDVEHTFEEIKPLYEHLHAYVRAKLMNAYPSYISPIGCLPAHLLGDMWGRFWTNLYS
 LTVPFGQKPNIDVTDAMVDQAWDAQRIFKEAEKFFVSVGLPNMTQGFWENSMLTDPGNVQKAVCHPTAWDLGKGDFRILMCTKVTMDDFLTAHHEMGHIQYDMAYAAQPFLLRNGANEGFHEAVGEIMSLSAATPKHLKS
 IGLLSPDFQEDNETEINFLLKQALTIVGTLPFTYMLEKWRWMVFKGEIPKDQWMKKWWEMKREIVGVVEPVPHDETYCDPASLFHVSNDYSFIRYYTRTLYQFQFQEALCQAAKHEGPLHKCDISNSTEAGQKLFNMLRL
 GKSEPWTLALENVVGAKNMNVRPLLNYFEPLFTWLKDQNKNSFVGWSTDWSPYADQSIKVRISLKSALGDRAYEWNDNEMYLFRSSVAYAMRQYFLKVKNQMILFGEEDVRVANLKPRISFNFFVTAPKNVSDIIPRTEV
 EKAIRMSRSRINDAFRLNDNSLEFLGIQPTLGPPNQPPVSIWLIVFGVVMGVIVVGIVILIFTGIRDRKKKNKARSGENPYASIDISKGENNPGFQNTDDVQTSF</code></pre>
+        </div>
 
         <div class="cols">
           <div class="card">
@@ -114,13 +121,13 @@ EKAIRMSRSRINDAFRLNDNSLEFLGIQPTLGPPNQPPVSIWLIVFGVVMGVIVVGIVILIFTGIRDRKKKNKARSGENP
         <p>入口：<a href="https://blast.ncbi.nlm.nih.gov/" target="_blank" rel="noopener noreferrer">NCBI BLAST</a>（<code>blast.ncbi.nlm.nih.gov</code>）。首页按序列类型分别进入 <strong>Nucleotide BLAST</strong>（BLASTN）与 <strong>Protein BLAST</strong>（BLASTP），与 CNGBdb 命名习惯一致。</p>
 
         <h3 id="sec-ncbi-1">A.1 入口与程序选择</h3>
-        <ol>
+        <ol class="step-list">
           <li>在浏览器打开上述 NCBI BLAST 首页。</li>
           <li>核酸任务使用 <strong>Nucleotide BLAST</strong>，蛋白任务使用 <strong>Protein BLAST</strong>；建议先完成 BLASTN，再新开或返回首页进入 BLASTP，避免混用查询类型。</li>
         </ol>
 
         <h3 id="sec-ncbi-2">A.2 核酸：BLASTN（LC656365.1）</h3>
-        <ol>
+        <ol class="step-list">
           <li>进入 <strong>Nucleotide BLAST</strong>（BLASTN）页面。</li>
           <li>将 <strong>LC656365.1</strong> 的 FASTA 粘贴到查询框。</li>
           <li>数据库可先保持默认（如 <code>nr</code> 或页面推荐集合），运行并记录最优命中是否指向 ACE2 / 同源基因及统计量。</li>
@@ -128,7 +135,7 @@ EKAIRMSRSRINDAFRLNDNSLEFLGIQPTLGPPNQPPVSIWLIVFGVVMGVIVVGIVILIFTGIRDRKKKNKARSGENP
         </ol>
 
         <h3 id="sec-ncbi-3">A.3 蛋白：BLASTP（BAB40370.1）</h3>
-        <ol>
+        <ol class="step-list">
           <li>进入 <strong>Protein BLAST</strong>（BLASTP）页面。</li>
           <li>将 <strong>BAB40370.1</strong> 的 FASTA 粘贴到查询框。</li>
           <li>使用默认蛋白库运行，记录最优命中与关键参数；勿与 BLASTN 页面混淆。</li>
@@ -138,20 +145,20 @@ EKAIRMSRSRINDAFRLNDNSLEFLGIQPTLGPPNQPPVSIWLIVFGVVMGVIVVGIVILIFTGIRDRKKKNKARSGENP
         <p>入口：<a href="https://db.cngb.org/blast" target="_blank" rel="noopener noreferrer">CNGBdb BLAST</a>。程序命名与 NCBI 习惯一致：核酸用 <strong>BLASTN</strong>，蛋白用 <strong>BLASTP</strong>。</p>
 
         <h3 id="sec-cngb-1">B.1 入口与程序选择</h3>
-        <ol>
+        <ol class="step-list">
           <li>打开上述 BLAST 页面。</li>
           <li>先选择 <strong>BLASTN</strong>，完成核酸任务后再切换到 <strong>BLASTP</strong> 做蛋白任务。</li>
         </ol>
 
         <h3 id="sec-cngb-2">B.2 核酸：BLASTN（LC656365.1）</h3>
-        <ol>
+        <ol class="step-list">
           <li>粘贴 2.1 节核酸 FASTA，选择合适核酸数据库（按页面选项或课程要求）。</li>
           <li>提交运行，将结果与 NCBI BLASTN 对照（基因/Accession、排序差异等）。</li>
           <li><strong>视频教程</strong>：<a href="../videos/CNGB-blastn.mp4">CNGBdb BLASTN 操作演示（MP4）</a></li>
         </ol>
 
         <h3 id="sec-cngb-3">B.3 蛋白：BLASTP（BAB40370.1）</h3>
-        <ol>
+        <ol class="step-list">
           <li>切换到 <strong>BLASTP</strong>，粘贴 2.2 节蛋白 FASTA。</li>
           <li>提交运行，同样记录并与 NCBI BLASTP 结果对照。</li>
           <li>若几乎无命中，检查是否误用 BLASTN、序列是否截断或含非法字符。</li>
@@ -160,45 +167,55 @@ EKAIRMSRSRINDAFRLNDNSLEFLGIQPTLGPPNQPPVSIWLIVFGVVMGVIVVGIVILIFTGIRDRKKKNKARSGENP
         <h3 id="sec-cngb-4">B.4 如何查看 BLAST 比对结果</h3>
         <p>完成 BLASTN 或 BLASTP 比对后，可以在结果页面中查看本次任务的基本信息和序列比对结果。</p>
 
-        <p><strong>1. 任务基本信息</strong></p>
-        <p>首先查看结果页面顶部的基本信息，包括：</p>
-        <ul>
-          <li><strong>Program</strong>：本次使用的比对程序。</li>
-          <li><strong>Database</strong>：使用的序列数据库。</li>
-          <li><strong>Query Length</strong>：查询序列的长度。</li>
-          <li><strong>Molecule Type</strong>：查询序列的分子类型。</li>
-        </ul>
+        <div class="guide-block">
+          <p><strong>1. 任务基本信息</strong></p>
+          <p>首先查看结果页面顶部的基本信息，包括：</p>
+          <ul>
+            <li><strong>Program</strong>：本次使用的比对程序。</li>
+            <li><strong>Database</strong>：使用的序列数据库。</li>
+            <li><strong>Query Length</strong>：查询序列的长度。</li>
+            <li><strong>Molecule Type</strong>：查询序列的分子类型。</li>
+          </ul>
+        </div>
 
-        <p><strong>2. 表格描述（Descriptions）</strong></p>
-        <p>表格中列出了与查询序列匹配的数据库记录。</p>
-        <p>重点观察以下信息：</p>
-        <ul>
-          <li><strong>Description</strong>：匹配序列的名称或描述。</li>
-          <li><strong>Scientific Name</strong>：匹配序列所属的物种。</li>
-          <li><strong>Query Cover</strong>：查询序列中有多少比例参与了比对。</li>
-          <li><strong>Per. Ident</strong>：比对区域中相同位置所占的百分比。</li>
-          <li><strong>E-value</strong>：用于评价比对结果统计显著性的指标。</li>
-        </ul>
-        <p>一般来说，E-value 越小，表示在当前搜索条件下随机获得相同或更高得分匹配的预期次数越少。</p>
-        <p>需要注意，序列一致性、查询覆盖度和 E-value 应结合起来判断，不能仅凭一个指标确定序列的生物学功能。</p>
+        <div class="guide-block">
+          <p><strong>2. 表格描述（Descriptions）</strong></p>
+          <p>表格中列出了与查询序列匹配的数据库记录。</p>
+          <p>重点观察以下信息：</p>
+          <ul>
+            <li><strong>Description</strong>：匹配序列的名称或描述。</li>
+            <li><strong>Scientific Name</strong>：匹配序列所属的物种。</li>
+            <li><strong>Query Cover</strong>：查询序列中有多少比例参与了比对。</li>
+            <li><strong>Per. Ident</strong>：比对区域中相同位置所占的百分比。</li>
+            <li><strong>E-value</strong>：用于评价比对结果统计显著性的指标。</li>
+          </ul>
+          <p>一般来说，E-value 越小，表示在当前搜索条件下随机获得相同或更高得分匹配的预期次数越少。</p>
+          <p>需要注意，序列一致性、查询覆盖度和 E-value 应结合起来判断，不能仅凭一个指标确定序列的生物学功能。</p>
+        </div>
 
-        <p><strong>3. 图形概览（Graphic Summary）</strong></p>
-        <p>图形概览可以直观展示查询序列与数据库序列之间的匹配位置和范围。</p>
-        <p>观察不同命中序列是否覆盖查询序列的主要区域。</p>
+        <div class="guide-block">
+          <p><strong>3. 图形概览（Graphic Summary）</strong></p>
+          <p>图形概览可以直观展示查询序列与数据库序列之间的匹配位置和范围。</p>
+          <p>观察不同命中序列是否覆盖查询序列的主要区域。</p>
+        </div>
 
-        <p><strong>4. 比对详情（Alignments）</strong></p>
-        <p>比对详情展示查询序列与数据库序列的具体匹配情况。</p>
-        <p>可以观察哪些位置相同，哪些位置存在差异。</p>
+        <div class="guide-block">
+          <p><strong>4. 比对详情（Alignments）</strong></p>
+          <p>比对详情展示查询序列与数据库序列的具体匹配情况。</p>
+          <p>可以观察哪些位置相同，哪些位置存在差异。</p>
+        </div>
 
-        <p><strong>5. 物种分类（Taxonomy）</strong></p>
-        <p>Taxonomy 展示比对结果涉及的物种及其分类信息。</p>
-        <p>观察核酸序列和蛋白质序列的命中物种是否相同。</p>
-        <p>注意：命中物种的范围会受到数据库、序列长度、检索参数等因素影响，不能仅根据 Taxonomy 判断物种亲缘关系。</p>
+        <div class="guide-block">
+          <p><strong>5. 物种分类（Taxonomy）</strong></p>
+          <p>Taxonomy 展示比对结果涉及的物种及其分类信息。</p>
+          <p>观察核酸序列和蛋白质序列的命中物种是否相同。</p>
+          <p>注意：命中物种的范围会受到数据库、序列长度、检索参数等因素影响，不能仅根据 Taxonomy 判断物种亲缘关系。</p>
+        </div>
 
         <h3 id="sec-cngb-5">B.5 如何阅读 AI 分析报告</h3>
         <p>部分 CNCB-BLAST 任务的结果页面提供 AI 自动生成的分析报告。</p>
         <p>报告可能包含以下内容：</p>
-        <ol>
+        <ol class="step-list">
           <li>结论</li>
           <li>比对质量评估</li>
           <li>物种分析</li>
@@ -208,7 +225,7 @@ EKAIRMSRSRINDAFRLNDNSLEFLGIQPTLGPPNQPPVSIWLIVFGVVMGVIVVGIVILIFTGIRDRKKKNKARSGENP
         </ol>
         <p>AI 报告可以帮助我们快速了解比对结果，但其中的解释并不一定全部正确。</p>
         <p>阅读报告时，可以先关注三个问题：</p>
-        <ul>
+        <ul class="ai-questions">
           <li>AI 判断这条序列是什么？</li>
           <li>BLAST 比对结果是否支持这一判断？</li>
           <li>AI 是否提出了无法直接从比对结果中得到的结论？</li>
@@ -227,57 +244,59 @@ EKAIRMSRSRINDAFRLNDNSLEFLGIQPTLGPPNQPPVSIWLIVFGVVMGVIVVGIVILIFTGIRDRKKKNKARSGENP
         <p><strong>CNGBdb BLAST：</strong>数据库以 CNGB 自身归档与测序项目库为主，来自中国团队、华大系、CNGB 测序项目、国家专项数据等；特色库包括 MacroBank、宏基因组、单细胞、植物/海洋/微生物专项、中国特有物种等；规模约 <strong>数亿条</strong>、<strong>数百 PB</strong>，以亚洲/中国样本、本土物种、独家测序数据为主；<strong>很多序列不在 NCBI 出现</strong>（中国独家数据）；冗余较低、更新较慢（按月/季度）；适合中国本土物种、CNGB 项目内数据、宏基因组与国产组学数据。</p>
 
         <p><strong>三、界面与功能对比。</strong></p>
-        <table style="width:100%; border-collapse:collapse; font-size:14px; margin:1em 0;">
-          <thead>
-            <tr style="border-bottom:2px solid var(--border); text-align:left;">
-              <th style="padding:8px 10px;">维度</th>
-              <th style="padding:8px 10px;">NCBI BLAST</th>
-              <th style="padding:8px 10px;">CNGBdb BLAST</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:8px 10px; color:var(--ink); font-weight:600;">入口</td>
-              <td style="padding:8px 10px; color:var(--ink-light);"><a href="https://blast.ncbi.nlm.nih.gov/" target="_blank" rel="noopener noreferrer">blast.ncbi.nlm.nih.gov</a></td>
-              <td style="padding:8px 10px; color:var(--ink-light);"><a href="https://db.cngb.org/blast" target="_blank" rel="noopener noreferrer">db.cngb.org/blast</a></td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:8px 10px; color:var(--ink); font-weight:600;">界面风格</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">经典、选项与参数丰富</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">相对简洁、中文友好、参数精简</td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:8px 10px; color:var(--ink); font-weight:600;">MegaBLAST</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">有（高相似核酸常用）</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">有（同类算法）</td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:8px 10px; color:var(--ink); font-weight:600;">物种过滤</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">强（完整 NCBI 分类体系）</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">相对弱（CNGB 自有分类）</td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:8px 10px; color:var(--ink); font-weight:600;">结果图形</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">丰富（如 MapViewer、分类相关展示）</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">基础图形、展示更简</td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:8px 10px; color:var(--ink); font-weight:600;">批量 / API</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">强（NCBI API、Entrez 等）</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">有限（以平台内接口为主）</td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:8px 10px; color:var(--ink); font-weight:600;">多序列 / 批量</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">支持较好</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">支持，限制通常更严</td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:8px 10px; color:var(--ink); font-weight:600;">访问体验</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">国际节点，高峰可能较慢</td>
-              <td style="padding:8px 10px; color:var(--ink-light);">国内节点，国内访问常更快、更稳</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-wrap">
+          <table class="practice-table">
+            <thead>
+              <tr>
+                <th>维度</th>
+                <th>NCBI BLAST</th>
+                <th>CNGBdb BLAST</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>入口</td>
+                <td><a href="https://blast.ncbi.nlm.nih.gov/" target="_blank" rel="noopener noreferrer">blast.ncbi.nlm.nih.gov</a></td>
+                <td><a href="https://db.cngb.org/blast" target="_blank" rel="noopener noreferrer">db.cngb.org/blast</a></td>
+              </tr>
+              <tr>
+                <td>界面风格</td>
+                <td>经典、选项与参数丰富</td>
+                <td>相对简洁、中文友好、参数精简</td>
+              </tr>
+              <tr>
+                <td>MegaBLAST</td>
+                <td>有（高相似核酸常用）</td>
+                <td>有（同类算法）</td>
+              </tr>
+              <tr>
+                <td>物种过滤</td>
+                <td>强（完整 NCBI 分类体系）</td>
+                <td>相对弱（CNGB 自有分类）</td>
+              </tr>
+              <tr>
+                <td>结果图形</td>
+                <td>丰富（如 MapViewer、分类相关展示）</td>
+                <td>基础图形、展示更简</td>
+              </tr>
+              <tr>
+                <td>批量 / API</td>
+                <td>强（NCBI API、Entrez 等）</td>
+                <td>有限（以平台内接口为主）</td>
+              </tr>
+              <tr>
+                <td>多序列 / 批量</td>
+                <td>支持较好</td>
+                <td>支持，限制通常更严</td>
+              </tr>
+              <tr>
+                <td>访问体验</td>
+                <td>国际节点，高峰可能较慢</td>
+                <td>国内节点，国内访问常更快、更稳</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <p><strong>四、适用场景（怎么选）。</strong></p>
         <ul>
@@ -294,45 +313,51 @@ EKAIRMSRSRINDAFRLNDNSLEFLGIQPTLGPPNQPPVSIWLIVFGVVMGVIVVGIVILIFTGIRDRKKKNKARSGENP
         <p>可以返回实验结果页面查找相关信息，不要求记忆具体数值。</p>
 
         <h3 id="sec-hw-fill">6.1 填空题</h3>
-        <ol class="hw-fill">
-          <li>本次实验中，核酸序列比对使用的程序是 <span class="hw-blank"></span>，蛋白质序列比对使用的程序是 <span class="hw-blank"></span>。</li>
-          <li>本次实验使用的核酸序列 LC656365.1 长度为 <span class="hw-blank"></span> bp，蛋白质序列 BAB40370.1 长度为 <span class="hw-blank"></span> aa。</li>
-          <li>在 CNCB-BLAST 中，我选择的核酸比对数据库是 <span class="hw-blank"></span>，蛋白质比对数据库是 <span class="hw-blank"></span>。</li>
-          <li>BLAST 结果中的 E-value 是评价比对结果的重要指标。通常情况下，E-value 越 <span class="hw-blank"></span>，说明在当前检索条件下随机获得相同或更高得分匹配的预期次数越少。</li>
-          <li>查看 BAB40370.1 的 BLASTP 比对结果，排名第一的匹配蛋白质名称是 <span class="hw-blank"></span>，所属物种是 <span class="hw-blank"></span>。</li>
-          <li>在 BLAST 结果的 Taxonomy 页面中，可以查看匹配序列所属的 <span class="hw-blank"></span> 信息。</li>
-        </ol>
+        <div class="hw-section">
+          <ol class="hw-fill">
+            <li>本次实验中，核酸序列比对使用的程序是 <span class="hw-blank"></span>，蛋白质序列比对使用的程序是 <span class="hw-blank"></span>。</li>
+            <li>本次实验使用的核酸序列 LC656365.1 长度为 <span class="hw-blank"></span> bp，蛋白质序列 BAB40370.1 长度为 <span class="hw-blank"></span> aa。</li>
+            <li>在 CNCB-BLAST 中，我选择的核酸比对数据库是 <span class="hw-blank"></span>，蛋白质比对数据库是 <span class="hw-blank"></span>。</li>
+            <li>BLAST 结果中的 E-value 是评价比对结果的重要指标。通常情况下，E-value 越 <span class="hw-blank"></span>，说明在当前检索条件下随机获得相同或更高得分匹配的预期次数越少。</li>
+            <li>查看 BAB40370.1 的 BLASTP 比对结果，排名第一的匹配蛋白质名称是 <span class="hw-blank"></span>，所属物种是 <span class="hw-blank"></span>。</li>
+            <li>在 BLAST 结果的 Taxonomy 页面中，可以查看匹配序列所属的 <span class="hw-blank"></span> 信息。</li>
+          </ol>
+        </div>
 
         <h3 id="sec-hw-short">6.2 简答题</h3>
-        <div class="hw-qa">
-          <p><strong>1. 如何判断序列比对结果？</strong></p>
-          <p>在 BLAST 的结果表格中，我们可以看到 Identity、Query Cover 和 E-value 等指标。</p>
-          <p>请结合本次实验，简单说明这三个指标分别表示什么。观察第一条匹配结果，判断它与查询序列的匹配情况如何。</p>
-        </div>
-        <div class="hw-qa">
-          <p><strong>2. 核酸和蛋白质的比对结果有什么不同？</strong></p>
-          <p>分别查看 LC656365.1 的 BLASTN 结果和 BAB40370.1 的 BLASTP 结果。</p>
-          <p>进入 Taxonomy 页面，观察两个结果中出现的物种。</p>
-          <p>请回答：</p>
-          <p>（1）两个比对结果中出现的物种是否相同？</p>
-          <p>（2）你认为造成这些差异的原因可能有哪些？</p>
-          <p>可以结合本次使用的序列、数据库和比对方法进行简单说明。</p>
+        <div class="hw-section">
+          <div class="hw-qa">
+            <p><strong>1. 如何判断序列比对结果？</strong></p>
+            <p>在 BLAST 的结果表格中，我们可以看到 Identity、Query Cover 和 E-value 等指标。</p>
+            <p>请结合本次实验，简单说明这三个指标分别表示什么。观察第一条匹配结果，判断它与查询序列的匹配情况如何。</p>
+          </div>
+          <div class="hw-qa">
+            <p><strong>2. 核酸和蛋白质的比对结果有什么不同？</strong></p>
+            <p>分别查看 LC656365.1 的 BLASTN 结果和 BAB40370.1 的 BLASTP 结果。</p>
+            <p>进入 Taxonomy 页面，观察两个结果中出现的物种。</p>
+            <p>请回答：</p>
+            <p>（1）两个比对结果中出现的物种是否相同？</p>
+            <p>（2）你认为造成这些差异的原因可能有哪些？</p>
+            <p>可以结合本次使用的序列、数据库和比对方法进行简单说明。</p>
+          </div>
         </div>
 
         <h3 id="sec-hw-open">6.3 开放思考题</h3>
-        <div class="hw-qa">
-          <p><strong>AI 生成的 BLAST 分析报告一定正确吗？</strong></p>
-          <p>完成 CNCB-BLAST 比对后，阅读结果页面中的 AI 分析报告。</p>
-          <p>从报告中选择一条你感兴趣的结论，并结合实际比对结果回答：</p>
-          <p>（1）AI 给出了什么结论？</p>
-          <p>（2）你能否在 BLAST 的表格描述、图形概览或比对详情中找到支持这一结论的信息？</p>
-          <p>（3）你认为 AI 分析报告对理解 BLAST 结果有什么帮助？使用时需要注意什么？</p>
-          <p>请根据自己的观察和理解回答，不要求对 AI 报告中的全部结论进行验证。</p>
+        <div class="hw-section">
+          <div class="hw-qa">
+            <p><strong>AI 生成的 BLAST 分析报告一定正确吗？</strong></p>
+            <p>完成 CNCB-BLAST 比对后，阅读结果页面中的 AI 分析报告。</p>
+            <p>从报告中选择一条你感兴趣的结论，并结合实际比对结果回答：</p>
+            <p>（1）AI 给出了什么结论？</p>
+            <p>（2）你能否在 BLAST 的表格描述、图形概览或比对详情中找到支持这一结论的信息？</p>
+            <p>（3）你认为 AI 分析报告对理解 BLAST 结果有什么帮助？使用时需要注意什么？</p>
+            <p>请根据自己的观察和理解回答，不要求对 AI 报告中的全部结论进行验证。</p>
+          </div>
         </div>
 
         <h3 id="sec-hw-submit">6.4 作业提交</h3>
         <p>请将本次实验的结果整理成一份实验报告，包含以下内容：</p>
-        <ol>
+        <ol class="submit-list">
           <li>实验名称：在线序列比对（NCBI 与 CNCB-BLAST）。</li>
           <li>实验结果：提供核酸和蛋白质序列比对成功后的结果截图。</li>
           <li>填空题：完成 6 道填空题。</li>
@@ -343,9 +368,11 @@ EKAIRMSRSRINDAFRLNDNSLEFLGIQPTLGPPNQPPVSIWLIVFGVVMGVIVVGIVILIFTGIRDRKKKNKARSGENP
         <p>文字回答应简洁、清楚，能够说明自己的观察即可。</p>
 
         <h3 id="sec-hw-extra">拓展阅读</h3>
-        <ul>
-          <li><a href="../01-alignment.html">教程 · 序列比对（NCBI 详解）</a></li>
-        </ul>
+        <div class="extra-read">
+          <ul>
+            <li><a href="../01-alignment.html">教程 · 序列比对（NCBI 详解）</a></li>
+          </ul>
+        </div>
 
         <p class="practice-footer-note">
           <a href="index.html">← 返回练习目录</a>
@@ -355,5 +382,80 @@ EKAIRMSRSRINDAFRLNDNSLEFLGIQPTLGPPNQPPVSIWLIVFGVVMGVIVVGIVILIFTGIRDRKKKNKARSGENP
       </article>
     </main>
   </div>
+
+  <script>
+    (function () {
+      var root = document.querySelector(".practice-01");
+      if (!root) return;
+
+      root.querySelectorAll(".copy-btn[data-copy-target]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var el = document.getElementById(btn.getAttribute("data-copy-target"));
+          if (!el) return;
+          var text = el.innerText || el.textContent || "";
+          var done = function () {
+            btn.setAttribute("data-state", "ok");
+            btn.textContent = "已复制";
+            setTimeout(function () {
+              btn.removeAttribute("data-state");
+              btn.textContent = "复制";
+            }, 1600);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done).catch(function () {
+              fallbackCopy(text, done);
+            });
+          } else {
+            fallbackCopy(text, done);
+          }
+        });
+      });
+
+      function fallbackCopy(text, done) {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand("copy");
+          done();
+        } catch (e) {}
+        document.body.removeChild(ta);
+      }
+
+      var main = root.querySelector(".book-main");
+      var links = Array.prototype.slice.call(root.querySelectorAll("#page-toc a[href^='#']"));
+      if (!main || !links.length) return;
+
+      var sections = links
+        .map(function (a) {
+          var id = a.getAttribute("href").slice(1);
+          var node = document.getElementById(id);
+          return node ? { id: id, node: node, link: a } : null;
+        })
+        .filter(Boolean);
+
+      function setActive(id) {
+        links.forEach(function (a) {
+          a.classList.toggle("is-active", a.getAttribute("href") === "#" + id);
+        });
+      }
+
+      function onScroll() {
+        var top = main.scrollTop + 48;
+        var current = sections[0] && sections[0].id;
+        for (var i = 0; i < sections.length; i++) {
+          if (sections[i].node.offsetTop <= top) current = sections[i].id;
+        }
+        if (current) setActive(current);
+      }
+
+      main.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
 </body>
 </html>
