@@ -1,6 +1,6 @@
-/* Practice 01 · 在线序列比对 — 页面级视觉（不改文案） */
+﻿/* Practice 01 · 在线序列比对 — 页面级视觉（不改文案） */
 
-.practice-01 {
+.practice-lesson {
   --p01-accent-soft: rgba(13, 148, 136, 0.1);
   --p01-accent-line: rgba(13, 148, 136, 0.28);
   --p01-shadow: 0 1px 2px rgba(26, 26, 46, 0.04), 0 10px 28px rgba(26, 26, 46, 0.05);
@@ -8,21 +8,21 @@
 }
 
 /* ---- 布局壳 ---- */
-.book-shell.practice-page.practice-01 {
+.book-shell.practice-page.practice-lesson {
   grid-template-columns: 288px 1fr;
 }
 
-.practice-01 .book-sidebar {
+.practice-lesson .book-sidebar {
   background: linear-gradient(180deg, #f3f5f6 0%, #eceff1 100%);
   border-right: 0;
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.06);
 }
 
-.practice-01 .toc-scroll {
+.practice-lesson .toc-scroll {
   padding: 0 0 28px;
 }
 
-.practice-01 .book-brand {
+.practice-lesson .book-brand {
   margin: 0 0 4px;
   padding: 18px 18px 14px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
@@ -33,7 +33,7 @@
   letter-spacing: 0.01em;
 }
 
-.practice-01 .toc__title {
+.practice-lesson .toc__title {
   margin: 14px 18px 8px;
   padding: 0 0 8px;
   font-size: 11px;
@@ -44,15 +44,15 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.practice-01 .toc.book-nav {
+.practice-lesson .toc.book-nav {
   padding: 0 10px 8px;
 }
 
-.practice-01 .toc.book-nav > li {
+.practice-lesson .toc.book-nav > li {
   margin: 2px 0;
 }
 
-.practice-01 .toc .lv1 {
+.practice-lesson .toc .lv1 {
   padding: 8px 10px;
   border-radius: 8px;
   font-size: 13px;
@@ -60,41 +60,41 @@
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.practice-01 .toc .lv1:hover {
+.practice-lesson .toc .lv1:hover {
   background: rgba(255, 255, 255, 0.7);
   color: var(--accent-hover);
 }
 
-.practice-01 .toc .lv2 {
+.practice-lesson .toc .lv2 {
   margin: 2px 0 10px 14px;
   padding-left: 10px;
   border-left: 2px solid rgba(13, 148, 136, 0.18);
   gap: 1px;
 }
 
-.practice-01 .toc .lv2 a {
+.practice-lesson .toc .lv2 a {
   padding: 5px 8px;
   border-radius: 6px;
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.practice-01 .toc .lv2 a:hover {
+.practice-lesson .toc .lv2 a:hover {
   background: rgba(255, 255, 255, 0.75);
   color: var(--ink);
 }
 
-.practice-01 .toc .lv2 a.is-active,
-.practice-01 .toc .lv1.is-active {
+.practice-lesson .toc .lv2 a.is-active,
+.practice-lesson .toc .lv1.is-active {
   color: var(--accent-hover);
   background: rgba(13, 148, 136, 0.08);
 }
 
-.practice-01 .toc .lv2 a.is-active .n {
+.practice-lesson .toc .lv2 a.is-active .n {
   color: var(--accent);
 }
 
 /* ---- 主文 ---- */
-.practice-01 .book-main {
+.practice-lesson .book-main {
   background:
     radial-gradient(ellipse 70% 42% at 100% 0%, rgba(13, 148, 136, 0.055), transparent 55%),
     radial-gradient(ellipse 50% 35% at 0% 100%, rgba(26, 26, 46, 0.03), transparent 50%),
@@ -102,12 +102,12 @@
   padding: 32px 36px 56px 32px;
 }
 
-.practice-01 .article {
+.practice-lesson .article {
   max-width: none;
   width: 100%;
 }
 
-.practice-01 .practice-breadcrumb {
+.practice-lesson .practice-breadcrumb {
   display: inline-flex;
   align-items: center;
   gap: 0;
@@ -122,12 +122,12 @@
   border-radius: 999px;
 }
 
-.practice-01 .practice-breadcrumb .sep {
+.practice-lesson .practice-breadcrumb .sep {
   margin: 0 7px;
   opacity: 0.7;
 }
 
-.practice-01 .article > h1 {
+.practice-lesson .article > h1 {
   font-size: clamp(1.55rem, 2.4vw, 1.9rem);
   font-weight: 750;
   letter-spacing: -0.03em;
@@ -136,7 +136,7 @@
   color: var(--ink);
 }
 
-.practice-01 .article > h1::after {
+.practice-lesson .article > h1::after {
   content: "";
   display: block;
   width: 44px;
@@ -146,14 +146,14 @@
   background: linear-gradient(90deg, var(--accent), rgba(13, 148, 136, 0.2));
 }
 
-.practice-01 .lead {
+.practice-lesson .lead {
   font-size: 15px;
   line-height: 1.8;
   color: var(--ink-light);
   margin-bottom: 1.6rem;
 }
 
-.practice-01 .article > h2 {
+.practice-lesson .article > h2 {
   position: relative;
   margin: 2.4rem 0 1rem;
   padding: 0 0 0.55rem 0.85rem;
@@ -163,7 +163,7 @@
   scroll-margin-top: 1.25rem;
 }
 
-.practice-01 .article > h2::before {
+.practice-lesson .article > h2::before {
   content: "";
   position: absolute;
   left: 0;
@@ -174,11 +174,11 @@
   background: linear-gradient(180deg, var(--accent), #0a7c73);
 }
 
-.practice-01 .article > h2:first-of-type {
+.practice-lesson .article > h2:first-of-type {
   margin-top: 0.35rem;
 }
 
-.practice-01 .article > h3 {
+.practice-lesson .article > h3 {
   margin: 1.75rem 0 0.7rem;
   font-size: 0.98rem;
   letter-spacing: -0.015em;
@@ -186,30 +186,30 @@
   scroll-margin-top: 1.25rem;
 }
 
-.practice-01 .article p {
+.practice-lesson .article p {
   margin-bottom: 0.95em;
   line-height: 1.78;
 }
 
-.practice-01 .article ul,
-.practice-01 .article ol {
+.practice-lesson .article ul,
+.practice-lesson .article ol {
   margin: 0.85em 0 1.15em;
   padding-left: 1.35em;
 }
 
-.practice-01 .article ul > li,
-.practice-01 .article ol > li {
+.practice-lesson .article ul > li,
+.practice-lesson .article ol > li {
   margin-bottom: 0.55em;
   line-height: 1.75;
 }
 
-.practice-01 .article ul > li:last-child,
-.practice-01 .article ol > li:last-child {
+.practice-lesson .article ul > li:last-child,
+.practice-lesson .article ol > li:last-child {
   margin-bottom: 0;
 }
 
 /* 练习说明列表：更紧凑清晰 */
-.practice-01 .intro-list > li {
+.practice-lesson .intro-list > li {
   margin-bottom: 0.9em;
   padding: 12px 14px 12px 16px;
   list-style: none;
@@ -220,18 +220,18 @@
   box-shadow: var(--p01-shadow);
 }
 
-.practice-01 .intro-list {
+.practice-lesson .intro-list {
   padding-left: 0;
 }
 
 /* 步骤列表 */
-.practice-01 .step-list {
+.practice-lesson .step-list {
   list-style: none;
   padding-left: 0;
   counter-reset: p01-step;
 }
 
-.practice-01 .step-list > li {
+.practice-lesson .step-list > li {
   position: relative;
   counter-increment: p01-step;
   margin-bottom: 0.7em;
@@ -242,12 +242,12 @@
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.practice-01 .step-list > li:hover {
+.practice-lesson .step-list > li:hover {
   border-color: var(--p01-accent-line);
   box-shadow: 0 4px 14px rgba(13, 148, 136, 0.06);
 }
 
-.practice-01 .step-list > li::before {
+.practice-lesson .step-list > li::before {
   content: counter(p01-step);
   position: absolute;
   left: 12px;
@@ -267,12 +267,12 @@
 }
 
 /* FASTA / 代码块 */
-.practice-01 .seq-wrap {
+.practice-lesson .seq-wrap {
   position: relative;
   margin: 1em 0 1.35em;
 }
 
-.practice-01 .seq-wrap pre {
+.practice-lesson .seq-wrap pre {
   margin: 0;
   padding: 14px 16px;
   border-radius: var(--p01-radius);
@@ -285,13 +285,13 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.practice-01 .seq-wrap pre code {
+.practice-lesson .seq-wrap pre code {
   font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", Consolas, monospace;
   word-break: break-all;
   white-space: pre-wrap;
 }
 
-.practice-01 .copy-btn {
+.practice-lesson .copy-btn {
   position: absolute;
   top: 8px;
   right: 8px;
@@ -307,24 +307,24 @@
   transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
-.practice-01 .copy-btn:hover {
+.practice-lesson .copy-btn:hover {
   color: var(--accent-hover);
   border-color: var(--p01-accent-line);
   background: #fff;
 }
 
-.practice-01 .copy-btn[data-state="ok"] {
+.practice-lesson .copy-btn[data-state="ok"] {
   color: var(--accent-hover);
   border-color: rgba(13, 148, 136, 0.4);
 }
 
 /* 卡片区 */
-.practice-01 .cols {
+.practice-lesson .cols {
   gap: 16px;
   margin: 1.4em 0 1.6em;
 }
 
-.practice-01 .card {
+.practice-lesson .card {
   border-radius: var(--p01-radius);
   padding: 16px 18px;
   border: 1px solid rgba(231, 229, 228, 0.95);
@@ -333,13 +333,13 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.practice-01 .card:hover {
+.practice-lesson .card:hover {
   border-color: var(--p01-accent-line);
   box-shadow: 0 4px 18px rgba(13, 148, 136, 0.08);
   transform: translateY(-1px);
 }
 
-.practice-01 .card .t {
+.practice-lesson .card .t {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -348,7 +348,7 @@
   letter-spacing: -0.01em;
 }
 
-.practice-01 .card .t::before {
+.practice-lesson .card .t::before {
   content: "";
   width: 7px;
   height: 7px;
@@ -359,7 +359,7 @@
 }
 
 /* 结果解读导读块 */
-.practice-01 .guide-block {
+.practice-lesson .guide-block {
   margin: 1rem 0 1.2rem;
   padding: 14px 16px 14px 18px;
   border: 1px solid rgba(231, 229, 228, 0.95);
@@ -369,21 +369,21 @@
   box-shadow: var(--p01-shadow);
 }
 
-.practice-01 .guide-block > p:first-child {
+.practice-lesson .guide-block > p:first-child {
   margin-bottom: 0.55em;
   color: var(--ink);
 }
 
-.practice-01 .guide-block ul,
-.practice-01 .guide-block ol {
+.practice-lesson .guide-block ul,
+.practice-lesson .guide-block ol {
   margin-bottom: 0.4em;
 }
 
-.practice-01 .guide-block > p:last-child {
+.practice-lesson .guide-block > p:last-child {
   margin-bottom: 0;
 }
 
-.practice-01 .ai-questions {
+.practice-lesson .ai-questions {
   margin: 0.75em 0 1.1em;
   padding: 12px 14px 12px 16px;
   list-style: none;
@@ -392,17 +392,17 @@
   border-radius: var(--p01-radius);
 }
 
-.practice-01 .ai-questions > li {
+.practice-lesson .ai-questions > li {
   position: relative;
   margin: 0 0 0.55em;
   padding-left: 1.15em;
 }
 
-.practice-01 .ai-questions > li:last-child {
+.practice-lesson .ai-questions > li:last-child {
   margin-bottom: 0;
 }
 
-.practice-01 .ai-questions > li::before {
+.practice-lesson .ai-questions > li::before {
   content: "";
   position: absolute;
   left: 0;
@@ -414,7 +414,7 @@
 }
 
 /* 对比表 */
-.practice-01 .table-wrap {
+.practice-lesson .table-wrap {
   margin: 1.1em 0 1.4em;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -424,7 +424,7 @@
   box-shadow: var(--p01-shadow);
 }
 
-.practice-01 .practice-table {
+.practice-lesson .practice-table {
   width: 100%;
   min-width: 520px;
   border-collapse: collapse;
@@ -432,7 +432,7 @@
   margin: 0;
 }
 
-.practice-01 .practice-table thead th {
+.practice-lesson .practice-table thead th {
   padding: 11px 14px;
   text-align: left;
   font-weight: 700;
@@ -442,7 +442,7 @@
   white-space: nowrap;
 }
 
-.practice-01 .practice-table tbody td {
+.practice-lesson .practice-table tbody td {
   padding: 10px 14px;
   color: var(--ink-light);
   border-bottom: 1px solid rgba(231, 229, 228, 0.85);
@@ -450,19 +450,19 @@
   line-height: 1.55;
 }
 
-.practice-01 .practice-table tbody tr:last-child td {
+.practice-lesson .practice-table tbody tr:last-child td {
   border-bottom: 0;
 }
 
-.practice-01 .practice-table tbody tr:nth-child(even) td {
+.practice-lesson .practice-table tbody tr:nth-child(even) td {
   background: rgba(247, 248, 248, 0.65);
 }
 
-.practice-01 .practice-table tbody tr:hover td {
+.practice-lesson .practice-table tbody tr:hover td {
   background: rgba(13, 148, 136, 0.05);
 }
 
-.practice-01 .practice-table td:first-child {
+.practice-lesson .practice-table td:first-child {
   font-weight: 600;
   color: var(--ink);
   white-space: nowrap;
@@ -470,17 +470,17 @@
 }
 
 /* 作业区 */
-.practice-01 .hw-section {
+.practice-lesson .hw-section {
   margin: 1.1rem 0 1.5rem;
 }
 
-.practice-01 .hw-fill {
+.practice-lesson .hw-fill {
   margin: 0.4rem 0 0;
   padding: 4px 4px 4px 1.5rem;
   list-style: decimal;
 }
 
-.practice-01 .hw-fill > li {
+.practice-lesson .hw-fill > li {
   margin: 0 0 0.85rem;
   padding: 12px 14px;
   line-height: 1.8;
@@ -491,7 +491,7 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
-.practice-01 .hw-blank {
+.practice-lesson .hw-blank {
   display: inline-block;
   min-width: 5em;
   height: 1.15em;
@@ -500,7 +500,7 @@
   margin: 0 0.2em;
 }
 
-.practice-01 .hw-qa {
+.practice-lesson .hw-qa {
   margin: 0 0 1rem;
   padding: 14px 16px 12px;
   background: rgba(255, 255, 255, 0.85);
@@ -509,11 +509,11 @@
   box-shadow: var(--p01-shadow);
 }
 
-.practice-01 .hw-qa > p {
+.practice-lesson .hw-qa > p {
   margin: 0.4rem 0;
 }
 
-.practice-01 .hw-qa > p:first-child {
+.practice-lesson .hw-qa > p:first-child {
   margin-top: 0;
   margin-bottom: 0.65rem;
   padding-bottom: 0.55rem;
@@ -521,11 +521,11 @@
   color: var(--ink);
 }
 
-.practice-01 .hw-qa > p:last-child {
+.practice-lesson .hw-qa > p:last-child {
   margin-bottom: 0;
 }
 
-.practice-01 .submit-list {
+.practice-lesson .submit-list {
   margin: 0.7em 0 1em;
   padding: 12px 14px 12px 2em;
   background: rgba(255, 255, 255, 0.85);
@@ -534,11 +534,11 @@
   box-shadow: var(--p01-shadow);
 }
 
-.practice-01 .submit-list > li {
+.practice-lesson .submit-list > li {
   margin-bottom: 0.45em;
 }
 
-.practice-01 .extra-read {
+.practice-lesson .extra-read {
   margin-top: 0.5rem;
   padding: 12px 16px;
   background: linear-gradient(135deg, rgba(13, 148, 136, 0.07), rgba(255, 255, 255, 0.9));
@@ -546,24 +546,24 @@
   border-radius: var(--p01-radius);
 }
 
-.practice-01 .extra-read ul {
+.practice-lesson .extra-read ul {
   margin: 0;
   padding-left: 1.2em;
 }
 
-.practice-01 .practice-footer-note {
+.practice-lesson .practice-footer-note {
   margin-top: 2.25rem;
   padding-top: 1.1rem;
   border-top: 1px solid rgba(231, 229, 228, 0.95);
   font-size: 12.5px;
 }
 
-.practice-01 .practice-footer-note a {
+.practice-lesson .practice-footer-note a {
   font-weight: 600;
 }
 
 /* 视频链接强调 */
-.practice-01 a[href$=".mp4"] {
+.practice-lesson a[href$=".mp4"] {
   display: inline-flex;
   align-items: center;
   gap: 0.35em;
@@ -572,7 +572,7 @@
   border-bottom: 1px dashed rgba(13, 148, 136, 0.35);
 }
 
-.practice-01 a[href$=".mp4"]::before {
+.practice-lesson a[href$=".mp4"]::before {
   content: "▶";
   font-size: 0.7em;
   color: var(--accent);
@@ -580,41 +580,41 @@
 
 /* ---- 响应式 ---- */
 @media (max-width: 980px) {
-  .book-shell.practice-page.practice-01 {
+  .book-shell.practice-page.practice-lesson {
     grid-template-columns: 1fr;
   }
 
-  .practice-01 .book-main {
+  .practice-lesson .book-main {
     padding: 22px 16px 40px;
   }
 
-  .practice-01 .cols {
+  .practice-lesson .cols {
     grid-template-columns: 1fr;
   }
 
-  .practice-01 .step-list > li {
+  .practice-lesson .step-list > li {
     padding-left: 42px;
   }
 
-  .practice-01 .intro-list > li {
+  .practice-lesson .intro-list > li {
     margin-left: 0;
   }
 
-  .practice-01 .toc-scroll {
+  .practice-lesson .toc-scroll {
     max-height: 36vh;
     overflow: auto;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .practice-01 .card,
-  .practice-01 .step-list > li,
-  .practice-01 .toc .lv1,
-  .practice-01 .toc .lv2 a {
+  .practice-lesson .card,
+  .practice-lesson .step-list > li,
+  .practice-lesson .toc .lv1,
+  .practice-lesson .toc .lv2 a {
     transition: none;
   }
 
-  .practice-01 .card:hover {
+  .practice-lesson .card:hover {
     transform: none;
   }
 }
