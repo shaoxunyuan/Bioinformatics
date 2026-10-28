@@ -91,9 +91,9 @@
 
         <h3 id="sec-3-1">3.1 表达矩阵（右键点击链接"另存为"）</h3>
         <ul>
-          <li><strong>下载</strong>：<a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/practice03_expression_matrix.csv" download>practice03_expression_matrix.csv</a></li>
+          <li><strong>下载</strong>：<a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/expression_matrix.csv" download>expression_matrix.csv</a></li>
           <li><strong>结构</strong>：第一列为基因 ID（<code>Gene_ID</code>：<code>GeneA</code>…<code>GeneE</code>），其余列为 <code>Sample1</code>…<code>Sample8</code> 的归一化计数（示例为演示用数值，单位与真实项目中的 raw counts 可能不同）。</li>
-          <li><strong>生成脚本下载</strong>：<a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/generate_practice03_demo_data.R" download>generate_practice03_demo_data.R</a></li>
+          <li><strong>生成脚本下载</strong>：<a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/generate_expression_demo_data.R" download>generate_expression_demo_data.R</a></li>
           <div align="center">
             <img src="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/docs/images/expression/%E5%9F%BA%E5%9B%A0%E8%A1%A8%E8%BE%BE-%E7%9F%A9%E9%98%B5%E8%A1%A8.png" width="600" alt="微生信在线绘图示例">
         </div>
@@ -101,13 +101,13 @@
 
         <h3 id="sec-3-2">3.2 样本 metadata（右键点击链接"另存为"）</h3>
         <ul>
-          <li><strong>下载</strong>：<a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/practice03_metadata.tsv" download>practice03_metadata.tsv</a></li>
+          <li><strong>下载</strong>：<a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/expression_metadata.tsv" download>expression_metadata.tsv</a></li>
           <li><strong>结构</strong>：两列——<code>Sample</code>（与表达矩阵列名一致）、<code>Condition</code>。<code>Sample1</code>–<code>Sample4</code> 为 <strong>Cancer</strong>，<code>Sample5</code>–<code>Sample8</code> 为 <strong>Health</strong>。</li>
         </ul>
 
         <h3 id="sec-3-3">3.3 差异表达结果（右键点击链接"另存为"）</h3>
         <ul>
-          <li><strong>下载</strong>：<a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/practice03_de_results.csv" download>practice03_de_results.csv</a></li>
+          <li><strong>下载</strong>：<a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/de_results.csv" download>de_results.csv</a></li>
           <li><strong>结构</strong>：含 <code>mean_Cancer</code>、<code>mean_Health</code>、<code>log2FoldChange</code>、<code>padj</code>、<code>significance</code> 等列，与常见差异分析结果表格式一致，供火山图等直接使用。</li>
           <div align="center">
             <img src="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/docs/images/expression/%E5%9F%BA%E5%9B%A0%E8%A1%A8%E8%BE%BE-%E5%B7%AE%E5%BC%82%E8%A1%A8.png" width="600" alt="微生信在线绘图示例">
@@ -124,7 +124,7 @@
         <pre class="code-block"><code># Volcano plot (DE result table)
 library(ggplot2)
 
-res &lt;- read.csv("practice03_de_results.csv", stringsAsFactors = FALSE) # 需要注意路径为存放文件的路径
+res &lt;- read.csv("de_results.csv", stringsAsFactors = FALSE) # 需要注意路径为存放文件的路径
 res$padj[is.na(res$padj)] &lt;- 1
 
 res$label &lt;- "NS"
@@ -146,11 +146,11 @@ ggsave("03_volcano.png", p, width = 6.5, height = 5, dpi = 300)</code></pre>
         <pre class="code-block"><code># Heatmap (log2 CPM for visualization)
 library(pheatmap)
 
-counts &lt;- read.csv("practice03_expression_matrix.csv", check.names = FALSE) # 需要注意路径为存放文件的路径
+counts &lt;- read.csv("expression_matrix.csv", check.names = FALSE) # 需要注意路径为存放文件的路径
 rownames(counts) &lt;- counts$Gene_ID
 counts$Gene_ID &lt;- NULL
  
-meta &lt;- read.table("practice03_metadata.tsv", header = TRUE, sep = "\t", quote = "", comment.char = "") # 需要注意路径为存放文件的路径
+meta &lt;- read.table("expression_metadata.tsv", header = TRUE, sep = "\t", quote = "", comment.char = "") # 需要注意路径为存放文件的路径
 rownames(meta) &lt;- meta$Sample
 
 lib &lt;- colSums(counts)
@@ -172,7 +172,7 @@ pheatmap(mat,
         <pre class="code-block"><code># Boxplot (sample-wise expression distribution)
 library(ggplot2)
 
-counts &lt;- read.csv("data/practice03_expression_matrix.csv", check.names = FALSE)
+counts &lt;- read.csv("data/expression_matrix.csv", check.names = FALSE)
 rownames(counts) &lt;- counts$Gene_ID
 counts$Gene_ID &lt;- NULL
 
@@ -208,10 +208,10 @@ ggsave("03_boxplot.png", p, width = 7.5, height = 4.8, dpi = 300)</code></pre>
         <ul>
           <li><strong>使用R语言或在线工具</strong><br>
             <li><strong>下载数据文件（右键另存为）</strong>：<br>
-              <strong><a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/practice03_expression_matrix.csv" download>
-                practice03_expression_matrix.csv</a></strong>、<strong><a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/practice03_metadata.tsv" download>
-                  practice03_metadata.tsv</a></strong>、<strong><a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/practice03_de_results.csv" download>
-                    practice03_de_results.csv</a></strong>
+              <strong><a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/expression_matrix.csv" download>
+                expression_matrix.csv</a></strong>、<strong><a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/expression_metadata.tsv" download>
+                  expression_metadata.tsv</a></strong>、<strong><a href="https://raw.githubusercontent.com/shaoxunyuan/Bioinformatics/main/data/de_results.csv" download>
+                    de_results.csv</a></strong>
               ，并描述这三个文件的组织形式。
           <li><strong>结果描述</strong>：<br>
             ① 说明火山图所采用的显著性阈值与倍数变化阈值，并简述可能的设定理由。<br>

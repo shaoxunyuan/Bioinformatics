@@ -1,5 +1,5 @@
-# 生成练习 03 配套示例：表达矩阵、差异表达结果、样本 metadata
-# 运行：在项目根目录执行  Rscript data/generate_practice03_demo_data.R
+# 生成表达矩阵、差异表达结果、样本 metadata 示例数据
+# 运行：在项目根目录执行  Rscript data/generate_expression_demo_data.R
 
 set.seed(42)
 
@@ -47,17 +47,17 @@ meta <- data.frame(
   stringsAsFactors = FALSE
 )
 
-write.csv(expr, file.path(data_dir, "practice03_expression_matrix.csv"), row.names = FALSE, fileEncoding = "UTF-8")
-write.csv(de, file.path(data_dir, "practice03_de_results.csv"), row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(expr, file.path(data_dir, "expression_matrix.csv"), row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(de, file.path(data_dir, "de_results.csv"), row.names = FALSE, fileEncoding = "UTF-8")
 write.table(
   meta,
-  file.path(data_dir, "practice03_metadata.tsv"),
+  file.path(data_dir, "expression_metadata.tsv"),
   sep = "\t",
   row.names = FALSE,
   quote = FALSE,
   fileEncoding = "UTF-8"
 )
 
-message("Written:\n - ", file.path(data_dir, "practice03_expression_matrix.csv"), "\n - ",
-        file.path(data_dir, "practice03_de_results.csv"), "\n - ",
-        file.path(data_dir, "practice03_metadata.tsv"))
+message("Written:\n - ", file.path(data_dir, "expression_matrix.csv"), "\n - ",
+        file.path(data_dir, "de_results.csv"), "\n - ",
+        file.path(data_dir, "expression_metadata.tsv"))
