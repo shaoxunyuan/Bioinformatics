@@ -49,8 +49,15 @@
               <a href="#sec-4-5"><span class="n">4.5</span><span>导出与展示</span></a>
             </div>
           </li>
-          <li><a class="lv1" href="#sec-5">五、结果解读要点</a></li>
-          <li><a class="lv1" href="#sec-hw">六、作业与拓展</a></li>
+          <li><a class="lv1" href="#sec-level">五、基础任务与进阶方向</a>
+            <div class="lv2">
+              <a href="#sec-level-basic"><span class="n">5.1</span><span>基础：比对并画树</span></a>
+              <a href="#sec-level-adv"><span class="n">5.2</span><span>进阶可以做什么</span></a>
+              <a href="#sec-level-path"><span class="n">5.3</span><span>建议练习顺序</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-5">六、结果解读要点</a></li>
+          <li><a class="lv1" href="#sec-hw">七、作业与拓展</a></li>
         </ul>
       </div>
     </aside>
@@ -62,7 +69,7 @@
         </nav>
 
         <h1>分子进化树的构建（MEGA 12）</h1>
-        <p class="lead">本练习<strong>全程使用 MEGA 12</strong>：安装软件 → 导入多物种细胞色素 b（Cyt b）蛋白序列 → 比对 → 建树 → 导出结果。不涉及 R 或其他建树工具。</p>
+        <p class="lead">本练习<strong>全程使用 MEGA 12</strong>：安装软件 → 导入多物种细胞色素 b（Cyt b）蛋白序列 → 比对 → 建树 → 导出结果。先完成「比对并画一棵树」的基础任务即可；学有余力可按第五章尝试进阶分析。不涉及 R 或其他建树工具。</p>
 
         <h2 id="sec-1">一、MEGA 12 简介与官网</h2>
 
@@ -366,7 +373,44 @@ IFLVLAPLAGWAENKALEWT</code></pre>
           <li>建议同时保存比对工程与树文件，便于比较 NJ / ML / ME 等不同方法的结果。</li>
         </ul>
 
-        <h2 id="sec-5">五、结果解读要点</h2>
+        <h2 id="sec-level">五、基础任务与进阶方向</h2>
+        <p>第四章已经带你走完一次完整流程。下面说明：什么是本实验的<strong>基础要求</strong>，以及在同一套数据上还能怎样<strong>进阶练习</strong>。不必一次做完；先把基础任务做扎实，再按兴趣往下选。</p>
+
+        <h3 id="sec-level-basic">5.1 基础：多序列比对并画树</h3>
+        <p>最基础的 MEGA 12 实验，就是把下面这条链路完整跑通：</p>
+        <ul>
+          <li>导入 Cyt b 蛋白序列；</li>
+          <li>做多序列比对（如 MUSCLE），并保存对齐结果；</li>
+          <li>用一种方法（建议先用 <strong>NJ</strong>）构建系统发育树；</li>
+          <li>导出一张可提交的树图，并能简单说出树上看到的现象。</li>
+        </ul>
+        <p>能独立完成这些步骤，就达到了本练习的基本目标。</p>
+
+        <h3 id="sec-level-adv">5.2 进阶可以做什么</h3>
+        <p>在已有比对结果的基础上，MEGA 12 里还可以继续尝试（均为选做/拓展）：</p>
+        <ol>
+          <li><strong>换方法、换参数，看树是否稳定</strong><br>
+            同一套已对齐序列，分别用 <strong>NJ</strong>、<strong>ML</strong>、<strong>ME</strong> 建树；也可换氨基酸替换模型（如 JTT / WAG / LG）或 gap 处理方式，比较主要分支是否一致。</li>
+          <li><strong>认真看 Bootstrap，并尝试定根</strong><br>
+            把 Bootstrap 从课堂演示的 100 提高到 500 或 1000；指定鱼类或两栖类为外群重新定根，观察哪些节点支持率高、哪些分支不太可靠。</li>
+          <li><strong>先选模型，再建 ML 树</strong><br>
+            使用 MEGA 的 <strong>Find Best Protein Model</strong>（或课程指定入口），按软件给出的推荐模型再跑一次最大似然树，体会「模型选择」对结果的影响。</li>
+          <li><strong>相对分子钟（RelTime）</strong><br>
+            在已有树的基础上尝试 <strong>RelTime</strong>，估计分支的相对时间尺度。没有校准点时，先理解「相对快慢」即可，不必强求绝对年代。</li>
+          <li><strong>祖先序列重建</strong><br>
+            尝试 ancestral sequence reconstruction，查看内部节点上可能的祖先氨基酸状态（作了解即可）。</li>
+        </ol>
+        <p>说明：若以后换用<strong>核酸 CDS</strong>数据，还可进一步做 dN/dS、密码子模型、中性检验等分析；本页示例是<strong>蛋白序列</strong>，上述核酸方向需另备 DNA 数据，课上不作强制要求。</p>
+
+        <h3 id="sec-level-path">5.3 建议练习顺序</h3>
+        <p>若想循序渐进，推荐按下面顺序练习（与作业中的必做 / 选做 / 拓展对应）：</p>
+        <ol>
+          <li>先完成基础：比对 → NJ 建树 → 导出树图；</li>
+          <li>再做方法比较与 Bootstrap / 外群定根；</li>
+          <li>有余力再尝试模型选择后重跑 ML，或 RelTime / 祖先序列重建。</li>
+        </ol>
+
+        <h2 id="sec-5">六、结果解读要点</h2>
         <p>完成建树后，可按下列线索检查结果是否合理（不同方法/参数下细节可能略有差异）：</p>
         <ul>
           <li><strong>灵长类</strong>：Human、Chimpanzee、Orangutan、Rhesus_macaque 通常聚得较近；人与黑猩猩往往最近。</li>
@@ -376,13 +420,13 @@ IFLVLAPLAGWAENKALEWT</code></pre>
           <li><strong>外群趋势</strong>：鱼类、两栖类相对哺乳类/鸟类往往更靠外；若拓扑与预期差很大，优先复查是否误选了核酸模型、是否未完成比对。</li>
         </ul>
 
-        <h2 id="sec-hw">六、作业与拓展</h2>
+        <h2 id="sec-hw">七、作业与拓展</h2>
         <ul>
-          <li><strong>必做</strong>：使用本页 <code>cytb_aa.fasta</code> 在 <strong>MEGA 12</strong> 中完成一次蛋白序列建树，并提交：<br>
+          <li><strong>必做（对应基础任务）</strong>：使用本页 <code>cytb_aa.fasta</code> 在 <strong>MEGA 12</strong> 中完成「比对 → 建树 → 导出」，并提交：<br>
             ① 一张导出的树图（PNG/SVG 均可）；<br>
             ② 用 1–2 句话写出你从树上观察到的一个现象（例如：哪些物种聚成一支、某个节点 Bootstrap 高/低等）。</li>
-          <li><strong>选做</strong>：在同一套已对齐蛋白序列上，分别用 <strong>NJ</strong>、<strong>ML</strong>、<strong>ME</strong> 构建三棵树，比较：主要分支拓扑是否一致？哪些节点的 Bootstrap 差异最明显？</li>
-          <li><strong>拓展</strong>：导出 Newick（<code>.nwk</code>），导入 iTOL 或 FigTree，对灵长类/鸟类/鱼类等类群着色，保存一张排版后的成图。</li>
+          <li><strong>选做（进阶 1–2）</strong>：在同一套已对齐蛋白序列上，分别用 <strong>NJ</strong>、<strong>ML</strong>、<strong>ME</strong> 构建三棵树；可同时提高 Bootstrap 或指定外群定根。比较：主要分支拓扑是否一致？哪些节点的支持率差异最明显？</li>
+          <li><strong>拓展（进阶 3 及以后，或美化出图）</strong>：任选其一——用软件推荐的蛋白模型重跑 ML 树；尝试 RelTime 或祖先序列重建；或导出 Newick（<code>.nwk</code>）到 iTOL / FigTree，对灵长类、鸟类、鱼类等类群着色并保存成图。</li>
         </ul>
 
         <p class="practice-footer-note">
