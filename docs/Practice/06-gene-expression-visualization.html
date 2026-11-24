@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06 · 基因表达数据的可视化</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+  <div class="book-shell practice-page">
+    <aside class="book-sidebar" aria-label="目录">
+      <div class="toc-scroll">
+        <div class="book-brand">
+          <a href="index.html">← 练习目录</a>
+          ·
+          <a href="../index.html">教程首页</a>
+        </div>
+        <div class="toc__title">目录</div>
+        <ul class="book-nav toc">
+          <li><a class="lv1" href="#sec-1">一、练习说明</a></li>
+          <li><a class="lv1" href="#sec-2">二、认识基因表达数据</a>
+            <div class="lv2">
+              <a href="#sec-2-1"><span class="n">2.1</span><span>表达矩阵</span></a>
+              <a href="#sec-2-2"><span class="n">2.2</span><span>差异表达结果</span></a>
+              <a href="#sec-2-3"><span class="n">2.3</span><span>GO 与 KEGG 富集结果</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-3">三、五种图的绘制</a>
+            <div class="lv2">
+              <a href="#sec-3-1"><span class="n">3.1</span><span>小提琴图</span></a>
+              <a href="#sec-3-2"><span class="n">3.2</span><span>火山图</span></a>
+              <a href="#sec-3-3"><span class="n">3.3</span><span>聚类热图</span></a>
+              <a href="#sec-3-4"><span class="n">3.4</span><span>GO / KEGG 富集气泡图</span></a>
+              <a href="#sec-3-5"><span class="n">3.5</span><span>Venn 图</span></a>
+            </div>
+          </li>
+          <li><a class="lv1" href="#sec-4">四、撰写实验报告</a></li>
+          <li><a class="lv1" href="#sec-5">五、课堂练习</a></li>
+          <li><a class="lv1" href="#sec-6">六、提交要求</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="book-main">
+      <article class="article">
+        <nav class="practice-breadcrumb" aria-label="面包屑">
+          <a href="index.html">Practice</a><span class="sep">/</span><span>06 基因表达数据的可视化</span>
+        </nav>
+
+        <h1>练习：基因表达数据的可视化</h1>
+
+        <h2 id="sec-1">一、练习说明</h2>
+        <ul>
+          <li><strong>练习目标</strong>：认识基因表达数据与差异分析结果，学会用五种常用图表展示表达数据，并能用一两句话解释图中的生物学含义。</li>
+          <li><strong>数据来源</strong>：本页提供一套示例数据，分组为<strong>对照组、低剂量组、高剂量组</strong>，每组 6 个重复。</li>
+          <li><strong>使用方式</strong>：每种图的数据都提供“一键复制”，复制后粘贴到在线绘图平台即可出图，不需要安装软件。</li>
+          <li><strong>提交成果</strong>：五张图（PNG 截图）+ 一份实验报告，报告按学校实验报告模板填写。</li>
+        </ul>
+
+        <p style="padding: 10px 14px; background: #e8f0fe; border-left: 3px solid #3b82f6; line-height: 1.7; margin: 14px 0;">
+          建议按“认识数据 → 画图 → 解释 → 写报告”的顺序完成，先看懂表格，再动手画图。
+        </p>
+
+        <h2 id="sec-2">二、认识基因表达数据</h2>
+
+        <h3 id="sec-2-1">2.1 表达矩阵</h3>
+        <p>表达矩阵把一次实验的定量结果整理成一张表：<strong>每一行是一个基因，每一列是一个样本，格子里的数值是该基因在该样本中的表达量</strong>。下表中数值为 log2(TPM + 1)。</p>
+
+        <table class="practice-table">
+          <thead>
+            <tr><th>基因</th><th>Ctrl_1</th><th>Ctrl_2</th><th>Low_1</th><th>Low_2</th><th>High_1</th><th>High_2</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>CYP1A1</td><td>3.41</td><td>3.58</td><td>4.72</td><td>4.65</td><td>5.61</td><td>5.49</td></tr>
+            <tr><td>HMOX1</td><td>4.80</td><td>4.95</td><td>5.85</td><td>6.02</td><td>6.94</td><td>7.11</td></tr>
+            <tr><td>NQO1</td><td>5.12</td><td>5.28</td><td>6.10</td><td>5.98</td><td>7.02</td><td>6.88</td></tr>
+            <tr><td>PPARG</td><td>8.21</td><td>8.04</td><td>7.62</td><td>7.48</td><td>6.53</td><td>6.71</td></tr>
+            <tr><td>INS</td><td>9.85</td><td>9.72</td><td>8.60</td><td>8.74</td><td>7.51</td><td>7.38</td></tr>
+            <tr><td>GAPDH</td><td>12.42</td><td>12.38</td><td>12.45</td><td>12.40</td><td>12.51</td><td>12.44</td></tr>
+          </tbody>
+        </table>
+        <p class="copy-hint">观察：CYP1A1、HMOX1、NQO1 随剂量升高而升高；PPARG、INS 随剂量升高而下降；GAPDH 基本不变。</p>
+
+        <h3 id="sec-2-2">2.2 差异表达结果</h3>
+        <p>差异分析会把每个基因在两个组之间比较一次，得到三个关键数值：</p>
+        <ul>
+          <li><code>log2FC</code>：两组表达量之比取 log2。等于 1 表示升高 2 倍，等于 2 表示升高 4 倍，等于 −1 表示降低到一半。</li>
+          <li><code>p value</code>：单个基因检验的原始显著性。</li>
+          <li><code>padj</code>（FDR）：多重检验校正后的 p 值，判断差异是否可靠时看它。</li>
+        </ul>
+        <p>常用判定标准：<strong>|log2FC| ≥ 1 且 padj &lt; 0.05</strong> 记为差异基因。</p>
+
+        <table class="practice-table">
+          <thead>
+            <tr><th>基因</th><th>log2FC</th><th>p value</th><th>padj</th><th>调控</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>CYP1A1</td><td>2.08</td><td>3.9e−05</td><td>0.0012</td><td>上调</td></tr>
+            <tr><td>HMOX1</td><td>2.05</td><td>3.6e−05</td><td>0.0012</td><td>上调</td></tr>
+            <tr><td>KEAP1</td><td>2.49</td><td>6.4e−06</td><td>0.00061</td><td>上调</td></tr>
+            <tr><td>INS</td><td>−2.45</td><td>8.1e−06</td><td>0.00067</td><td>下调</td></tr>
+            <tr><td>PPARG</td><td>−1.73</td><td>0.0026</td><td>0.0138</td><td>下调</td></tr>
+            <tr><td>CXCL10</td><td>−2.80</td><td>1.4e−04</td><td>0.0022</td><td>下调</td></tr>
+          </tbody>
+        </table>
+        <p class="copy-hint">上表为“高剂量组 vs 对照组”的部分结果。</p>
+
+        <h3 id="sec-2-3">2.3 GO 与 KEGG 富集结果</h3>
+        <p>拿到差异基因列表后，可以看这些基因集中在哪些功能或通路上。GO 按功能分三类：<strong>BP</strong>（生物学过程）、<strong>MF</strong>（分子功能）、<strong>CC</strong>（细胞组分）；KEGG 则按具体的信号通路或代谢途径组织。常用方法是对差异基因做超几何检验（ORA），结果表包含：</p>
+        <ul>
+          <li><code>Description</code>：条目名称，如 <em>response to oxidative stress</em>。</li>
+          <li><code>Count</code>：落在这个条目里的差异基因个数。</li>
+          <li><code>GeneRatio</code>：Count 占全部差异基因的比例。</li>
+          <li><code>padj</code>：富集显著性，越小越可靠。</li>
+        </ul>
+
+        <h2 id="sec-3">三、五种图的绘制</h2>
+        <p>下面每一种图都给出：这张图回答什么问题、怎么看、示例数据（可一键复制）以及在线绘制入口。绘图平台可以自行选择，本练习以微生信为例。</p>
+
+        <h3 id="sec-3-1">3.1 小提琴图：看表达分布</h3>
+        <ul>
+          <li><strong>回答的问题</strong>：同一个基因在对照组、低剂量组、高剂量组中的表达分布有什么不同？</li>
+          <li><strong>怎么看</strong>：每个“小提琴”是一组样本的表达分布，越宽说明该表达量附近的样本越多；中间的白箱是中位数与四分位数，点代表每个重复样本。</li>
+          <li><strong>数据格式</strong>：三列，基因、样本、分组，另加一列表达量；平台一般要求“分组列 + 数值列”，必要时把基因拆成多次绘制。</li>
+        </ul>
+        <div class="copy-block">
+          <button class="copy-btn" type="button">复制数据</button>
+          <pre><code>gene	sample	group	value
+CYP1A1	Ctrl_1	对照组	3.09
+CYP1A1	Ctrl_2	对照组	5.5
+CYP1A1	Ctrl_3	对照组	7.63
+CYP1A1	Ctrl_4	对照组	3.4
+CYP1A1	Ctrl_5	对照组	5.91
+CYP1A1	Ctrl_6	对照组	9.31
+CYP1A1	Low_1	低剂量组	2.53
+CYP1A1	Low_2	低剂量组	5.01
+CYP1A1	Low_3	低剂量组	8.1
+CYP1A1	Low_4	低剂量组	3.8
+CYP1A1	Low_5	低剂量组	5.55
+CYP1A1	Low_6	低剂量组	6.9
+CYP1A1	High_1	高剂量组	3.6
+CYP1A1	High_2	高剂量组	5.83
+CYP1A1	High_3	高剂量组	8.34
+CYP1A1	High_4	高剂量组	3.92
+CYP1A1	High_5	高剂量组	4.49
+CYP1A1	High_6	高剂量组	8.3
+HMOX1	Ctrl_1	对照组	4.67
+HMOX1	Ctrl_2	对照组	6
+HMOX1	Ctrl_3	对照组	7.7
+HMOX1	Ctrl_4	对照组	4.51
+HMOX1	Ctrl_5	对照组	6.65
+HMOX1	Ctrl_6	对照组	7.68
+HMOX1	Low_1	低剂量组	4.63
+HMOX1	Low_2	低剂量组	5.43
+HMOX1	Low_3	低剂量组	6.24
+HMOX1	Low_4	低剂量组	5.5
+HMOX1	Low_5	低剂量组	6.11
+HMOX1	Low_6	低剂量组	7.61
+HMOX1	High_1	高剂量组	4.08
+HMOX1	High_2	高剂量组	6.26
+HMOX1	High_3	高剂量组	6.88
+HMOX1	High_4	高剂量组	4.3
+HMOX1	High_5	高剂量组	7.03
+HMOX1	High_6	高剂量组	8.35
+PPARG	Ctrl_1	对照组	5.43
+PPARG	Ctrl_2	对照组	7.72
+PPARG	Ctrl_3	对照组	6.55
+PPARG	Ctrl_4	对照组	5.62
+PPARG	Ctrl_5	对照组	7.3
+PPARG	Ctrl_6	对照组	7.15
+PPARG	Low_1	低剂量组	5.82
+PPARG	Low_2	低剂量组	6.81
+PPARG	Low_3	低剂量组	6.85
+PPARG	Low_4	低剂量组	5.19
+PPARG	Low_5	低剂量组	7.49
+PPARG	Low_6	低剂量组	6.6
+PPARG	High_1	高剂量组	5.19
+PPARG	High_2	高剂量组	7.2
+PPARG	High_3	高剂量组	5.62
+PPARG	High_4	高剂量组	5.55
+PPARG	High_5	高剂量组	8.11
+PPARG	High_6	高剂量组	5.47</code></pre>
+        </div>
+        <p class="copy-hint">示例数据（CYP1A1、HMOX1、PPARG × 18 个样本）： 共 55 行，点击右上角按钮可一键复制。</p>
+        <figure class="practice-figure practice-figure--half">
+          <img src="../presentation/assets/gene-expression/violin.png" alt="小提琴图参考效果">
+          <figcaption>参考效果：同一基因在对照组、低剂量组、高剂量组中的表达分布。</figcaption>
+        </figure>
+        <p><strong>绘制入口</strong>：<a href="https://www.bioinformatics.com.cn/?keywords=%E5%B0%8F%E6%8F%90%E7%90%B4%E5%9B%BE" target="_blank" rel="noopener">微生信 · 小提琴图</a></p>
+        <p><strong>操作步骤</strong>：① 打开入口，选择小提琴图工具；② 按页面提示粘贴数据并指定分组列与数值列；③ 设置颜色（可用灰、蓝、橙区分三组）；④ 出图后下载 PNG，文件名建议 <code>01_violin.png</code>。</p>
+
+        <h3 id="sec-3-2">3.2 火山图：差异表达全景</h3>
+        <ul>
+          <li><strong>回答的问题</strong>：哪些基因既变化幅度大、又统计显著？</li>
+          <li><strong>怎么看</strong>：横轴是 log2FC（变化幅度），纵轴是 −log10(padj)（显著性）。越靠上越显著，越靠两侧变化越大；红色为上调，蓝色为下调，灰色为不显著。</li>
+          <li><strong>数据格式</strong>：至少包含基因名、log2FC、p 值（或 padj）三列。</li>
+        </ul>
+        <div class="copy-block">
+          <button class="copy-btn" type="button">复制数据</button>
+          <pre><code>gene	log2FC	pvalue	padj
+GENE0765	2.85	0.0002615	0.00307
+GENE1269	2.791	3.965e-07	0.0001586
+GENE1509	2.616	0.002104	0.01191
+GENE1207	2.405	1.349e-05	0.0007919
+GENE0325	2.384	8.744e-05	0.0019
+GENE0323	2.366	0.0001478	0.002169
+GENE0595	2.303	6.707e-06	0.0006087
+BMP2	2.288	0.0001545	0.002248
+GENE0249	2.253	3.641e-05	0.0012
+GENE0759	2.199	0.001532	0.009886
+CASP3	2.159	1.14e-05	0.0007919
+GENE0770	2.151	0.0005529	0.004857
+GENE0365	2.114	0.0004937	0.00454
+GENE1118	2.079	0.0005065	0.004589
+GENE0190	2.052	0.0001163	0.002009
+GENE1119	2.047	0.0003459	0.003641
+GENE0343	2.029	0.0007382	0.005906
+GENE0537	2.004	0.0001194	0.002009
+GENE1149	1.983	0.0003142	0.003467
+GENE0347	1.92	4.056e-05	0.0012
+GENE1168	1.92	0.008776	0.03367
+GENE1100	1.828	0.0009986	0.007218
+GENE0933	1.806	0.0003284	0.003534
+GENE1276	1.806	0.0006193	0.005271
+GENE1384	1.791	0.0002083	0.002694
+GENE1058	1.78	0.003111	0.01572
+GENE1459	1.779	0.0001345	0.002131
+GENE0242	1.765	0.002146	0.01205
+GENE1150	1.748	0.003432	0.01684
+GENE1054	1.738	0.003861	0.01803
+GENE1362	1.711	0.002127	0.01198
+GENE0627	1.695	0.002542	0.01372
+GENE1293	1.69	0.001997	0.01158
+GENE0585	1.684	1.435e-05	0.0007919
+GENE0747	1.667	0.00221	0.01236
+GENE1373	1.66	0.003051	0.01564
+ALPL	1.656	0.002855	0.01483
+GENE1315	1.589	0.003479	0.01687
+GENE0393	1.587	0.009547	0.03586
+GENE0915	1.582	0.001309	0.008692
+GENE0358	1.581	0.008438	0.03277
+GENE0547	1.58	0.0008717	0.006804
+GENE1465	1.577	0.0006383	0.005375
+GENE1425	1.56	0.003691	0.01747
+GENE0124	1.556	0.003428	0.01684
+GENE0148	1.517	0.007245	0.02927
+GENE1341	1.488	0.00832	0.03247
+GENE0871	1.465	0.003938	0.01811
+GENE0563	1.429	0.008297	0.03246
+GENE1110	1.428	0.003824	0.01794
+GENE0914	1.425	0.003874	0.01803
+GENE0877	1.409	0.0009816	0.007205
+GENE0136	1.408	0.004784	0.02138
+GENE1533	1.397	0.001724	0.01065
+GENE1382	1.342	0.00488	0.02163
+GENE0749	1.32	0.009455	0.03559
+GENE0139	1.304	0.008575	0.03298
+GENE1366	1.303	0.003802	0.01789
+GENE0937	1.297	0.03226	0.09558
+GENE1246	1.285	0.0001427	0.002169
+GENE0902	1.225	0.0002088	0.002694
+GENE0543	1.215	0.006295	0.02623
+GENE0812	1.214	0.002345	0.01294
+GENE1189	1.197	0.01638	0.05473
+GENE0146	1.176	0.00169	0.01053
+GENE0776	1.174	0.002483	0.01347
+GENE0857	1.165	0.01078	0.03894
+GENE0523	1.141	0.002834	0.01479
+GENE0498	1.136	0.0097	0.03626
+GENE1161	1.1	0.001946	0.0114
+GENE0289	1.08	0.00364	0.01739
+NFKB1	1.048	0.01796	0.0583
+GENE0612	1.003	0.008543	0.03294
+GENE1122	0.604	0.04887	0.1312
+GENE1178	0.55	0.141	0.305
+GENE0880	0.534	0.1095	0.2508
+GENE0478	0.453	0.1784	0.3618
+GENE0570	0.434	0.1478	0.3157
+GENE1012	0.405	0.3385	0.565
+GENE1387	0.394	0.252	0.4628
+GENE1506	0.39	0.2524	0.4631
+GENE0822	0.389	0.2849	0.5012
+FOS	0.387	0.2141	0.4118
+GENE1440	0.375	0.2789	0.4962
+GENE0918	0.373	0.18	0.3633
+GENE1220	0.255	0.5796	0.7745
+GENE0402	0.254	0.3337	0.5592
+GENE1363	0.222	0.4232	0.6457
+GENE1306	0.218	0.5436	0.7421
+GENE1476	0.211	0.4564	0.6743
+GENE0981	0.209	0.2808	0.4981
+STAT3	0.202	0.4749	0.6889
+GENE0579	0.2	0.4561	0.6743
+STAT2	0.196	0.6526	0.8255
+GENE0480	0.184	0.7	0.8504
+GENE1379	0.177	0.6309	0.8099
+GENE1035	0.15	0.6074	0.7979
+GENE1247	0.138	0.7235	0.8671
+GENE0686	0.136	0.7457	0.8763
+GENE1514	0.114	0.7382	0.873
+GENE0683	0.09	0.7842	0.9031
+GENE1469	0.083	0.8144	0.9178
+GENE0689	0.06	0.8629	0.9418
+GENE1590	0.048	0.9161	0.9641
+GENE0171	0.017	0.9619	0.9812
+GENE0544	-0.003	0.9923	0.9941
+GENE1461	-0.008	0.9854	0.9922
+GENE0107	-0.028	0.9381	0.9751
+GENE1381	-0.072	0.8669	0.9428
+GENE0786	-0.086	0.8669	0.9428
+GENE0639	-0.11	0.7397	0.873
+GENE0410	-0.116	0.8403	0.9279
+GENE0144	-0.152	0.6492	0.8244
+GENE1197	-0.154	0.5665	0.7636
+GENE1157	-0.168	0.5298	0.7294
+GENE0787	-0.169	0.7192	0.8646
+GENE1562	-0.191	0.4199	0.6436
+GENE0298	-0.197	0.539	0.737
+GZMB	-0.206	0.4154	0.6385
+GENE0465	-0.209	0.5339	0.7326
+GENE0906	-0.209	0.5944	0.7866
+GENE0170	-0.228	0.4763	0.6897
+GENE0571	-0.251	0.4458	0.6652
+GENE0359	-0.303	0.3593	0.5855
+GENE0603	-0.305	0.3556	0.5817
+GENE0524	-0.375	0.4707	0.6865
+GENE1524	-0.4	0.2124	0.41
+GENE1365	-0.424	0.3874	0.6149
+GENE0647	-0.43	0.4282	0.6499
+GENE1353	-0.456	0.208	0.4038
+GENE0642	-0.494	0.03319	0.09768
+GENE0905	-0.511	0.2714	0.4878
+GENE1475	-0.574	0.02626	0.07988
+GENE0514	-0.589	0.1213	0.2711
+GENE0355	-0.647	0.2015	0.3941
+GENE0175	-0.66	0.1296	0.2857
+GENE0746	-0.678	0.05963	0.1533
+GENE0619	-0.768	0.01999	0.06359
+GENE0768	-0.784	0.1485	0.3163
+GENE0805	-0.823	0.03517	0.102
+GENE1541	-0.834	0.05581	0.1457
+GENE0173	-0.842	0.02521	0.07714
+GENE1070	-0.925	0.009889	0.03671
+GENE0227	-0.93	0.01684	0.05591
+GENE0573	-0.935	0.08104	0.1971
+GENE0481	-0.938	0.03356	0.09815
+GENE1580	-0.96	0.01516	0.05152
+GENE0188	-0.977	0.01093	0.03929
+GENE0278	-1.007	0.01029	0.03758
+GENE0562	-1.048	0.01858	0.05981
+GENE1442	-1.065	0.01012	0.0373
+GENE0558	-1.08	0.005018	0.02218
+GENE0863	-1.089	0.0371	0.1062
+GENE1027	-1.12	0.01309	0.04544
+GENE1407	-1.146	0.0001205	0.002009
+GENE1125	-1.165	0.005371	0.02335
+GENE1235	-1.167	0.0001922	0.002584
+GENE0330	-1.243	0.009788	0.03642
+GENE0848	-1.247	0.001078	0.007601
+GENE0851	-1.265	0.008036	0.03151
+GENE1164	-1.28	0.01338	0.04624
+GENE0860	-1.306	0.00243	0.01331
+GENE0913	-1.309	0.006849	0.0281
+GENE1594	-1.339	0.000203	0.002674
+GENE0505	-1.366	0.001498	0.009741
+GENE0813	-1.455	0.0006611	0.005535
+GENE0368	-1.461	0.01115	0.04001
+GENE1443	-1.481	0.007523	0.03024
+GENE0213	-1.496	0.001641	0.01038
+GENE0969	-1.526	0.008483	0.03286
+GENE0512	-1.539	0.002309	0.01283
+GENE0559	-1.575	0.00109	0.007652
+GENE0893	-1.615	0.0001207	0.002009
+GENE0337	-1.619	0.002701	0.01426
+GENE1152	-1.641	2.123e-05	0.001034
+GENE0834	-1.651	0.0008959	0.006814
+GENE0312	-1.665	0.000125	0.002041
+GENE1596	-1.692	0.0008986	0.006814
+GENE1354	-1.695	7.097e-05	0.001695
+GENE1589	-1.701	0.0001623	0.002298
+GENE1351	-1.736	0.0009742	0.007183
+GENE1388	-1.788	0.0004219	0.004133
+GENE0488	-1.79	0.0001205	0.002009
+GENE1412	-1.799	3.956e-05	0.0012
+GENE0577	-1.804	0.001907	0.0113
+GENE1108	-1.81	0.0008924	0.006814
+GENE1067	-1.818	0.0001956	0.002608
+GENE1079	-1.831	0.0001032	0.001988
+GENE1359	-1.831	0.0001042	0.001988
+GENE1228	-1.84	0.0009998	0.007218
+GENE1537	-1.901	0.003619	0.01734
+GENE1278	-1.93	0.0003299	0.003534
+GENE0869	-1.948	0.0005721	0.004975
+GENE1244	-1.968	3.275e-06	0.000524
+GENE0415	-1.975	0.004871	0.02163
+GENE0397	-1.997	0.0004288	0.004133
+GENE1140	-2.027	0.0002639	0.00307
+GENE0416	-2.057	0.0001004	0.001988
+GENE0370	-2.081	3.955e-05	0.0012
+GENE0409	-2.123	6.488e-05	0.001573
+GENE0167	-2.139	0.0002523	0.003023
+GENE1326	-2.167	0.0008878	0.006814
+GENE0622	-2.193	8.07e-05	0.001845
+GENE0185	-2.206	0.0003671	0.003742
+GENE0783	-2.216	0.001542	0.009905
+GENE1141	-2.225	0.0003541	0.00367
+GENE0407	-2.241	0.0001044	0.001988
+GENE1099	-2.272	5.631e-07	0.0001802
+GENE0705	-2.31	4.353e-05	0.001222
+GENE0942	-2.313	0.0004468	0.004223
+GENE1477	-2.313	6.848e-06	0.0006087
+GENE0680	-2.343	1.79e-05	0.0009237
+GENE0299	-2.346	0.0003445	0.003641
+GENE0300	-2.435	0.0003575	0.00367
+GENE0192	-2.44	7.354e-05	0.00173
+GENE0663	-2.452	4.124e-05	0.0012
+GENE0225	-2.513	1.719e-06	0.0003929
+GENE0633	-2.603	4.971e-06	0.0005891
+GENE0821	-2.63	2.165e-05	0.001034
+CXCL10	-2.8	0.0001449	0.002169</code></pre>
+        </div>
+        <p class="copy-hint">示例数据（高剂量组 vs 对照组，含显著上调、显著下调与不显著基因）： 共 221 行，点击右上角按钮可一键复制。</p>
+        <figure class="practice-figure practice-figure--half">
+          <img src="../presentation/assets/gene-expression/volcano.png" alt="火山图参考效果">
+          <figcaption>参考效果：高剂量组 vs 对照组，红点为上调、蓝点为下调、灰点为不显著。</figcaption>
+        </figure>
+        <p><strong>绘制入口</strong>：<a href="https://www.bioinformatics.com.cn/?keywords=%E7%81%AB%E5%B1%B1%E5%9B%BE" target="_blank" rel="noopener">微生信 · 火山图</a></p>
+        <p><strong>操作步骤</strong>：① 粘贴数据并指定 log2FC 与显著性列；② 阈值设为 |log2FC| ≥ 1、padj &lt; 0.05；③ 勾选显示基因名（可只标前几个）；④ 下载 PNG，命名 <code>02_volcano.png</code>。</p>
+
+        <h3 id="sec-3-3">3.3 聚类热图：表达模式</h3>
+        <ul>
+          <li><strong>回答的问题</strong>：样本之间是否按剂量分开？哪些基因的表达模式相似？</li>
+          <li><strong>怎么看</strong>：行是基因、列是样本，颜色表示经过行标准化后的相对表达（红高蓝低）；上方和左侧的树状图是聚类结果，越早合并说明越相似。</li>
+          <li><strong>数据格式</strong>：第一列为基因名，其余每列一个样本，格子为表达量；分组信息另外提供。</li>
+        </ul>
+        <div class="copy-block">
+          <button class="copy-btn" type="button">复制数据</button>
+          <pre><code>gene	Ctrl_1	Ctrl_2	Ctrl_3	Ctrl_4	Ctrl_5	Ctrl_6	Low_1	Low_2	Low_3	Low_4	Low_5	Low_6	High_1	High_2	High_3	High_4	High_5	High_6
+GENE1039	4.55	4.18	4.26	3.91	4.47	4.07	5.16	4.93	4.44	5.65	5.69	5.82	6.95	6.13	6.28	6.28	6.21	6.65
+GENE1269	1.68	1.88	1.8	2.44	1.9	1.91	3.45	3.14	3.62	3.32	2.58	3.47	4.19	4.48	4.81	4.48	5.26	5.11
+GENE1312	4.77	4.68	4.88	4.34	5.11	4.21	6.59	5.97	6.86	6.98	5.73	6	7.3	7.01	7.76	7.79	7.4	6.8
+GENE1380	8.71	8.35	8.87	9.09	8.76	8.42	7.49	8.2	7.95	8.12	7.61	7.28	7.22	6.59	6.85	6.88	6.73	6.38
+GENE1099	4.93	5.03	5.01	5.06	5.36	5.79	3.58	4.33	4.18	3.56	3.99	3.37	3.43	3.09	2.74	2.85	3.09	2.36
+GENE0549	9.35	10.08	10.4	9.97	9.97	9.83	7.91	9.66	8.2	8.62	8.41	8.56	7.27	7.62	7.39	8.43	7.51	7.57
+GENE0225	10.07	10.7	9.44	10.14	10.09	10.06	9.19	7.9	8.72	9.11	8.29	9.22	7.96	7.14	7.25	8.04	7.95	7.07
+GENE0620	0.82	1.28	1.58	1.33	0.59	0.79	1.32	2.7	1.65	1.97	2.65	0.99	3.15	4.3	3.2	3.03	3.42	3.31
+GENE1083	7.29	7.53	8.27	7.4	8.04	7.66	6.57	6.35	6.84	7.43	6.61	6.72	5.63	5.14	5.95	5.43	5.7	4.74
+GENE1244	8.39	8.54	8.26	8.23	7.96	8.11	6.5	7.41	7.2	8.27	7.08	8.84	6.58	5.8	6.19	6.59	6.6	5.91
+CALR	2.22	2.78	2.21	3.06	2.61	2.23	4.27	3.14	3.84	3.76	3.67	3.67	4.93	4.24	4.73	4.38	4.53	5.48
+GENE0293	6.64	6.21	7.33	6.81	6.82	6.56	5.6	6.19	5.29	5.87	7.67	4.6	4.91	4.16	3.88	5.11	4.27	4.31
+GENE0633	4.99	5.39	5.15	6.15	5.26	4.49	4.6	4.78	3.79	2.79	2.79	3.58	2.03	2.87	2.34	2.6	2.77	3.19
+GENE1399	10.76	10.46	10.12	10.28	10.62	10.74	10.45	9.2	9.17	9.76	9.65	9.47	8.61	8.42	8.83	8.38	9.35	8.38
+KEAP1	2.31	3.05	2.17	2.78	2.54	3.17	3.17	3.48	4.51	4.64	3.55	3.54	5.51	4.95	5.16	4.38	5.96	5.01
+GENE0595	3.62	3.15	4.45	3.58	3.08	3.41	4.9	5.59	6.11	4.22	4.81	4.31	5.78	6.05	6.33	5.91	5.37	5.68
+GENE1266	9.83	10.17	8.88	8.8	9.17	9.54	8.79	8.15	7.98	8.43	8.43	8.55	6.4	6.46	7.4	6.78	6.32	7.4
+GENE1477	8.19	8.69	8.71	9.03	8.33	8.41	8.03	6.41	7.34	7.36	8.37	7.33	6.56	6.19	5.94	7.04	6.11	5.65
+INS	5.81	5.64	6.89	5.7	5.88	6.44	4.56	5.42	4.78	5.35	5.32	6.17	3.71	3.29	3.28	3.05	4.46	3.88
+WNT3A	3.7	3.62	3.43	2.63	4.01	2.95	4.58	5.17	5.07	4.2	4.93	5.47	6.47	5.11	5.37	5.88	6.11	5.94
+GENE0533	4.49	5.58	5.5	4.4	5.15	4.52	2.97	2.76	3.66	3.15	3.64	2.91	2.67	3.25	2.37	2.09	2.61	2.45
+CASP3	3.64	3.99	3.87	3.89	3.81	4.03	4.16	4.38	5.18	5.53	4.44	3.8	5.68	6.11	6.2	6.66	5.55	5.98
+GENE0332	7.31	7.12	6.93	7.6	6.88	7.19	6.54	6.67	6.81	5.98	6.96	6.75	8.11	8.41	8.43	8.48	7.97	8.62
+GENE0445	1.28	0.81	1.17	0.42	1.35	1.73	2.06	2.3	1.34	1.06	2.89	1.41	3.99	2.61	3.77	3.61	3.01	3.81</code></pre>
+        </div>
+        <p class="copy-hint">示例数据（差异最显著的 24 个基因 × 18 个样本）： 共 25 行，点击右上角按钮可一键复制。</p>
+        <figure class="practice-figure practice-figure--half">
+          <img src="../presentation/assets/gene-expression/heatmap.png" alt="聚类热图参考效果">
+          <figcaption>参考效果：18 个样本按剂量聚类，差异基因分成两簇。</figcaption>
+        </figure>
+        <p><strong>绘制入口</strong>：<a href="https://www.bioinformatics.com.cn/?keywords=%E7%83%AD%E5%9B%BE" target="_blank" rel="noopener">微生信 · 热图</a></p>
+        <p><strong>操作步骤</strong>：① 粘贴表达矩阵；② 选择“按行标准化”；③ 打开行列聚类；④ 设置分组注释（对照组、低剂量组、高剂量组）；⑤ 下载 PNG，命名 <code>03_heatmap.png</code>。</p>
+
+        <h3 id="sec-3-4">3.4 GO / KEGG 富集气泡图</h3>
+        <ul>
+          <li><strong>回答的问题</strong>：差异基因主要集中在哪些生物学过程与信号通路？</li>
+          <li><strong>怎么看</strong>：纵轴是条目名称，横轴是 GeneRatio；点越大表示命中的差异基因越多，颜色越深（越暖）表示 padj 越小、富集越显著。</li>
+          <li><strong>数据格式</strong>：条目名、Count、GeneRatio、padj 四列。</li>
+        </ul>
+        <div class="copy-block">
+          <button class="copy-btn" type="button">复制数据</button>
+          <pre><code>Description	Count	GeneRatio	padj
+apoptotic process	118	0.543778801843318	1.2319642512105e-79
+inflammatory response	104	0.47926267281106	3.57435502450262e-75
+cytokine-mediated signaling pathway	94	0.433179723502304	2.26557118262244e-72
+response to oxidative stress	79	0.36405529953917	1.01742882736536e-57
+cell cycle arrest	74	0.341013824884793	4.44095517336729e-53
+DNA damage response	67	0.308755760368664	9.11621313120865e-49
+xenobiotic metabolic process	58	0.267281105990783	2.5531219040602e-41
+glutathione metabolic process	50	0.230414746543779	9.7017732666711e-40
+angiogenesis	24	0.110599078341014	0.0359230024013803
+MAPK cascade	23	0.105990783410138	0.361345442207078</code></pre>
+        </div>
+        <p class="copy-hint">示例数据（GO 生物学过程富集结果）： 共 11 行，点击右上角按钮可一键复制。</p>
+        <div class="copy-block">
+          <button class="copy-btn" type="button">复制数据</button>
+          <pre><code>Description	Count	GeneRatio	padj
+MAPK signaling pathway	113	0.52073732718894	1.841419433984e-77
+Apoptosis	90	0.414746543778802	2.11013411216906e-65
+TNF signaling pathway	72	0.331797235023041	2.62968371958317e-53
+IL-17 signaling pathway	64	0.294930875576037	8.28254632710553e-52
+NF-kappa B signaling pathway	72	0.331797235023041	5.15701083372469e-47
+Drug metabolism - cytochrome P450	49	0.225806451612903	6.63091866650691e-41
+Glutathione metabolism	45	0.207373271889401	3.04484530906625e-37
+PPAR signaling pathway	51	0.235023041474654	5.48977773725687e-36
+Oxidative phosphorylation	21	0.0967741935483871	0.190400928748109
+p53 signaling pathway	11	0.0506912442396313	0.435060114295672</code></pre>
+        </div>
+        <p class="copy-hint">示例数据（KEGG 通路富集结果）： 共 11 行，点击右上角按钮可一键复制。</p>
+        <figure class="practice-figure practice-figure--half">
+          <img src="../presentation/assets/gene-expression/go.png" alt="GO 富集气泡图参考效果">
+          <figcaption>参考效果：GO 生物学过程富集气泡图，点大小表示基因数，颜色表示显著性。</figcaption>
+        </figure>
+        <p><strong>绘制入口</strong>：<a href="https://www.bioinformatics.com.cn/?keywords=pathway" target="_blank" rel="noopener">微生信 · 通路 / 富集图</a></p>
+        <p><strong>操作步骤</strong>：① 打开入口选择气泡图或富集图工具；② 粘贴上表；③ 大小映射 Count，颜色映射 padj；④ 下载 PNG，命名 <code>04_go.png</code>、<code>05_kegg.png</code>。</p>
+
+        <h3 id="sec-3-5">3.5 Venn 图：差异基因的重叠</h3>
+        <ul>
+          <li><strong>回答的问题</strong>：三次两两比较得到的差异基因，哪些是共有的，哪些只在某一次比较中出现？</li>
+          <li><strong>怎么看</strong>：每个圆是一个比较的差异基因集合，重叠区域的数字表示同时属于这几个集合的基因个数。</li>
+          <li><strong>数据格式</strong>：每个集合一列（或一个文本框），每行一个基因名。</li>
+        </ul>
+        <div class="copy-block">
+          <button class="copy-btn" type="button">复制数据</button>
+          <pre><code>ACACA
+ALOX5
+ATF4
+CALR
+CAT
+CCL5
+CD4
+CXCL10
+CYP1A1
+CYP2E1
+FOS
+GENE0105
+GENE0113
+GENE0120
+GENE0122
+GENE0125
+GENE0127
+GENE0135
+GENE0146
+GENE0150
+GENE0151
+GENE0152
+GENE0153
+GENE0154
+GENE0158
+GENE0159
+GENE0161
+GENE0173
+GENE0174
+GENE0175
+GENE0182
+GENE0183
+GENE0185
+GENE0191
+GENE0192
+GENE0196
+GENE0199
+GENE0200
+GENE0201
+GENE0202
+GENE0205
+GENE0206
+GENE0208
+GENE0212
+GENE0213
+GENE0214
+GENE0215
+GENE0217
+GENE0225
+GENE0227
+GENE0228
+GENE0235
+GENE0238
+GENE0245
+GENE0249
+GENE0255
+GENE0257
+GENE0259
+GENE0260
+GENE0262
+GENE0267
+GENE0268
+GENE0271
+GENE0275
+GENE0278
+GENE0279
+GENE0282
+GENE0289
+GENE0294
+GENE0295
+GENE0296
+GENE0299
+GENE0304
+GENE0306
+GENE0309
+GENE0312
+GENE0322
+GENE0329
+GENE0330
+GENE0337
+GENE0340
+GENE0344
+GENE0346
+GENE0353
+GENE0356
+GENE0359
+GENE0368
+GENE0369
+GENE0376
+GENE0380
+GENE0385
+GENE0386
+GENE0399
+GENE0400
+GENE0403
+GENE0405
+GENE0412
+GENE0418
+GENE0424
+GENE0426
+GENE0429
+GENE0436
+GENE0437
+GENE0446
+GENE0451
+GENE0452
+GENE0455
+GENE0459
+GENE0467
+GENE0470
+GENE0476
+GENE0479
+GENE0487
+GENE0488
+GENE0506
+GENE0507
+GENE0509
+GENE0519
+GENE0530
+GENE0533
+GENE0535
+GENE0548
+GENE0549
+GENE0550
+GENE0552
+GENE0553
+GENE0554
+GENE0559
+GENE0560
+GENE0561
+GENE0562
+GENE0563
+GENE0568
+GENE0573
+GENE0574
+GENE0575
+GENE0576
+GENE0581
+GENE0582
+GENE0589
+GENE0591
+GENE0594
+GENE0595
+GENE0602
+GENE0606
+GENE0612
+GENE0617
+GENE0619
+GENE0621
+GENE0626
+GENE0629
+GENE0630
+GENE0631
+GENE0633
+GENE0650
+GENE0653
+GENE0657
+GENE0664
+GENE0665
+GENE0669
+GENE0675
+GENE0676
+GENE0679
+GENE0680
+GENE0681
+GENE0684
+GENE0687
+GENE0690
+GENE0692
+GENE0693
+GENE0694
+GENE0698
+GENE0702
+GENE0711
+GENE0716
+GENE0719
+GENE0722
+GENE0725
+GENE0728
+GENE0729
+GENE0730
+GENE0732
+GENE0733
+GENE0737
+GENE0739
+GENE0751
+GENE0753
+GENE0759
+GENE0761
+GENE0762
+GENE0765
+GENE0766
+GENE0768
+GENE0771
+GENE0774
+GENE0776
+GENE0777
+GENE0781
+GENE0782
+GENE0786
+GENE0798
+GENE0799
+GENE0801
+GENE0805
+GENE0806
+GENE0812
+GENE0813
+GENE0815
+GENE0821
+GENE0827
+GENE0828
+GENE0830
+GENE0834
+GENE0838
+GENE0839
+GENE0842
+GENE0843
+GENE0848
+GENE0854
+GENE0860
+GENE0865
+GENE0872
+GENE0875
+GENE0877
+GENE0893
+GENE0896
+GENE0899
+GENE0907
+GENE0909
+GENE0912
+GENE0920
+GENE0922
+GENE0925
+GENE0926
+GENE0929
+GENE0937
+GENE0939
+GENE0942
+GENE0944
+GENE0946
+GENE0948
+GENE0949
+GENE0954
+GENE0955
+GENE0959
+GENE0961
+GENE0963
+GENE0967
+GENE0969
+GENE0972
+GENE0974
+GENE0977
+GENE0979
+GENE0980
+GENE0988
+GENE0997
+GENE0999
+GENE1004
+GENE1009
+GENE1011
+GENE1013
+GENE1023
+GENE1024
+GENE1027
+GENE1028
+GENE1029
+GENE1032
+GENE1037
+GENE1039
+GENE1042
+GENE1044
+GENE1046
+GENE1047
+GENE1052
+GENE1056
+GENE1062
+GENE1070
+GENE1076
+GENE1078
+GENE1079
+GENE1082
+GENE1087
+GENE1095
+GENE1098
+GENE1099
+GENE1101
+GENE1103
+GENE1105
+GENE1109
+GENE1110
+GENE1113
+GENE1114
+GENE1119
+GENE1120
+GENE1122
+GENE1123
+GENE1126
+GENE1129
+GENE1130
+GENE1133
+GENE1137
+GENE1141
+GENE1142
+GENE1143
+GENE1149
+GENE1152
+GENE1153
+GENE1160
+GENE1164
+GENE1169
+GENE1175
+GENE1179
+GENE1190
+GENE1192
+GENE1196
+GENE1199
+GENE1201
+GENE1212
+GENE1213
+GENE1217
+GENE1223
+GENE1224
+GENE1228
+GENE1230
+GENE1235
+GENE1237
+GENE1239
+GENE1246
+GENE1250
+GENE1255
+GENE1258
+GENE1259
+GENE1262
+GENE1263
+GENE1264
+GENE1266
+GENE1269
+GENE1272
+GENE1290
+GENE1291
+GENE1292
+GENE1293
+GENE1299
+GENE1303
+GENE1304
+GENE1305
+GENE1307
+GENE1309
+GENE1310
+GENE1312
+GENE1313
+GENE1315
+GENE1317
+GENE1322
+GENE1325
+GENE1335
+GENE1336
+GENE1338
+GENE1342
+GENE1349
+GENE1351
+GENE1361
+GENE1367
+GENE1369
+GENE1370
+GENE1372
+GENE1387
+GENE1388
+GENE1389
+GENE1390
+GENE1392
+GENE1405
+GENE1407
+GENE1414
+GENE1416
+GENE1418
+GENE1421
+GENE1422
+GENE1424
+GENE1430
+GENE1435
+GENE1442
+GENE1443
+GENE1444
+GENE1449
+GENE1452
+GENE1462
+GENE1463
+GENE1465
+GENE1477
+GENE1479
+GENE1486
+GENE1487
+GENE1488
+GENE1489
+GENE1495
+GENE1496
+GENE1500
+GENE1507
+GENE1512
+GENE1518
+GENE1519
+GENE1521
+GENE1523
+GENE1527
+GENE1531
+GENE1533
+GENE1546
+GENE1548
+GENE1551
+GENE1557
+GENE1567
+GENE1573
+GENE1576
+GENE1577
+GENE1583
+GENE1586
+GENE1594
+GENE1598
+IL1B
+IRAK4
+IRF3
+KEAP1
+MYC
+NFKB1
+SCD
+SELE
+SOCS3
+SOD1
+SP7
+TIMP1
+TLR4
+VCAM1
+WNT3A</code></pre>
+        </div>
+        <p class="copy-hint">集合 A：低剂量组 vs 对照组（434 个差异基因）： 共 434 行，点击右上角按钮可一键复制。</p>
+        <div class="copy-block">
+          <button class="copy-btn" type="button">复制数据</button>
+          <pre><code>ADAMTS5
+ALOX5
+ALPL
+ATF4
+BMP2
+CALR
+CASP3
+CAT
+CCL5
+CXCL10
+CYP1A1
+DDIT3
+GENE0105
+GENE0109
+GENE0116
+GENE0117
+GENE0122
+GENE0124
+GENE0127
+GENE0135
+GENE0136
+GENE0139
+GENE0146
+GENE0148
+GENE0150
+GENE0161
+GENE0167
+GENE0174
+GENE0178
+GENE0182
+GENE0185
+GENE0190
+GENE0191
+GENE0192
+GENE0193
+GENE0198
+GENE0202
+GENE0205
+GENE0213
+GENE0215
+GENE0223
+GENE0225
+GENE0231
+GENE0232
+GENE0235
+GENE0242
+GENE0249
+GENE0267
+GENE0270
+GENE0278
+GENE0289
+GENE0293
+GENE0299
+GENE0300
+GENE0304
+GENE0306
+GENE0312
+GENE0322
+GENE0323
+GENE0325
+GENE0327
+GENE0330
+GENE0332
+GENE0337
+GENE0343
+GENE0346
+GENE0347
+GENE0356
+GENE0358
+GENE0365
+GENE0368
+GENE0370
+GENE0376
+GENE0387
+GENE0390
+GENE0391
+GENE0392
+GENE0393
+GENE0394
+GENE0397
+GENE0403
+GENE0405
+GENE0407
+GENE0409
+GENE0413
+GENE0415
+GENE0416
+GENE0418
+GENE0420
+GENE0423
+GENE0424
+GENE0426
+GENE0429
+GENE0442
+GENE0443
+GENE0445
+GENE0447
+GENE0448
+GENE0458
+GENE0466
+GENE0467
+GENE0471
+GENE0472
+GENE0473
+GENE0476
+GENE0487
+GENE0488
+GENE0490
+GENE0493
+GENE0494
+GENE0498
+GENE0505
+GENE0506
+GENE0507
+GENE0509
+GENE0512
+GENE0523
+GENE0526
+GENE0530
+GENE0533
+GENE0535
+GENE0537
+GENE0539
+GENE0543
+GENE0547
+GENE0548
+GENE0549
+GENE0552
+GENE0553
+GENE0555
+GENE0558
+GENE0559
+GENE0563
+GENE0565
+GENE0568
+GENE0574
+GENE0575
+GENE0576
+GENE0577
+GENE0581
+GENE0585
+GENE0590
+GENE0595
+GENE0600
+GENE0601
+GENE0612
+GENE0617
+GENE0620
+GENE0622
+GENE0627
+GENE0628
+GENE0629
+GENE0630
+GENE0631
+GENE0633
+GENE0643
+GENE0649
+GENE0656
+GENE0662
+GENE0663
+GENE0669
+GENE0672
+GENE0677
+GENE0678
+GENE0680
+GENE0681
+GENE0684
+GENE0685
+GENE0692
+GENE0693
+GENE0698
+GENE0705
+GENE0709
+GENE0716
+GENE0719
+GENE0722
+GENE0727
+GENE0735
+GENE0737
+GENE0738
+GENE0747
+GENE0749
+GENE0753
+GENE0759
+GENE0760
+GENE0762
+GENE0765
+GENE0766
+GENE0767
+GENE0769
+GENE0770
+GENE0776
+GENE0783
+GENE0789
+GENE0798
+GENE0802
+GENE0803
+GENE0804
+GENE0812
+GENE0813
+GENE0821
+GENE0828
+GENE0829
+GENE0834
+GENE0842
+GENE0843
+GENE0845
+GENE0848
+GENE0851
+GENE0854
+GENE0857
+GENE0860
+GENE0865
+GENE0869
+GENE0871
+GENE0875
+GENE0877
+GENE0879
+GENE0888
+GENE0893
+GENE0896
+GENE0900
+GENE0902
+GENE0903
+GENE0909
+GENE0911
+GENE0913
+GENE0914
+GENE0915
+GENE0922
+GENE0925
+GENE0927
+GENE0931
+GENE0933
+GENE0942
+GENE0947
+GENE0949
+GENE0952
+GENE0963
+GENE0969
+GENE0970
+GENE0974
+GENE0977
+GENE0979
+GENE0980
+GENE0982
+GENE0997
+GENE0998
+GENE1000
+GENE1003
+GENE1004
+GENE1009
+GENE1024
+GENE1027
+GENE1028
+GENE1032
+GENE1033
+GENE1037
+GENE1039
+GENE1041
+GENE1046
+GENE1054
+GENE1055
+GENE1058
+GENE1059
+GENE1061
+GENE1063
+GENE1067
+GENE1071
+GENE1072
+GENE1073
+GENE1076
+GENE1077
+GENE1078
+GENE1079
+GENE1083
+GENE1087
+GENE1095
+GENE1099
+GENE1100
+GENE1105
+GENE1108
+GENE1109
+GENE1110
+GENE1118
+GENE1119
+GENE1120
+GENE1123
+GENE1125
+GENE1129
+GENE1130
+GENE1134
+GENE1140
+GENE1141
+GENE1143
+GENE1149
+GENE1150
+GENE1152
+GENE1153
+GENE1154
+GENE1159
+GENE1160
+GENE1161
+GENE1164
+GENE1168
+GENE1192
+GENE1198
+GENE1207
+GENE1211
+GENE1222
+GENE1224
+GENE1226
+GENE1228
+GENE1229
+GENE1235
+GENE1238
+GENE1244
+GENE1246
+GENE1253
+GENE1254
+GENE1256
+GENE1258
+GENE1264
+GENE1266
+GENE1268
+GENE1269
+GENE1270
+GENE1276
+GENE1277
+GENE1278
+GENE1281
+GENE1290
+GENE1291
+GENE1293
+GENE1302
+GENE1303
+GENE1305
+GENE1308
+GENE1310
+GENE1311
+GENE1312
+GENE1313
+GENE1315
+GENE1316
+GENE1322
+GENE1324
+GENE1325
+GENE1326
+GENE1328
+GENE1337
+GENE1338
+GENE1339
+GENE1341
+GENE1349
+GENE1351
+GENE1354
+GENE1359
+GENE1361
+GENE1362
+GENE1366
+GENE1367
+GENE1371
+GENE1372
+GENE1373
+GENE1374
+GENE1380
+GENE1382
+GENE1384
+GENE1388
+GENE1390
+GENE1391
+GENE1392
+GENE1399
+GENE1404
+GENE1407
+GENE1412
+GENE1414
+GENE1416
+GENE1418
+GENE1419
+GENE1424
+GENE1425
+GENE1433
+GENE1442
+GENE1443
+GENE1449
+GENE1452
+GENE1453
+GENE1454
+GENE1457
+GENE1459
+GENE1460
+GENE1465
+GENE1470
+GENE1477
+GENE1479
+GENE1486
+GENE1489
+GENE1495
+GENE1497
+GENE1509
+GENE1515
+GENE1518
+GENE1519
+GENE1521
+GENE1523
+GENE1529
+GENE1533
+GENE1537
+GENE1559
+GENE1567
+GENE1573
+GENE1574
+GENE1576
+GENE1577
+GENE1589
+GENE1592
+GENE1594
+GENE1596
+GENE1600
+HMOX1
+IFIT1
+INS
+IRAK4
+JAK1
+KEAP1
+LDLR
+LEP
+MAPK1
+MYC
+NQO1
+PPARG
+PTGS2
+SOCS3
+TIMP1
+VCAM1
+WNT3A</code></pre>
+        </div>
+        <p class="copy-hint">集合 B：高剂量组 vs 对照组（437 个差异基因）： 共 437 行，点击右上角按钮可一键复制。</p>
+        <div class="copy-block">
+          <button class="copy-btn" type="button">复制数据</button>
+          <pre><code>ABCB1
+ACACA
+ADAMTS5
+ATF4
+BMP2
+CASP3
+CYP2E1
+DDIT3
+FOS
+GENE0106
+GENE0109
+GENE0112
+GENE0113
+GENE0115
+GENE0116
+GENE0120
+GENE0122
+GENE0124
+GENE0127
+GENE0136
+GENE0148
+GENE0151
+GENE0152
+GENE0153
+GENE0154
+GENE0174
+GENE0175
+GENE0178
+GENE0182
+GENE0183
+GENE0189
+GENE0190
+GENE0193
+GENE0196
+GENE0198
+GENE0199
+GENE0200
+GENE0202
+GENE0206
+GENE0208
+GENE0212
+GENE0215
+GENE0217
+GENE0219
+GENE0223
+GENE0225
+GENE0227
+GENE0228
+GENE0231
+GENE0232
+GENE0235
+GENE0242
+GENE0245
+GENE0249
+GENE0255
+GENE0257
+GENE0259
+GENE0260
+GENE0262
+GENE0268
+GENE0270
+GENE0271
+GENE0275
+GENE0278
+GENE0279
+GENE0289
+GENE0294
+GENE0295
+GENE0299
+GENE0300
+GENE0301
+GENE0304
+GENE0322
+GENE0323
+GENE0325
+GENE0327
+GENE0329
+GENE0330
+GENE0332
+GENE0340
+GENE0343
+GENE0347
+GENE0352
+GENE0358
+GENE0359
+GENE0365
+GENE0369
+GENE0380
+GENE0386
+GENE0387
+GENE0390
+GENE0391
+GENE0392
+GENE0393
+GENE0394
+GENE0397
+GENE0403
+GENE0407
+GENE0412
+GENE0413
+GENE0416
+GENE0420
+GENE0436
+GENE0437
+GENE0441
+GENE0443
+GENE0445
+GENE0446
+GENE0448
+GENE0449
+GENE0451
+GENE0455
+GENE0458
+GENE0459
+GENE0470
+GENE0471
+GENE0473
+GENE0476
+GENE0479
+GENE0481
+GENE0490
+GENE0493
+GENE0498
+GENE0505
+GENE0507
+GENE0514
+GENE0526
+GENE0529
+GENE0530
+GENE0536
+GENE0537
+GENE0539
+GENE0543
+GENE0547
+GENE0548
+GENE0550
+GENE0554
+GENE0555
+GENE0561
+GENE0562
+GENE0565
+GENE0576
+GENE0581
+GENE0585
+GENE0590
+GENE0591
+GENE0594
+GENE0598
+GENE0600
+GENE0601
+GENE0602
+GENE0606
+GENE0612
+GENE0616
+GENE0620
+GENE0621
+GENE0626
+GENE0643
+GENE0649
+GENE0650
+GENE0656
+GENE0657
+GENE0662
+GENE0663
+GENE0664
+GENE0675
+GENE0677
+GENE0678
+GENE0680
+GENE0684
+GENE0685
+GENE0687
+GENE0690
+GENE0694
+GENE0702
+GENE0705
+GENE0711
+GENE0716
+GENE0720
+GENE0726
+GENE0728
+GENE0729
+GENE0732
+GENE0735
+GENE0738
+GENE0739
+GENE0744
+GENE0746
+GENE0747
+GENE0749
+GENE0761
+GENE0768
+GENE0769
+GENE0770
+GENE0771
+GENE0776
+GENE0777
+GENE0780
+GENE0781
+GENE0782
+GENE0786
+GENE0789
+GENE0794
+GENE0798
+GENE0799
+GENE0801
+GENE0805
+GENE0806
+GENE0821
+GENE0827
+GENE0829
+GENE0830
+GENE0832
+GENE0838
+GENE0839
+GENE0845
+GENE0851
+GENE0857
+GENE0859
+GENE0860
+GENE0863
+GENE0865
+GENE0871
+GENE0879
+GENE0882
+GENE0888
+GENE0899
+GENE0900
+GENE0902
+GENE0903
+GENE0911
+GENE0912
+GENE0914
+GENE0915
+GENE0920
+GENE0926
+GENE0927
+GENE0939
+GENE0946
+GENE0947
+GENE0948
+GENE0952
+GENE0954
+GENE0955
+GENE0959
+GENE0967
+GENE0969
+GENE0974
+GENE0982
+GENE0983
+GENE0988
+GENE0989
+GENE0993
+GENE0995
+GENE0997
+GENE0999
+GENE1008
+GENE1014
+GENE1023
+GENE1026
+GENE1029
+GENE1033
+GENE1039
+GENE1041
+GENE1042
+GENE1044
+GENE1047
+GENE1050
+GENE1052
+GENE1054
+GENE1056
+GENE1058
+GENE1059
+GENE1063
+GENE1070
+GENE1071
+GENE1072
+GENE1073
+GENE1077
+GENE1080
+GENE1081
+GENE1082
+GENE1083
+GENE1084
+GENE1098
+GENE1101
+GENE1103
+GENE1109
+GENE1110
+GENE1114
+GENE1115
+GENE1118
+GENE1120
+GENE1122
+GENE1125
+GENE1140
+GENE1142
+GENE1150
+GENE1152
+GENE1154
+GENE1159
+GENE1161
+GENE1172
+GENE1175
+GENE1179
+GENE1187
+GENE1189
+GENE1190
+GENE1196
+GENE1198
+GENE1199
+GENE1201
+GENE1207
+GENE1213
+GENE1217
+GENE1222
+GENE1223
+GENE1226
+GENE1230
+GENE1235
+GENE1238
+GENE1244
+GENE1250
+GENE1253
+GENE1254
+GENE1255
+GENE1256
+GENE1258
+GENE1259
+GENE1262
+GENE1263
+GENE1264
+GENE1266
+GENE1269
+GENE1270
+GENE1272
+GENE1276
+GENE1278
+GENE1281
+GENE1288
+GENE1291
+GENE1292
+GENE1299
+GENE1302
+GENE1303
+GENE1304
+GENE1305
+GENE1307
+GENE1308
+GENE1309
+GENE1310
+GENE1311
+GENE1313
+GENE1315
+GENE1322
+GENE1326
+GENE1332
+GENE1335
+GENE1336
+GENE1337
+GENE1342
+GENE1362
+GENE1366
+GENE1367
+GENE1369
+GENE1371
+GENE1372
+GENE1373
+GENE1374
+GENE1380
+GENE1382
+GENE1384
+GENE1387
+GENE1389
+GENE1391
+GENE1404
+GENE1408
+GENE1411
+GENE1421
+GENE1422
+GENE1424
+GENE1425
+GENE1429
+GENE1433
+GENE1434
+GENE1435
+GENE1442
+GENE1445
+GENE1449
+GENE1453
+GENE1457
+GENE1459
+GENE1460
+GENE1466
+GENE1470
+GENE1475
+GENE1477
+GENE1487
+GENE1488
+GENE1495
+GENE1496
+GENE1500
+GENE1507
+GENE1509
+GENE1515
+GENE1518
+GENE1527
+GENE1529
+GENE1533
+GENE1546
+GENE1555
+GENE1557
+GENE1559
+GENE1562
+GENE1567
+GENE1573
+GENE1574
+GENE1576
+GENE1586
+GENE1589
+GENE1598
+GENE1600
+GSTA1
+HMOX1
+IL1B
+INS
+IRAK4
+IRF3
+JAK1
+KEAP1
+LEP
+MAPK1
+MMP9
+MYC
+NFKB1
+PTGS2
+SCD
+SELE
+SOD1
+SP7
+TLR4
+VEGFA</code></pre>
+        </div>
+        <p class="copy-hint">集合 C：高剂量组 vs 低剂量组（442 个差异基因）： 共 442 行，点击右上角按钮可一键复制。</p>
+        <figure class="practice-figure practice-figure--half">
+          <img src="../presentation/assets/gene-expression/venn.png" alt="Venn 图参考效果">
+          <figcaption>参考效果：三次两两比较的差异基因重叠情况。</figcaption>
+        </figure>
+        <p><strong>绘制入口</strong>：<a href="https://www.bioinformatics.com.cn/?keywords=%E6%96%87%E6%81%A9%E5%9B%BE" target="_blank" rel="noopener">微生信 · 文恩图</a></p>
+        <p><strong>操作步骤</strong>：① 选择三组 Venn 工具；② 依次粘贴 A、B、C 三个基因列表；③ 出图后下载 PNG，命名 <code>06_venn.png</code>。</p>
+
+        <h2 id="sec-4">四、撰写实验报告</h2>
+        <p>实验报告按学校模板填写，模板包含封面信息和一个四行表格。建议按下表对应填写：</p>
+
+        <table class="practice-table">
+          <thead>
+            <tr><th>模板位置</th><th>填写内容</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>封面 · 实验名称</td><td>基因表达数据的可视化</td></tr>
+            <tr><td>封面 · 实验日期 / 姓名 / 学号 / 班级</td><td>按实际情况填写</td></tr>
+            <tr><td>实验目的</td><td>① 认识表达矩阵与差异分析结果的结构；② 学会用五种图展示表达数据；③ 能结合图形解释基因表达的变化趋势。</td></tr>
+            <tr><td>实验内容和要求</td><td>使用本页示例数据，分别绘制小提琴图、火山图、聚类热图、GO / KEGG 富集气泡图和 Venn 图，共 5 张图；每张图注明所用数据与关键参数（阈值、分组、标准化方式）。</td></tr>
+            <tr><td>实验结果（含关键步骤截图）</td><td>按顺序放入 5 张图，每张图下方配 1—2 句说明：图展示了什么、看到什么趋势；可附 1 张数据粘贴或参数设置的截图作为关键步骤。</td></tr>
+            <tr><td>实验中出现的问题汇总</td><td>记录实际操作中的问题，例如：数据粘贴后列数不对、分组列没有被识别、热图颜色方向相反、Venn 图数字与预期不同等，并写出解决办法。</td></tr>
+          </tbody>
+        </table>
+
+        <p>写“实验结果”时，可以套用下面的句式（复制后改成自己的观察）：</p>
+        <div class="copy-block">
+          <button class="copy-btn" type="button">复制数据</button>
+          <pre><code>小提琴图显示，CYP1A1 与 HMOX1 的表达量随剂量升高而升高，PPARG 则随剂量升高而下降，三组之间的分布差异明显。
+火山图中，红色点代表显著上调基因，蓝色点代表显著下调基因；以 |log2FC| ≥ 1 且 padj &lt; 0.05 为标准，高剂量组相对对照组筛出若干差异基因。
+聚类热图显示，18 个样本按剂量顺序聚成三类，差异基因也分成两簇：一簇在高剂量组高表达，另一簇在对照组高表达。
+GO 与 KEGG 富集结果显示，差异基因主要富集在氧化应激、炎症反应、MAPK 与 TNF 等通路。
+Venn 图显示，三次比较共有的差异基因位于三圆交集，只在某一次比较中出现的基因位于单侧区域。</code></pre>
+        </div>
+        <p class="copy-hint">实验报告参考句式： 共 5 行，点击右上角按钮可一键复制。</p>
+
+        <h2 id="sec-5">五、课堂练习</h2>
+
+        <h3>（一）填空题</h3>
+        <ol class="hw-fill">
+          <li>表达矩阵中，每一行是一个 <span class="hw-blank"></span>，每一列是一个 <span class="hw-blank"></span>。</li>
+          <li>差异分析结果中，log2FC = 2 表示该基因的表达量约升高 <span class="hw-blank"></span> 倍。</li>
+          <li>判断差异基因常用的阈值是 |log2FC| ≥ <span class="hw-blank"></span> 且 padj &lt; <span class="hw-blank"></span>。</li>
+          <li>火山图的横轴是 <span class="hw-blank"></span>，纵轴是 <span class="hw-blank"></span>。</li>
+          <li>热图中的颜色表示按 <span class="hw-blank"></span>（行 / 列）标准化后的相对表达量。</li>
+          <li>GO 分为 BP、MF、CC 三类，其中 BP 指 <span class="hw-blank"></span>。</li>
+          <li>富集气泡图中，点越大表示 <span class="hw-blank"></span>，颜色越深表示 <span class="hw-blank"></span>。</li>
+          <li>Venn 图三圆重叠区域中的数字，表示同时属于这几个集合的 <span class="hw-blank"></span> 个数。</li>
+        </ol>
+
+        <h3>（二）简答题</h3>
+        <div class="hw-qa">
+          <p><strong>1.</strong> 根据小提琴图，描述 CYP1A1 在对照组、低剂量组、高剂量组中的变化趋势，并说明这一趋势对应哪种调控（上调还是下调）。</p>
+          <p><strong>2.</strong> 火山图中，有的基因 log2FC 很大却没有被判为差异基因，可能是什么原因？</p>
+          <p><strong>3.</strong> 如果热图中对照组样本聚在一起、两个剂量组样本聚在一起，说明样本之间什么关系？请写 2—3 句。</p>
+          <p><strong>4.</strong> 从 GO 或 KEGG 结果中任选一条通路，说明高剂量组可能影响了什么生物学过程。</p>
+        </div>
+
+        <details style="margin-top: 6px; font-size: 13px; color: var(--ink-muted);">
+          <summary style="cursor: pointer; font-weight: 600;">自查要点（完成后再看）</summary>
+          <ul style="margin-top: 8px;">
+            <li>第 1 空：基因；第 2 空：样本。</li>
+            <li>log2FC = 2 表示升高约 4 倍。</li>
+            <li>常用阈值：|log2FC| ≥ 1，padj &lt; 0.05。</li>
+            <li>火山图横轴 log2FC，纵轴 −log10(padj)。</li>
+            <li>热图颜色是行标准化后的相对表达量。</li>
+            <li>BP 指生物学过程（Biological Process）。</li>
+            <li>点越大＝命中差异基因越多；颜色越深＝padj 越小、富集越显著。</li>
+            <li>Venn 交集数字＝同时属于这几个集合的基因个数。</li>
+            <li>简答 2 的要点：变化幅度大但样本波动也大，p 值或 padj 未达阈值。</li>
+            <li>简答 3 的要点：样本聚类与分组一致，说明组间差异大于组内差异，剂量处理对表达谱影响明显。</li>
+          </ul>
+        </details>
+
+        <h2 id="sec-6">六、提交要求</h2>
+        <ul>
+          <li>提交 5 张图（小提琴图、火山图、聚类热图、GO / KEGG 富集气泡图、Venn 图），保存为 PNG。</li>
+          <li>按学校实验报告模板撰写报告，包含实验目的、实验内容和要求、实验结果（含关键步骤截图）、实验中出现的问题汇总。</li>
+          <li>图与报告放在同一文件夹，命名建议：<code>学号_姓名_基因表达可视化</code>。</li>
+          <li>报告中每张图下方用 1—2 句说明该图展示了什么、得出了什么结论，避免只贴图不解释。</li>
+        </ul>
+
+        <p class="practice-footer-note">
+          <a href="index.html">← 返回练习目录</a>
+          &nbsp;·&nbsp;
+          <a href="../presentation/01-gene-expression.html">查看配套演示</a>
+        </p>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      function fallbackCopy(text, done) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+
+      document.querySelectorAll('.copy-block').forEach(function (block) {
+        var btn = block.querySelector('.copy-btn');
+        var pre = block.querySelector('pre');
+        if (!btn || !pre) return;
+        btn.addEventListener('click', function () {
+          var text = pre.innerText || pre.textContent || '';
+          var done = function () {
+            btn.textContent = '已复制';
+            btn.classList.add('is-done');
+            setTimeout(function () {
+              btn.textContent = '复制数据';
+              btn.classList.remove('is-done');
+            }, 1600);
+          };
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text, done); });
+          } else {
+            fallbackCopy(text, done);
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
