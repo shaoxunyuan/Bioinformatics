@@ -2,6 +2,8 @@
 
 本目录用于存放课程相关的 **Reveal.js** 演示文稿。
 
+在线浏览：<https://shaoxunyuan.github.io/Bioinformatics/presentation/>
+
 入口页：[index.html](index.html)
 
 ## 目录
