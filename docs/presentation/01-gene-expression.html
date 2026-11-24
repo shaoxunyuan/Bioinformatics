@@ -117,6 +117,12 @@
     }
     .reveal .small li::before { top: 0.6em; }
 
+    .nw { white-space: nowrap; }
+    .reveal .pipeline .step strong { white-space: nowrap; }
+    .reveal .term-table .k { white-space: nowrap; }
+    .reveal :not(pre) > code { white-space: nowrap; }
+    .reveal .slide-footer span { white-space: nowrap; }
+
     .reveal pre {
       width: 100%;
       box-shadow: none !important;
@@ -450,24 +456,32 @@
 
       <!-- 01 -->
       <section data-page="01">
-        <h1>基因表达数据的可视化</h1>
-        <p class="subtitle">从表达矩阵、差异分析到功能解释</p>
-        <div class="thumb-row">
+        <h1><span class="nw">基因表达数据</span>的可视化</h1>
+        <p class="subtitle">从<span class="nw">表达矩阵</span>、差异分析到功能解释</p>
+        <div class="thumb-row five">
+          <figure>
+            <img src="assets/gene-expression/violin.png" alt="小提琴图示例">
+            <figcaption>分布 · <span class="nw">小提琴图</span></figcaption>
+          </figure>
           <figure>
             <img src="assets/gene-expression/volcano.png" alt="火山图示例">
-            <figcaption>火山图 · 差异全景</figcaption>
+            <figcaption>差异 · <span class="nw">火山图</span></figcaption>
           </figure>
           <figure>
             <img src="assets/gene-expression/heatmap.png" alt="聚类热图示例">
-            <figcaption>聚类热图 · 表达模式</figcaption>
+            <figcaption>模式 · <span class="nw">聚类热图</span></figcaption>
+          </figure>
+          <figure>
+            <img src="assets/gene-expression/go.png" alt="GO 富集气泡图示例">
+            <figcaption>功能 · <span class="nw">富集气泡图</span></figcaption>
           </figure>
           <figure>
             <img src="assets/gene-expression/venn.png" alt="Venn 图示例">
-            <figcaption>Venn · 差异基因重叠</figcaption>
+            <figcaption>重叠 · <span class="nw">Venn 图</span></figcaption>
           </figure>
         </div>
         <div class="band band-blue" style="margin-top: 0.7em;">示例分组：对照组 · 低剂量组 · 高剂量组（每组 6 个重复）</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>01</span></div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>01</span></div>
       </section>
 
       <!-- 02 -->
@@ -476,15 +490,17 @@
         <div class="three-col">
           <div class="box">
             <strong>先认识数据</strong>
-            表达矩阵<br>
-            差异表达结果<br>
-            GO / Pathway 结果
+            <span class="nw">表达矩阵</span><br>
+            <span class="nw">差异表达结果</span><br>
+            <span class="nw">GO / Pathway</span> 结果
           </div>
           <div class="box">
             <strong>再看五张图</strong>
-            小提琴图<br>
-            火山图 · 聚类热图<br>
-            GO / Pathway 图 · Venn 图
+            <span class="nw">小提琴图</span><br>
+            <span class="nw">火山图</span><br>
+            <span class="nw">聚类热图</span><br>
+            <span class="nw">GO / Pathway</span> 图<br>
+            <span class="nw">Venn 图</span>
           </div>
           <div class="box">
             <strong>最后连成故事</strong>
@@ -494,25 +510,25 @@
           </div>
         </div>
         <div class="band band-green" style="margin-top: 0.8em;">主线：先看数据长什么样，再让图回答生物学问题。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>02</span></div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>02</span></div>
       </section>
 
       <!-- 03 -->
       <section data-page="03" class="textslide">
-        <h2>什么是基因表达数据？</h2>
+        <h2>什么是<span class="nw">基因表达数据</span>？</h2>
         <ul>
           <li>基因表达：基因转录出 mRNA 的水平，反映细胞在特定条件下的活跃程度</li>
-          <li>RNA-seq 得到每个基因的 reads 计数；表达谱芯片得到荧光强度</li>
+          <li><span class="nw">RNA-seq</span> 得到每个基因的 reads 计数；表达谱芯片得到荧光强度</li>
           <li>整理成矩阵：<strong>行 = 基因，列 = 样本，值 = 表达量</strong></li>
-          <li>常见数值：raw counts、TPM / FPKM；分析前做过滤、标准化和 log2 转换</li>
+          <li>常见数值：raw counts、<span class="nw">TPM / FPKM</span>；分析前做过滤、标准化和 <span class="nw">log2</span> 转换</li>
         </ul>
         <div class="band band-blue" style="margin-top: 0.8em;">同一基因在不同样本中的高低，就是后面所有图的原料。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>03</span></div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>03</span></div>
       </section>
 
       <!-- 04 -->
       <section data-page="04" class="compact">
-        <h2>表达矩阵长什么样</h2>
+        <h2><span class="nw">表达矩阵</span>长什么样</h2>
         <table class="data-table">
           <thead>
             <tr>
@@ -531,57 +547,60 @@
             <tr><td class="gene">GAPDH</td><td>12.42</td><td>12.38</td><td>12.45</td><td>12.40</td><td>12.51</td><td>12.44</td></tr>
           </tbody>
         </table>
-        <p class="table-note">数值为 log2(TPM + 1)；这里只展示部分基因与样本。</p>
+        <p class="table-note">数值为 <span class="nw">log2(TPM + 1)</span>；这里只展示部分基因与样本。</p>
         <div class="band band-green">CYP1A1、HMOX1 随剂量升高，PPARG、INS 随剂量下降；GAPDH 基本不变。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>04</span></div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>04</span></div>
       </section>
 
       <!-- 05 -->
       <section data-page="05">
-        <h2>表达矩阵是怎么来的？</h2>
+        <h2><span class="nw">表达矩阵</span>是怎么来的？</h2>
         <div class="pipeline">
-          <div class="step"><strong>测序</strong>RNA-seq 产生 reads</div>
+          <div class="step"><strong>测序</strong><span class="nw">RNA-seq</span>产生reads</div>
           <div class="arrow">→</div>
-          <div class="step"><strong>比对 / 定量</strong>STAR、featureCounts 统计基因 reads</div>
+          <div class="step">
+            <strong>比对 / 定量</strong>
+            <div>STAR/<span class="nw">featureCounts</span> 统计基因 reads</div>
+          </div>
           <div class="arrow">→</div>
-          <div class="step"><strong>表达矩阵</strong>基因 × 样本的 counts 表</div>
+          <div class="step"><strong><span class="nw">表达矩阵</span></strong><span class="nw">基因 × 样本</span>的 counts 表</div>
           <div class="arrow">→</div>
-          <div class="step"><strong>质控与标准化</strong>过滤低表达，TPM / vst，log2</div>
+          <div class="step"><strong><span class="nw">质控与标准化</span></strong>过滤低表达，<span class="nw">TPM</span> / vst，<span class="nw">log2</span></div>
         </div>
         <ul class="small" style="margin-top: 0.7em;">
           <li>低表达基因噪声大，先过滤，减少多重检验负担</li>
           <li>样本测序深度不同，必须标准化后才能比较</li>
-          <li>log2 让上调与下调对称，也便于画热图和火山图</li>
+          <li><span class="nw">log2</span> 让上调与下调对称，也便于画热图和<span class="nw">火山图</span></li>
         </ul>
-        <div class="band band-blue">这一步的输出，就是一张“基因 × 样本”的数值表。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>05</span></div>
+        <div class="band band-blue">这一步的输出，就是一张“<span class="nw">基因 × 样本</span>”的数值表。</div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>05</span></div>
       </section>
 
       <!-- 06 -->
       <section data-page="06" class="compact tight">
-        <h2>差异表达数据怎么来的？</h2>
+        <h2><span class="nw">差异表达</span>数据怎么来的？</h2>
         <ul>
-          <li>实验设计：对照组、低剂量组、高剂量组，每组 6 个重复</li>
-          <li>两两比较：低剂量 vs 对照、高剂量 vs 对照、高剂量 vs 低剂量</li>
-          <li>输入表达矩阵和分组信息，用 <code>limma-voom</code>、<code>DESeq2</code> 或 <code>edgeR</code> 建模</li>
-          <li>每个基因输出：<code>log2FC</code>（变化幅度）、p 值、FDR（校正后 p 值）</li>
+          <li>实验设计：<span class="nw">对照组、低剂量组、高剂量组</span>，每组 6 个重复</li>
+          <li>两两比较：<span class="nw">低剂量 vs 对照</span>、<span class="nw">高剂量 vs 对照</span>、<span class="nw">高剂量 vs 低剂量</span></li>
+          <li>输入<span class="nw">表达矩阵</span>和分组信息，用 <code>limma-voom</code>、<code>DESeq2</code> 或 <code>edgeR</code> 建模</li>
+          <li>每个基因输出：<code>log2FC</code>（变化幅度）、p 值、<span class="nw">FDR</span>（校正后 p 值）</li>
         </ul>
         <div class="term-table" style="font-size: 0.7em;">
-          <div class="k">log2FC</div><div>组间均值差（log2 尺度）；2 表示升高 4 倍，−2 表示降低 4 倍</div>
+          <div class="k"><span class="nw">log2FC</span></div><div>组间均值差（<span class="nw">log2</span> 尺度）；2 表示升高 4 倍，−2 表示降低 4 倍</div>
           <div class="k">p value</div><div>单个基因检验得到的原始显著性</div>
-          <div class="k">FDR</div><div>Benjamini–Hochberg 校正后的 p 值，控制假阳性</div>
-          <div class="k">判定</div><div>|log2FC| ≥ 1 且 FDR &lt; 0.05 记为差异基因</div>
+          <div class="k"><span class="nw">FDR</span></div><div><span class="nw">Benjamini–Hochberg</span> 校正后的 p 值，控制假阳性</div>
+          <div class="k">判定</div><div>|<span class="nw">log2FC</span>| ≥ 1 且 <span class="nw">FDR</span> &lt; 0.05 记为<span class="nw">差异基因</span></div>
         </div>
-        <div class="band band-orange">差异表达不是“看图看出来的”，而是对每个基因做统计检验。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>06</span></div>
+        <div class="band band-orange"><span class="nw">差异表达</span>不是“看图看出来的”，而是对每个基因做统计检验。</div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>06</span></div>
       </section>
 
       <!-- 07 -->
       <section data-page="07" class="compact">
-        <h2>差异表达结果表长什么样</h2>
+        <h2><span class="nw">差异表达结果</span>表长什么样</h2>
         <table class="data-table">
           <thead>
-            <tr><th>基因</th><th>log2FC</th><th>p value</th><th>FDR</th><th>调控</th></tr>
+            <tr><th>基因</th><th><span class="nw">log2FC</span></th><th>p value</th><th><span class="nw">FDR</span></th><th>调控</th></tr>
           </thead>
           <tbody>
             <tr><td class="gene">CYP1A1</td><td>2.08</td><td>3.9e−05</td><td>0.0012</td><td class="up">上调</td></tr>
@@ -592,66 +611,66 @@
             <tr><td class="gene">CXCL10</td><td>−2.80</td><td>1.4e−04</td><td>0.0022</td><td class="down">下调</td></tr>
           </tbody>
         </table>
-        <p class="table-note">比较：高剂量组 vs 对照组；阈值 |log2FC| ≥ 1 且 FDR &lt; 0.05。</p>
-        <div class="band band-green">显著性看 FDR，变化幅度看 log2FC；两者都过阈值才算差异基因。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>07</span></div>
+        <p class="table-note">比较：高剂量组 vs 对照组；阈值 |<span class="nw">log2FC</span>| ≥ 1 且 <span class="nw">FDR</span> &lt; 0.05。</p>
+        <div class="band band-green">显著性看 <span class="nw">FDR</span>，变化幅度看 <span class="nw">log2FC</span>；两者都过阈值才算<span class="nw">差异基因</span>。</div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>07</span></div>
       </section>
 
       <!-- 08 -->
       <section data-page="08" class="textslide">
-        <h2>GO 数据怎么来的？</h2>
+        <h2><span class="nw">GO</span> 数据怎么来的？</h2>
         <ul>
-          <li>GO（Gene Ontology）把基因功能分成三类本体：<strong>BP</strong> 生物过程、<strong>MF</strong> 分子功能、<strong>CC</strong> 细胞组分</li>
-          <li>每个条目是一组基因，例如 <em>response to oxidative stress</em></li>
-          <li>把差异基因列表做超几何检验（ORA），看哪些条目被显著“富集”</li>
-          <li>输入：差异基因；背景：所有检测到的基因；输出：条目、命中基因数、FDR</li>
+          <li><span class="nw">GO</span>（Gene Ontology）把基因功能分成三类本体：<strong>BP</strong> 生物过程、<strong>MF</strong> <span class="nw">分子功能</span>、<strong>CC</strong> <span class="nw">细胞组分</span></li>
+          <li>每个条目是一组基因，例如 <em><span class="nw">response to oxidative stress</span></em></li>
+          <li>把<span class="nw">差异基因列表</span>做超几何检验（<span class="nw">ORA</span>），看哪些条目被显著“富集”</li>
+          <li>输入：<span class="nw">差异基因</span>；背景：所有检测到的基因；输出：条目、命中基因数、<span class="nw">FDR</span></li>
         </ul>
         <div class="pipeline" style="margin-top: 0.75em;">
-          <div class="step"><strong>差异基因列表</strong>上调 / 下调</div>
+          <div class="step"><strong><span class="nw">差异基因列表</span></strong>上调 / 下调</div>
           <div class="arrow">→</div>
-          <div class="step"><strong>GO 注释库</strong>基因 → 条目</div>
+          <div class="step"><strong><span class="nw">GO</span> 注释库</strong>基因 → 条目</div>
           <div class="arrow">→</div>
           <div class="step"><strong>超几何检验</strong>与背景比较</div>
           <div class="arrow">→</div>
-          <div class="step"><strong>富集结果表</strong>条目 + FDR</div>
+          <div class="step"><strong>富集结果表</strong>条目 + <span class="nw">FDR</span></div>
         </div>
-        <div class="band band-blue">GO 回答“这些差异基因主要在做什么”。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>08</span></div>
+        <div class="band band-blue"><span class="nw">GO</span> 回答“这些<span class="nw">差异基因</span>主要在做什么”。</div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>08</span></div>
       </section>
 
       <!-- 09 -->
       <section data-page="09" class="compact">
-        <h2>GO 富集结果表长什么样</h2>
+        <h2><span class="nw">GO</span> 富集结果表长什么样</h2>
         <table class="data-table">
           <thead>
-            <tr><th>条目（Term）</th><th>本体</th><th>Count</th><th>GeneRatio</th><th>FDR</th></tr>
+            <tr><th>条目（Term）</th><th>本体</th><th>Count</th><th><span class="nw">GeneRatio</span></th><th><span class="nw">FDR</span></th></tr>
           </thead>
           <tbody>
-            <tr><td class="gene">apoptotic process</td><td>BP</td><td>120</td><td>0.56</td><td>7.6e−84</td></tr>
-            <tr><td class="gene">inflammatory response</td><td>BP</td><td>101</td><td>0.47</td><td>4.7e−71</td></tr>
-            <tr><td class="gene">cytokine-mediated signaling pathway</td><td>BP</td><td>92</td><td>0.43</td><td>1.5e−69</td></tr>
-            <tr><td class="gene">response to oxidative stress</td><td>BP</td><td>79</td><td>0.37</td><td>2.7e−58</td></tr>
-            <tr><td class="gene">cell cycle arrest</td><td>BP</td><td>74</td><td>0.35</td><td>1.3e−53</td></tr>
-            <tr><td class="gene">glutathione metabolic process</td><td>BP</td><td>48</td><td>0.22</td><td>1.8e−36</td></tr>
+            <tr><td class="gene"><span class="nw">apoptotic process</span></td><td>BP</td><td>120</td><td>0.56</td><td>7.6e−84</td></tr>
+            <tr><td class="gene"><span class="nw">inflammatory response</span></td><td>BP</td><td>101</td><td>0.47</td><td>4.7e−71</td></tr>
+            <tr><td class="gene"><span class="nw">cytokine-mediated signaling pathway</span></td><td>BP</td><td>92</td><td>0.43</td><td>1.5e−69</td></tr>
+            <tr><td class="gene"><span class="nw">response to oxidative stress</span></td><td>BP</td><td>79</td><td>0.37</td><td>2.7e−58</td></tr>
+            <tr><td class="gene"><span class="nw">cell cycle arrest</span></td><td>BP</td><td>74</td><td>0.35</td><td>1.3e−53</td></tr>
+            <tr><td class="gene"><span class="nw">glutathione metabolic process</span></td><td>BP</td><td>48</td><td>0.22</td><td>1.8e−36</td></tr>
           </tbody>
         </table>
-        <p class="table-note">GeneRatio = 命中差异基因数 / 差异基因总数；MF、CC 的结果表结构相同。</p>
-        <div class="band band-green">FDR 越小越可靠；GeneRatio 帮助判断这个条目覆盖了多少差异基因。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>09</span></div>
+        <p class="table-note"><span class="nw">GeneRatio</span> = 命中<span class="nw">差异基因</span>数 / <span class="nw">差异基因</span>总数；MF、CC 的结果表结构相同。</p>
+        <div class="band band-green"><span class="nw">FDR</span> 越小越可靠；<span class="nw">GeneRatio</span> 帮助判断这个条目覆盖了多少<span class="nw">差异基因</span>。</div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>09</span></div>
       </section>
 
       <!-- 10 -->
       <section data-page="10" class="textslide">
-        <h2>Pathway 数据怎么来的？</h2>
+        <h2><span class="nw">Pathway</span> 数据怎么来的？</h2>
         <ul>
-          <li>通路数据库：<strong>KEGG</strong>、Reactome、WikiPathways</li>
-          <li>每个通路是一组功能相关的基因，例如 <em>TNF signaling pathway</em></li>
-          <li>可用 ORA，也可用 <strong>GSEA</strong> 对全部基因排序，不先截断阈值</li>
-          <li>结果表：通路名、命中基因数、GeneRatio、p 值、FDR</li>
+          <li>通路数据库：<strong><span class="nw">KEGG</span></strong>、Reactome、Wiki<span class="nw">Pathway</span>s</li>
+          <li>每个通路是一组功能相关的基因，例如 <em><span class="nw">TNF signaling pathway</span></em></li>
+          <li>可用 <span class="nw">ORA</span>，也可用 <strong><span class="nw">GSEA</span></strong> 对全部基因排序，不先截断阈值</li>
+          <li>结果表：通路名、命中基因数、<span class="nw">GeneRatio</span>、p 值、<span class="nw">FDR</span></li>
         </ul>
         <div class="two-col" style="margin-top: 0.55em;">
           <div>
-            <div class="col-head blue">GO</div>
+            <div class="col-head blue"><span class="nw">GO</span></div>
             <ul class="small">
               <li>按功能分类组织</li>
               <li>覆盖广，适合概览</li>
@@ -659,16 +678,16 @@
             </ul>
           </div>
           <div>
-            <div class="col-head orange">Pathway</div>
+            <div class="col-head orange"><span class="nw">Pathway</span></div>
             <ul class="small">
               <li>按具体反应/信号链组织</li>
               <li>更贴近机制解释</li>
-              <li>常与 GO 一起汇报</li>
+              <li>常与 <span class="nw">GO</span> 一起汇报</li>
             </ul>
           </div>
         </div>
-        <div class="band band-blue">GO 偏功能分类，Pathway 偏具体反应链条，两者互补。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>10</span></div>
+        <div class="band band-blue"><span class="nw">GO</span> 偏功能分类，<span class="nw">Pathway</span> 偏具体反应链条，两者互补。</div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>10</span></div>
       </section>
 
       <!-- 11 -->
@@ -677,32 +696,32 @@
         <div class="thumb-row five">
           <figure>
             <img src="assets/gene-expression/violin.png" alt="小提琴图">
-            <figcaption>分布<br>小提琴图</figcaption>
+            <figcaption>分布<br><span class="nw">小提琴图</span></figcaption>
           </figure>
           <figure>
             <img src="assets/gene-expression/volcano.png" alt="火山图">
-            <figcaption>差异<br>火山图</figcaption>
+            <figcaption>差异<br><span class="nw">火山图</span></figcaption>
           </figure>
           <figure>
             <img src="assets/gene-expression/heatmap.png" alt="聚类热图">
-            <figcaption>模式<br>聚类热图</figcaption>
+            <figcaption>模式<br><span class="nw">聚类热图</span></figcaption>
           </figure>
           <figure>
             <img src="assets/gene-expression/go.png" alt="GO 富集图">
-            <figcaption>功能<br>GO / Pathway</figcaption>
+            <figcaption>功能<br><span class="nw">GO / Pathway</span></figcaption>
           </figure>
           <figure>
             <img src="assets/gene-expression/venn.png" alt="Venn 图">
-            <figcaption>重叠<br>Venn 图</figcaption>
+            <figcaption>重叠<br><span class="nw">Venn 图</span></figcaption>
           </figure>
         </div>
         <div class="band band-green" style="margin-top: 0.7em;">先确定问题，再选图：分布、差异、模式、功能、重叠。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>11</span></div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>11</span></div>
       </section>
 
       <!-- 12 -->
       <section data-page="12" class="figslide">
-        <h2>小提琴图：看表达分布</h2>
+        <h2><span class="nw">小提琴图</span>：看表达分布</h2>
         <div class="fig-row">
           <pre><code class="language-r">library(ggplot2)
 
@@ -721,12 +740,12 @@ ggplot(expr, aes(group, value, fill = group)) +
           <li>本图：CYP1A1、HMOX1 随剂量升高，PPARG 随剂量下降</li>
         </ul>
         <div class="band band-green">比较两组以上表达量时，先看分布，不只看均值。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>12</span></div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>12</span></div>
       </section>
 
       <!-- 13 -->
       <section data-page="13" class="figslide">
-        <h2>火山图：差异表达全景</h2>
+        <h2><span class="nw">火山图</span>：<span class="nw">差异表达</span>全景</h2>
         <div class="fig-row">
           <pre><code class="language-r">ggplot(res, aes(log2FC, -log10(padj))) +
   geom_point(aes(color = status), size = 1.4) +
@@ -742,17 +761,17 @@ ggplot(expr, aes(group, value, fill = group)) +
           <img src="assets/gene-expression/volcano.png" alt="高剂量组与对照组比较的火山图">
         </div>
         <ul class="small" style="margin-top: 0.45em;">
-          <li>横轴 log2FC 表示变化幅度，纵轴 −log10(FDR) 表示显著性</li>
+          <li>横轴 <span class="nw">log2FC</span> 表示变化幅度，纵轴 −log10(<span class="nw">FDR</span>) 表示显著性</li>
           <li>两条竖线和一条横线就是阈值；越靠上、越靠两侧越值得关注</li>
           <li>红色上调、蓝色下调、灰色不显著；标注 top 基因便于追踪</li>
         </ul>
         <div class="band band-orange">一屏展示所有基因，适合快速判断差异的整体格局。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>13</span></div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>13</span></div>
       </section>
 
       <!-- 14 -->
       <section data-page="14" class="figslide">
-        <h2>聚类热图：样本与基因的模式</h2>
+        <h2><span class="nw">聚类热图</span>：样本与基因的模式</h2>
         <div class="fig-row">
           <pre><code class="language-r">library(pheatmap)
 
@@ -770,12 +789,12 @@ pheatmap(t(scale(t(mat))),
           <li>顶部注释条标出分组；剂量组与对照组在聚类上分开</li>
         </ul>
         <div class="band band-blue">热图看“模式”，不看绝对表达值。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>14</span></div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>14</span></div>
       </section>
 
       <!-- 15 -->
       <section data-page="15" class="figslide">
-        <h2>GO 富集图：功能方向</h2>
+        <h2><span class="nw">GO</span> 富集图：功能方向</h2>
         <div class="fig-row">
           <pre><code class="language-r">ggplot(go, aes(GeneRatio,
                reorder(Description, GeneRatio))) +
@@ -788,17 +807,17 @@ pheatmap(t(scale(t(mat))),
           <img src="assets/gene-expression/go.png" alt="GO 生物学过程富集气泡图">
         </div>
         <ul class="small" style="margin-top: 0.45em;">
-          <li>横轴 GeneRatio，点大小 = 命中基因数，颜色 = −log10(FDR)</li>
+          <li>横轴 <span class="nw">GeneRatio</span>，点大小 = 命中基因数，颜色 = −log10(<span class="nw">FDR</span>)</li>
           <li>越靠右、点越大、颜色越暖，富集越强</li>
           <li>本图展示 BP；MF、CC 可用同一模板分别出图</li>
         </ul>
-        <div class="band band-green">优先汇报与表型相关的条目，而不是只看 FDR 最小。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>15</span></div>
+        <div class="band band-green">优先汇报与表型相关的条目，而不是只看 <span class="nw">FDR</span> 最小。</div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>15</span></div>
       </section>
 
       <!-- 16 -->
       <section data-page="16" class="figslide">
-        <h2>Pathway 富集图：机制线索</h2>
+        <h2><span class="nw">Pathway</span> 富集图：机制线索</h2>
         <div class="fig-row">
           <pre><code class="language-r">ggplot(path, aes(GeneRatio,
                  reorder(Description, GeneRatio))) +
@@ -814,17 +833,17 @@ pheatmap(t(scale(t(mat))),
           <img src="assets/gene-expression/pathway.png" alt="KEGG 通路富集气泡图">
         </div>
         <ul class="small" style="margin-top: 0.45em;">
-          <li>每个点是一条 KEGG 通路，横轴仍是 GeneRatio</li>
+          <li>每个点是一条 <span class="nw">KEGG</span> 通路，横轴仍是 <span class="nw">GeneRatio</span></li>
           <li>连线帮助比较不同通路的富集比例</li>
           <li>MAPK、Apoptosis、TNF、IL-17 等炎症与应激通路靠前</li>
         </ul>
         <div class="band band-orange">结合实验背景解释通路，而不是罗列所有显著条目。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>16</span></div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>16</span></div>
       </section>
 
       <!-- 17 -->
       <section data-page="17" class="figslide">
-        <h2>Venn 图：三组差异基因的重叠</h2>
+        <h2><span class="nw">Venn 图</span>：三组<span class="nw">差异基因</span>的重叠</h2>
         <div class="fig-row">
           <pre><code class="language-r">library(ggforce)
 
@@ -842,57 +861,57 @@ ggplot() +
           <li>三圆交集（67 个）是剂量共同响应基因</li>
           <li>单侧特有区域反映低剂量或高剂量特异响应</li>
         </ul>
-        <div class="band band-green">Venn 回答“哪些基因共享、哪些只在某一比较中出现”。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>17</span></div>
+        <div class="band band-green"><span class="nw">Venn</span> 回答“哪些基因共享、哪些只在某一比较中出现”。</div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>17</span></div>
       </section>
 
       <!-- 18 -->
       <section data-page="18">
         <h2>什么问题，配什么图</h2>
         <div class="term-table" style="font-size: 0.78em;">
-          <div class="k">看分布</div><div>小提琴图：同一基因在对照组、低剂量组、高剂量组中的表达分布</div>
-          <div class="k">看差异</div><div>火山图：全部基因的变化幅度与显著性，一屏掌握差异格局</div>
-          <div class="k">看模式</div><div>聚类热图：样本是否按剂量分开，基因是否成簇协同变化</div>
-          <div class="k">看功能</div><div>GO / Pathway 富集图：差异基因集中在哪些生物学过程与通路</div>
-          <div class="k">看重叠</div><div>Venn 图：不同比较之间共享的与特异的差异基因</div>
+          <div class="k">看分布</div><div><span class="nw">小提琴图</span>：同一基因在<span class="nw">对照组、低剂量组、高剂量组</span>中的表达分布</div>
+          <div class="k">看差异</div><div><span class="nw">火山图</span>：全部基因的变化幅度与显著性，一屏掌握差异格局</div>
+          <div class="k">看模式</div><div><span class="nw">聚类热图</span>：样本是否按剂量分开，基因是否成簇协同变化</div>
+          <div class="k">看功能</div><div><span class="nw">GO / Pathway</span> 富集图：<span class="nw">差异基因</span>集中在哪些<span class="nw">生物学过程</span>与通路</div>
+          <div class="k">看重叠</div><div><span class="nw">Venn 图</span>：不同比较之间共享的与特异的<span class="nw">差异基因</span></div>
         </div>
         <div class="band band-blue" style="margin-top: 0.7em;">一张图只回答一个问题；组合起来才构成完整证据链。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>18</span></div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>18</span></div>
       </section>
 
       <!-- 19 -->
       <section data-page="19">
         <h2>完整分析流程回顾</h2>
         <div class="pipeline six">
-          <div class="step"><strong>表达矩阵</strong>基因 × 样本</div>
+          <div class="step"><strong><span class="nw">表达矩阵</span></strong><span class="nw">基因 × 样本</span></div>
           <div class="arrow">→</div>
-          <div class="step"><strong>过滤与标准化</strong>log2 转换</div>
+          <div class="step"><strong><span class="nw">过滤与标准化</span></strong><span class="nw">log2</span> 转换</div>
           <div class="arrow">→</div>
-          <div class="step"><strong>差异分析</strong>log2FC + FDR</div>
+          <div class="step"><strong>差异分析</strong><span class="nw">log2FC</span> + <span class="nw">FDR</span></div>
           <div class="arrow">→</div>
-          <div class="step"><strong>差异基因列表</strong>上调 / 下调</div>
+          <div class="step"><strong><span class="nw">差异基因列表</span></strong>上调 / 下调</div>
           <div class="arrow">→</div>
-          <div class="step"><strong>功能富集</strong>GO / Pathway</div>
+          <div class="step"><strong><span class="nw">功能富集</span></strong><span class="nw">GO / Pathway</span></div>
           <div class="arrow">→</div>
           <div class="step"><strong>五类图</strong>分布·差异·模式·功能·重叠</div>
         </div>
         <div class="band band-green" style="margin-top: 0.8em;">图是分析结果的可视化，不是分析的起点。</div>
         <div class="band band-gray">判断一张图是否可信，先回到数据与统计：样本量、标准化、阈值与多重检验。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>19</span></div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>19</span></div>
       </section>
 
       <!-- 20 -->
       <section data-page="20" class="textslide">
         <h2>小结</h2>
         <ul>
-          <li>表达矩阵：行是基因、列是样本；先过滤与标准化</li>
-          <li>差异表达：log2FC + FDR，按阈值筛选差异基因</li>
-          <li>GO / Pathway：对差异基因做 ORA，得到功能条目</li>
-          <li>五类图：小提琴、火山、聚类热图、富集图、Venn</li>
+          <li><span class="nw">表达矩阵</span>：行是基因、列是样本；先<span class="nw">过滤与标准化</span></li>
+          <li><span class="nw">差异表达</span>：<span class="nw">log2FC</span> + <span class="nw">FDR</span>，按阈值筛选<span class="nw">差异基因</span></li>
+          <li><span class="nw">GO / Pathway</span>：对<span class="nw">差异基因</span>做 <span class="nw">ORA</span>，得到功能条目</li>
+          <li>五类图：小提琴、火山、<span class="nw">聚类热图</span>、富集图、<span class="nw">Venn</span></li>
           <li>先明确问题，再选图，最后用生物学解释结果</li>
         </ul>
-        <div class="band band-orange" style="margin-top: 0.7em;">练习：用本讲示例矩阵，画出高剂量 vs 对照的火山图与热图，并用 3 句话解释结果。</div>
-        <div class="slide-footer"><span>生物信息学 · 基因表达数据的可视化</span><span>20</span></div>
+        <div class="band band-orange" style="margin-top: 0.7em;">练习：用本讲示例矩阵，画出<span class="nw">高剂量 vs 对照</span>的<span class="nw">火山图</span>与热图，并用 3 句话解释结果。</div>
+        <div class="slide-footer"><span>生物信息学 · <span class="nw">基因表达数据</span>的可视化</span><span>20</span></div>
       </section>
 
     </div>
