@@ -124,6 +124,8 @@
           <li><strong>怎么看</strong>：每个“小提琴”是一组样本的表达分布，越宽说明该表达量附近的样本越多；中间的白箱是中位数与四分位数，点代表每个重复样本。</li>
           <li><strong>数据格式</strong>：三列，基因、样本、分组，另加一列表达量；平台一般要求“分组列 + 数值列”，必要时把基因拆成多次绘制。</li>
         </ul>
+        <div class="figure-split">
+          <div>
         <div class="copy-block">
           <button class="copy-btn" type="button">复制数据</button>
           <pre><code>gene	sample	group	value
@@ -183,10 +185,14 @@ PPARG	High_5	高剂量组	8.11
 PPARG	High_6	高剂量组	5.47</code></pre>
         </div>
         <p class="copy-hint">示例数据（CYP1A1、HMOX1、PPARG × 18 个样本）： 共 55 行，点击右上角按钮可一键复制。</p>
-        <figure class="practice-figure practice-figure--half">
-          <img src="../presentation/assets/gene-expression/violin.png" alt="小提琴图参考效果">
-          <figcaption>参考效果：同一基因在对照组、低剂量组、高剂量组中的表达分布。</figcaption>
-        </figure>
+          </div>
+          <div>
+            <figure class="practice-figure">
+              <img src="../presentation/assets/gene-expression/violin.png" alt="小提琴图参考效果">
+              <figcaption>参考效果：同一基因在对照组、低剂量组、高剂量组中的表达分布。</figcaption>
+            </figure>
+          </div>
+        </div>
         <p><strong>绘制入口</strong>：<a href="https://www.bioinformatics.com.cn/?keywords=%E5%B0%8F%E6%8F%90%E7%90%B4%E5%9B%BE" target="_blank" rel="noopener">微生信 · 小提琴图</a></p>
         <p><strong>操作步骤</strong>：① 打开入口，选择小提琴图工具；② 按页面提示粘贴数据并指定分组列与数值列；③ 设置颜色（可用灰、蓝、橙区分三组）；④ 出图后下载 PNG，文件名建议 <code>01_violin.png</code>。</p>
 
@@ -196,6 +202,8 @@ PPARG	High_6	高剂量组	5.47</code></pre>
           <li><strong>怎么看</strong>：横轴是 log2FC（变化幅度），纵轴是 −log10(padj)（显著性）。越靠上越显著，越靠两侧变化越大；红色为上调，蓝色为下调，灰色为不显著。</li>
           <li><strong>数据格式</strong>：至少包含基因名、log2FC、p 值（或 padj）三列。</li>
         </ul>
+        <div class="figure-split">
+          <div>
         <div class="copy-block">
           <button class="copy-btn" type="button">复制数据</button>
           <pre><code>gene	log2FC	pvalue	padj
@@ -421,10 +429,14 @@ GENE0821	-2.63	2.165e-05	0.001034
 CXCL10	-2.8	0.0001449	0.002169</code></pre>
         </div>
         <p class="copy-hint">示例数据（高剂量组 vs 对照组，含显著上调、显著下调与不显著基因）： 共 221 行，点击右上角按钮可一键复制。</p>
-        <figure class="practice-figure practice-figure--half">
-          <img src="../presentation/assets/gene-expression/volcano.png" alt="火山图参考效果">
-          <figcaption>参考效果：高剂量组 vs 对照组，红点为上调、蓝点为下调、灰点为不显著。</figcaption>
-        </figure>
+          </div>
+          <div>
+            <figure class="practice-figure">
+              <img src="../presentation/assets/gene-expression/volcano.png" alt="火山图参考效果">
+              <figcaption>参考效果：高剂量组 vs 对照组，红点为上调、蓝点为下调、灰点为不显著。</figcaption>
+            </figure>
+          </div>
+        </div>
         <p><strong>绘制入口</strong>：<a href="https://www.bioinformatics.com.cn/?keywords=%E7%81%AB%E5%B1%B1%E5%9B%BE" target="_blank" rel="noopener">微生信 · 火山图</a></p>
         <p><strong>操作步骤</strong>：① 粘贴数据并指定 log2FC 与显著性列；② 阈值设为 |log2FC| ≥ 1、padj &lt; 0.05；③ 勾选显示基因名（可只标前几个）；④ 下载 PNG，命名 <code>02_volcano.png</code>。</p>
 
@@ -434,6 +446,8 @@ CXCL10	-2.8	0.0001449	0.002169</code></pre>
           <li><strong>怎么看</strong>：行是基因、列是样本，颜色表示经过行标准化后的相对表达（红高蓝低）；上方和左侧的树状图是聚类结果，越早合并说明越相似。</li>
           <li><strong>数据格式</strong>：第一列为基因名，其余每列一个样本，格子为表达量；分组信息另外提供。</li>
         </ul>
+        <div class="figure-split">
+          <div>
         <div class="copy-block">
           <button class="copy-btn" type="button">复制数据</button>
           <pre><code>gene	Ctrl_1	Ctrl_2	Ctrl_3	Ctrl_4	Ctrl_5	Ctrl_6	Low_1	Low_2	Low_3	Low_4	Low_5	Low_6	High_1	High_2	High_3	High_4	High_5	High_6
@@ -463,10 +477,14 @@ GENE0332	7.31	7.12	6.93	7.6	6.88	7.19	6.54	6.67	6.81	5.98	6.96	6.75	8.11	8.41	8.
 GENE0445	1.28	0.81	1.17	0.42	1.35	1.73	2.06	2.3	1.34	1.06	2.89	1.41	3.99	2.61	3.77	3.61	3.01	3.81</code></pre>
         </div>
         <p class="copy-hint">示例数据（差异最显著的 24 个基因 × 18 个样本）： 共 25 行，点击右上角按钮可一键复制。</p>
-        <figure class="practice-figure practice-figure--half">
-          <img src="../presentation/assets/gene-expression/heatmap.png" alt="聚类热图参考效果">
-          <figcaption>参考效果：18 个样本按剂量聚类，差异基因分成两簇。</figcaption>
-        </figure>
+          </div>
+          <div>
+            <figure class="practice-figure">
+              <img src="../presentation/assets/gene-expression/heatmap.png" alt="聚类热图参考效果">
+              <figcaption>参考效果：18 个样本按剂量聚类，差异基因分成两簇。</figcaption>
+            </figure>
+          </div>
+        </div>
         <p><strong>绘制入口</strong>：<a href="https://www.bioinformatics.com.cn/?keywords=%E7%83%AD%E5%9B%BE" target="_blank" rel="noopener">微生信 · 热图</a></p>
         <p><strong>操作步骤</strong>：① 粘贴表达矩阵；② 选择“按行标准化”；③ 打开行列聚类；④ 设置分组注释（对照组、低剂量组、高剂量组）；⑤ 下载 PNG，命名 <code>03_heatmap.png</code>。</p>
 
@@ -519,6 +537,8 @@ p53 signaling pathway	11	0.0506912442396313	0.435060114295672</code></pre>
           <li><strong>怎么看</strong>：每个圆是一个比较的差异基因集合，重叠区域的数字表示同时属于这几个集合的基因个数。</li>
           <li><strong>数据格式</strong>：每个集合一列（或一个文本框），每行一个基因名。</li>
         </ul>
+        <div class="venn-grid">
+          <div>
         <div class="copy-block">
           <button class="copy-btn" type="button">复制数据</button>
           <pre><code>ACACA
@@ -957,6 +977,8 @@ VCAM1
 WNT3A</code></pre>
         </div>
         <p class="copy-hint">集合 A：低剂量组 vs 对照组（434 个差异基因）： 共 434 行，点击右上角按钮可一键复制。</p>
+          </div>
+          <div>
         <div class="copy-block">
           <button class="copy-btn" type="button">复制数据</button>
           <pre><code>ADAMTS5
@@ -1398,6 +1420,8 @@ VCAM1
 WNT3A</code></pre>
         </div>
         <p class="copy-hint">集合 B：高剂量组 vs 对照组（437 个差异基因）： 共 437 行，点击右上角按钮可一键复制。</p>
+          </div>
+          <div>
         <div class="copy-block">
           <button class="copy-btn" type="button">复制数据</button>
           <pre><code>ABCB1
@@ -1844,10 +1868,14 @@ TLR4
 VEGFA</code></pre>
         </div>
         <p class="copy-hint">集合 C：高剂量组 vs 低剂量组（442 个差异基因）： 共 442 行，点击右上角按钮可一键复制。</p>
-        <figure class="practice-figure practice-figure--half">
-          <img src="../presentation/assets/gene-expression/venn.png" alt="Venn 图参考效果">
-          <figcaption>参考效果：三次两两比较的差异基因重叠情况。</figcaption>
-        </figure>
+          </div>
+          <div>
+            <figure class="practice-figure">
+              <img src="../presentation/assets/gene-expression/venn.png" alt="Venn 图参考效果">
+              <figcaption>参考效果：三次两两比较的差异基因重叠情况。</figcaption>
+            </figure>
+          </div>
+        </div>
         <p><strong>绘制入口</strong>：<a href="https://www.bioinformatics.com.cn/?keywords=%E6%96%87%E6%81%A9%E5%9B%BE" target="_blank" rel="noopener">微生信 · 文恩图</a></p>
         <p><strong>操作步骤</strong>：① 选择三组 Venn 工具；② 依次粘贴 A、B、C 三个基因列表；③ 出图后下载 PNG，命名 <code>06_venn.png</code>。</p>
 
@@ -1869,7 +1897,7 @@ VEGFA</code></pre>
         </table>
 
         <p>写“实验结果”时，可以套用下面的句式（复制后改成自己的观察）：</p>
-        <div class="copy-block">
+        <div class="copy-block copy-block--wrap">
           <button class="copy-btn" type="button">复制数据</button>
           <pre><code>小提琴图显示，CYP1A1 与 HMOX1 的表达量随剂量升高而升高，PPARG 则随剂量升高而下降，三组之间的分布差异明显。
 火山图中，红色点代表显著上调基因，蓝色点代表显著下调基因；以 |log2FC| ≥ 1 且 padj &lt; 0.05 为标准，高剂量组相对对照组筛出若干差异基因。

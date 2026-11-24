@@ -487,6 +487,11 @@
   line-height: 1.6;
 }
 
+.copy-block--wrap pre code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 .practice-table {
   width: 100%;
   border-collapse: collapse;
@@ -512,4 +517,88 @@
 .practice-table td {
   color: var(--ink-light);
   line-height: 1.6;
+}
+
+/* 数据与参考图并排：压缩版面 */
+.figure-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 18px;
+  align-items: start;
+  margin: 12px 0 6px;
+}
+
+.figure-split > div {
+  min-width: 0;
+}
+
+.figure-split .copy-block {
+  margin: 0 0 6px;
+}
+
+.figure-split .copy-block pre {
+  max-height: 320px;
+}
+
+.figure-split .copy-hint {
+  margin: 0;
+}
+
+.figure-split .practice-figure {
+  margin: 0;
+}
+
+/* Venn：三列数据 + 一列图 */
+.venn-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.1fr);
+  gap: 14px;
+  align-items: start;
+  margin: 12px 0 6px;
+}
+
+.venn-grid > div {
+  min-width: 0;
+}
+
+.venn-grid .copy-block {
+  margin: 0 0 4px;
+}
+
+.venn-grid .copy-block pre {
+  max-height: 260px;
+  padding: 34px 10px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.venn-grid .copy-btn {
+  top: 6px;
+  right: 6px;
+  font-size: 11px;
+  padding: 3px 8px;
+}
+
+.venn-grid .copy-hint {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+.venn-grid .practice-figure {
+  margin: 0;
+}
+
+.venn-grid .practice-figure figcaption {
+  font-size: 12px;
+}
+
+@media (max-width: 820px) {
+  .figure-split {
+    grid-template-columns: 1fr;
+  }
+
+  .venn-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
