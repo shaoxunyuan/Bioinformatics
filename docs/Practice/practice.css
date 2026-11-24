@@ -571,25 +571,33 @@
   height: auto;
 }
 
-/* Venn：三列数据 + 一列图 */
+/* Venn：三列数据 + 一列图（左右等高） */
 .venn-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.1fr);
   gap: 14px;
-  align-items: start;
+  align-items: stretch;
   margin: 12px 0 6px;
 }
 
 .venn-grid > div {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .venn-grid .copy-block {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   margin: 0 0 4px;
 }
 
 .venn-grid .copy-block pre {
-  max-height: 260px;
+  flex: 1 1 0;
+  min-height: 0;
+  max-height: none;
   padding: 34px 10px 10px;
   font-size: 12px;
   line-height: 1.5;
@@ -632,5 +640,14 @@
 
   .venn-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .venn-grid > div {
+    display: block;
+  }
+
+  .venn-grid .copy-block pre {
+    flex: none;
+    max-height: 260px;
   }
 }
